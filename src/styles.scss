@@ -65,3 +65,13 @@ svg g path.note {
   fill: var(--tertiary-color);
   stroke-width: 1;
 }
+
+svg g .transparent {
+  fill: none;
+}
+
+svg g path.database {
+  fill: var(--secondary-color);
+  stroke: var(--primary-color);
+  stroke-width: 1.5px;
+}

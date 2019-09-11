@@ -66,9 +66,11 @@ export class DataService {
     data = this.replaceAll(data, 'fill="#FEFECE"', ' ');
     data = this.replaceAll(data, 'fill="#000000"', ' ');
     data = this.replaceAll(data, 'fill="#A80036"', ' ');
+    data = this.replaceAll(data, '<rect fill="none"', '<rect class="transparent"');
     data = this.replaceAll(data, ' style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 5.0,5.0;"', ' class="dashed"');
     data = this.replaceAll(data, ' style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 2.0,2.0;"', ' class="dotted"');
     data = this.replaceAll(data, ' style="stroke: #A80036; stroke-width: 1.0; stroke-dasharray: 1.0,4.0;"', ' class="skipped"');
+    data = this.replaceAll(data, ' style="stroke: #000000; stroke-width: 1.5;"', ' class="database"');
     data = this.replaceAll(data, ' style="stroke: #A80036; stroke-width: 1.5;"', ' ');
     data = this.replaceAll(data, ' style="stroke: #A80036; stroke-width: 1.0;"', ' class="note"');
     data = this.replaceAll(data, ' style="stroke: #A80036; stroke-width: 2.0;"', ' class="actor"');
