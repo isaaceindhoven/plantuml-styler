@@ -1,10 +1,30 @@
 <textarea #tA rows="20" cols="100" placeholder="Plant uml code"
-    (keyup)="generateSvg(tA.value)">Bob->Alice : hello</textarea><br>
+    (keyup)="generateSvg(tA.value)">Bob->Alice : hello</textarea>
+<div style="position: relative; float: right; margin-right: 45% ">
+    <p>
+        <input #first type="color" value="#009ddc" (change)="colorChange('primary', first.value)">
+        primary color, used for borders and lines
+    </p>
+    <p>
+        <input #second type="color" value="#ffffff" (change)="colorChange('secondary', second.value)">
+        secondary color, used for backgrounds
+    </p>
+
+    <p>
+        <input #third type="color" value="#fbfb77" (change)="colorChange('tertiary', third.value)">
+        tertiary color, used for notes
+    </p>
+    <p>
+        <input #fourth type="color" value="#3a3a3a" (change)="colorChange('quaternary', fourth.value)">
+        quaternary color, used for note borders
+    </p>
+    <p>
+        <input #fifth type="color" value="#000000" (change)="colorChange('text', fifth.value)">
+        text color
+    </p>
+</div><br>
 <a download="sequence.png" (mouseover)="download()" href="{{png}}"><button>download as png</button></a>
-<input #first type="color" value="#009ddc" (change)="colorChange('primary', first.value)">
-<input #second type="color" value="#ffffff" (change)="colorChange('secondary', second.value)">
-<input #third type="color" value="#fbfb77" (change)="colorChange('tertiary', third.value)">
-<input #fourth type="color" value="#3a3a3a" (change)="colorChange('quaternary', fourth.value)">
-<input #fifth type="color" value="#000000" (change)="colorChange('text', fifth.value)">
+
+
 <br><br>
 <div [innerHTML]=" svg | trustHtml"></div>
