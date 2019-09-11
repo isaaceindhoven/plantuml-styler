@@ -26,8 +26,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  isaacStyle() {
+    document.getElementById('svgTag').style.removeProperty(`--primary-color`);
+    document.getElementById('svgTag').style.removeProperty(`--secondary-color`);
+    document.getElementById('svgTag').style.removeProperty(`--tertiary-color`);
+    document.getElementById('svgTag').style.removeProperty(`--quaternary-color`);
+    document.getElementById('svgTag').style.removeProperty(`--text-color`);
+
+    document.getElementById('primary').setAttribute('value', '#009ddc')
+    document.getElementById('secondary').setAttribute('value', '#ffffff')
+    document.getElementById('tertiary').setAttribute('value', '#fbfb77')
+    document.getElementById('quaternary').setAttribute('value', '#3a3a3a')
+    document.getElementById('text').setAttribute('value', '#000000')
+  }
+
   colorChange(name, color) {
-    this.el.nativeElement.style.setProperty(`--${name}-color`, color);
+    document.getElementById('svgTag').style.setProperty(`--${name}-color`, color);
+    document.getElementById(name).setAttribute('value', color)
+
   }
 
   generateSvg(text) {
