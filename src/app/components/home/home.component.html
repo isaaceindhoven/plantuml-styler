@@ -1,31 +1,34 @@
 <textarea #tA rows="20" cols="100" placeholder="Plant uml code"
     (keyup)="generateSvg(tA.value)">Bob->Alice : hello</textarea>
-<div style="position: relative; float: right; margin-right: 45% ">
+<div class="right">
     <p>
-        <input id="primary" #first type="color" value="#009ddc" (change)="colorChange('primary', first.value)">
+        <input id="primary" #first type="color" value="#A80036" (change)="colorChange('primary', first.value)">
+        {{first.value}}
         primary color, used for borders and lines
     </p>
     <p>
-        <input id="secondary" #second type="color" value="#ffffff" (change)="colorChange('secondary', second.value)">
+        <input id="secondary" #second type="color" value="#FEFECE" (change)="colorChange('secondary', second.value)">
+        {{second.value}}
         secondary color, used for backgrounds
     </p>
 
     <p>
         <input id="tertiary" #third type="color" value="#fbfb77" (change)="colorChange('tertiary', third.value)">
+        {{third.value}}
         tertiary color, used for notes
     </p>
     <p>
         <input id="quaternary" #fourth type="color" value="#3a3a3a" (change)="colorChange('quaternary', fourth.value)">
+        {{fourth.value}}
         quaternary color, used for note borders
     </p>
     <p>
         <input id="text" #fifth type="color" value="#000000" (change)="colorChange('text', fifth.value)">
+        {{fifth.value}}
         text color
     </p>
 </div><br>
 <a download="sequence.png" (mouseover)="download()" href="{{png}}"><button>download as png</button></a>
 <button (click)="isaacStyle()">ISAAC style</button>
-
-
 <br><br>
 <div [innerHTML]=" svg | trustHtml"></div>

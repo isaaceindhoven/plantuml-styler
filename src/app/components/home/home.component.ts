@@ -27,11 +27,11 @@ export class HomeComponent implements OnInit {
   }
 
   isaacStyle() {
-    document.getElementById('svgTag').style.removeProperty(`--primary-color`);
-    document.getElementById('svgTag').style.removeProperty(`--secondary-color`);
-    document.getElementById('svgTag').style.removeProperty(`--tertiary-color`);
-    document.getElementById('svgTag').style.removeProperty(`--quaternary-color`);
-    document.getElementById('svgTag').style.removeProperty(`--text-color`);
+    document.getElementById('svgTag').style.setProperty(`--primary-color`, '#009ddc');
+    document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#ffffff');
+    document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#fbfb77');
+    document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#3a3a3a');
+    document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
 
     document.getElementById('primary').setAttribute('value', '#009ddc')
     document.getElementById('secondary').setAttribute('value', '#ffffff')
