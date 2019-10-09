@@ -17,14 +17,16 @@ $text-color: #000000;
 svg g ellipse,
 svg g circle,
 svg g rect {
-  stroke: var(--primary-color);
-  stroke-width: 1.5px;
+  stroke: var(--primary-color) ;
+  stroke-width: 1.5px ;
   /* fill: url(#image); */
-  fill: var(--secondary-color);
+  fill: var(--secondary-color) ;
 }
 
 svg g path {
   fill: var(--tertiary-color);
+  stroke: var(--quaternary-color);
+  stroke-width: 1.5;
 }
 
 svg g polygon {
@@ -75,3 +77,5 @@ svg g path.database {
   stroke: var(--primary-color);
   stroke-width: 1.5px;
 }
+
+

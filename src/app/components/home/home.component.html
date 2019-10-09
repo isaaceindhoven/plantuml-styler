@@ -1,34 +1,45 @@
-<textarea #tA rows="20" cols="100" placeholder="Plant uml code"
+<textarea #tA rows="16" cols="90" placeholder="Plant uml code"
     (keyup)="generateSvg(tA.value)">Bob->Alice : hello</textarea>
 <div class="right">
     <p>
-        <input id="primary" #first type="color" value="#A80036" (change)="colorChange('primary', first.value)">
+        <input id="primary" #first type="color" value="#A80036" (click)="colorChange('primary', first.value)"
+            (change)="colorChange('primary', first.value)">
         {{first.value}}
         primary color, used for borders and lines
     </p>
     <p>
-        <input id="secondary" #second type="color" value="#FEFECE" (change)="colorChange('secondary', second.value)">
+        <input id="secondary" #second type="color" value="#FEFECE" (click)="colorChange('secondary', second.value)"
+            (change)="colorChange('secondary', second.value)">
         {{second.value}}
         secondary color, used for backgrounds
     </p>
 
     <p>
-        <input id="tertiary" #third type="color" value="#fbfb77" (change)="colorChange('tertiary', third.value)">
+        <input id="tertiary" #third type="color" value="#fbfb77" (click)="colorChange('tertiary', third.value)"
+            (change)="colorChange('tertiary', third.value)">
         {{third.value}}
         tertiary color, used for notes
     </p>
     <p>
-        <input id="quaternary" #fourth type="color" value="#3a3a3a" (change)="colorChange('quaternary', fourth.value)">
+        <input id="quaternary" #fourth type="color" value="#3a3a3a" (click)="colorChange('quaternary', fourth.value)"
+            (change)="colorChange('quaternary', fourth.value)">
         {{fourth.value}}
         quaternary color, used for note borders
     </p>
     <p>
-        <input id="text" #fifth type="color" value="#000000" (change)="colorChange('text', fifth.value)">
+        <input id="text" #fifth type="color" value="#000000" (click)="colorChange('text', fifth.value)"
+            (change)="colorChange('text', fifth.value)">
         {{fifth.value}}
         text color
     </p>
 </div><br>
 <a download="sequence.png" (mouseover)="download()" href="{{png}}"><button>download as png</button></a>
 <button (click)="isaacStyle()">ISAAC style</button>
+<button (click)="toCircles(tA.value)">Circles</button>
+<button (click)="toEllipse(tA.value)">Ellipses</button>
+<button (click)="toRounded(tA.value)">Rounded corners</button>
+<button (click)="toRectangle()">Rectangles</button>
+hide notes<input type="checkbox" (change)="changeHidden(tA.value)">
+<input #img type="file" accept="image/*" (change)="toImage(img, tA.value)" value="Image">
 <br><br>
 <div [innerHTML]=" svg | trustHtml"></div>
