@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   png: any
   text: any = "Bob->Alice : hello"
   hiddenNotes: boolean = false;
-  constructor(private http: HttpClient, private dataservice: DataService, private el: ElementRef, private renderer: Renderer2) { }
+  constructor(private http: HttpClient, private dataservice: DataService) { }
 
   ngOnInit() {
     this.generateSvg(this.text)
@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
           document.getElementsByTagName('svg')[0].setAttribute('id', 'svgTag');
           this.dataservice.toImageNode(document)
           this.dataservice.removeStyling();
+          this.addListners();
         }, 1);
       }
     )
@@ -57,6 +58,7 @@ export class HomeComponent implements OnInit {
           document.getElementsByTagName('svg')[0].setAttribute('id', 'svgTag');
           this.dataservice.toEllipseNode(document)
           this.dataservice.removeStyling();
+          this.addListners();
         }, 1);
       }
     )
@@ -74,6 +76,7 @@ export class HomeComponent implements OnInit {
           document.getElementsByTagName('svg')[0].setAttribute('id', 'svgTag');
           this.dataservice.toCircleNode(document)
           this.dataservice.removeStyling();
+          this.addListners();
         }, 1);
       }
     )
@@ -90,6 +93,13 @@ export class HomeComponent implements OnInit {
         setTimeout(() => {
           document.getElementsByTagName('svg')[0].setAttribute('id', 'svgTag');
           this.dataservice.removeStyling();
+          if (this.hiddenNotes) {
+            this.HideNotes();
+          }
+          else {
+            this.ShowNotes()
+          }
+          this.addListners();
         }, 1);
       }
     )
@@ -113,6 +123,7 @@ export class HomeComponent implements OnInit {
       document.getElementsByTagName('svg')[0].setAttribute('id', 'svgTag');
       this.dataservice.removeStyling();
       this.HideNotes();
+      this.addListners();
     }, 1);
   }
 
@@ -135,8 +146,53 @@ export class HomeComponent implements OnInit {
     document.getElementById('text').setAttribute('value', '#000000')
   }
 
-  changeHidden(text) {
+  addListners() {
+    this.dataservice.getTagList('rect').forEach((element: SVGRectElement) => {
+      if (element.getAttribute('rx') != null) {
+        element.addEventListener('mouseover', () => {
+          this.ShowNotes();
+        });
+        element.addEventListener('mouseenter', () => {
+          this.ShowNotes();
+        });
+        element.addEventListener('mouseleave', () => {
+          this.HideNotes();
+        })
+      }
+    })
+    this.dataservice.getTagList('ellipse').forEach((element: SVGRectElement) => {
+      element.addEventListener('mouseover', () => {
+        this.ShowNotes();
+      });
+      element.addEventListener('mouseenter', () => {
+        this.ShowNotes();
+      });
+      element.addEventListener('mouseleave', () => {
+        this.HideNotes();
+      })
+    })
+    this.dataservice.getTagList('circle').forEach((element: SVGRectElement) => {
+      element.addEventListener('mouseover', () => {
+        this.ShowNotes();
+      });
+      element.addEventListener('mouseenter', () => {
+        this.ShowNotes();
+      });
+      element.addEventListener('mouseleave', () => {
+        this.HideNotes();
+      })
+    })
+  }
+
+
+  changeHidden() {
     this.hiddenNotes = !this.hiddenNotes;
+    if (this.hiddenNotes) {
+      this.HideNotes()
+    }
+    else {
+      this.ShowNotes()
+    }
   }
 
   generateSvg(text) {
@@ -147,6 +203,7 @@ export class HomeComponent implements OnInit {
       data => {
         this.rectangled = data
         this.toRectangle();
+        this.addListners();
       }
     )
   }

@@ -62,9 +62,7 @@ export class DataService {
   }
 
   toImageNode(document: Document) {
-    var rects: any = document.getElementsByTagName('rect');
-    var list = Array.from(rects);
-    list.forEach((element: SVGRectElement) => {
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var image = document.createElementNS(ns, 'image');
@@ -80,9 +78,7 @@ export class DataService {
   }
 
   toEllipseNode(document: Document) {
-    var rects: any = document.getElementsByTagName('rect');
-    var list = Array.from(rects);
-    list.forEach((element: SVGRectElement) => {
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var ellipse = document.createElementNS(ns, 'ellipse');
@@ -101,9 +97,7 @@ export class DataService {
   }
 
   toCircleNode(document: Document) {
-    var rects: any = document.getElementsByTagName('rect');
-    var list = Array.from(rects);
-    list.forEach((element: SVGRectElement) => {
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var circle = document.createElementNS(ns, 'circle');
@@ -120,28 +114,16 @@ export class DataService {
   }
 
   hideNotes() {
-    var notes: any = document.getElementsByTagName('path');
-    var list = Array.from(notes);
-    list.forEach((element: SVGRectElement) => {
+    this.getTagList('path').forEach((element: SVGRectElement) => {
       if (element.getAttribute('class') == null) {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
     });
-    var notes: any = document.getElementsByTagName('text');
-    var list = Array.from(notes);
-    list.forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.getAttribute('font-size') == '12') {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
-      }
-    });
-    var rects: any = document.getElementsByTagName('rect');
-    var list = Array.from(rects);
-    list.forEach((element: SVGRectElement) => {
-      if (element.getAttribute('rx') != null) {
-        element.setAttribute('onmouseenter', 'ShowNotes()')
-        element.setAttribute('onmouseleave', 'HideNotes()')
       }
     });
   }
@@ -163,9 +145,11 @@ export class DataService {
     this.removeStyleFrom('polyline');
     this.removeStyleFrom('text');
   }
-
+  getTagList(type) {
+    return Array.from(document.getElementsByTagName(type));
+  }
   removeStyleFrom(type) {
-    Array.from(document.getElementsByTagName(type)).forEach(element => {
+    this.getTagList(type).forEach(element => {
       if (element.getAttribute('fill') == 'none') {
         if (type == 'path')
           element.setAttribute('class', 'actor')
