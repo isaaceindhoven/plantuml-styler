@@ -1,3 +1,5 @@
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
 /* You can add global styles to this file, and also import other style files */
 $font-stack: Tahoma;
 $primary-color: #009ddc;
@@ -5,11 +7,23 @@ $secondary-color: #ffffff;
 $tertiary-color: #fbfb77;
 $quaternary-color: #3a3a3a;
 $text-color: #000000;
-
+@keyframes dash {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 :root {
   --font-stack: Tahoma;
-  --primary-color: #A80036;
-  --secondary-color: #FEFECE;
+  --primary-color: #a80036;
+  --secondary-color: #fefece;
   --tertiary-color: #fbfb77;
   --quaternary-color: #3a3a3a;
   --text-color: #000000;
@@ -17,26 +31,34 @@ $text-color: #000000;
 svg g ellipse,
 svg g circle,
 svg g rect {
-  stroke: var(--primary-color) ;
-  stroke-width: 1.5px ;
+  stroke: var(--primary-color);
+  stroke-width: 1.5px;
   /* fill: url(#image); */
-  fill: var(--secondary-color) ;
+  fill: var(--secondary-color);
+  stroke-dasharray: 1000;
+  animation: draw 1s linear;
 }
 
 svg g path {
   fill: var(--tertiary-color);
   stroke: var(--quaternary-color);
   stroke-width: 1.5;
+  stroke-dasharray: 1000;
+  animation: draw 1s linear;
 }
 
 svg g polygon {
   fill: var(--primary-color);
+  stroke-dasharray: 1000;
+  animation: draw 2s linear;
 }
 
 svg g line,
 svg g polyline {
   stroke: var(--primary-color);
   stroke-width: 1px;
+  stroke-dasharray: 1000;
+  animation: draw 2s linear;
 }
 
 svg g text {
@@ -47,14 +69,17 @@ svg g text {
 
 svg g line.dashed {
   stroke-dasharray: 5, 5;
+  animation: dash 2s linear;
 }
 
 svg g line.dotted {
   stroke-dasharray: 2, 2;
+  animation: dash 2s linear;
 }
 
 svg g line.skipped {
   stroke-dasharray: 1, 4;
+  animation: dash 2s linear;
 }
 
 svg g path.actor {
@@ -78,4 +103,50 @@ svg g path.database {
   stroke-width: 1.5px;
 }
 
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
+.mat-raised-button {
+  background-color: #009ddc;
+  color: #ffffff;
+}
+
+.example-header-image {
+  background-image: url("./assets/isaac-icon-logo-rgb-250px.png");
+  background-size: cover;
+}
+
+.buttonClass {
+  box-sizing: border-box;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  outline: 0;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  border-radius: 4px;
+  overflow: visible;
+  transform: translate3d(0,0,0);
+  transition: background .4s cubic-bezier(.25,.8,.25,1),box-shadow 280ms cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  background-color: #009ddc;
+  color: #ffffff;
+}

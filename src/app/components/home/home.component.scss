@@ -1,13 +1,13 @@
 div.right {
   position: relative;
   float: right;
-  margin-right: 45%;
+  margin-right: 40%;
 }
 @media screen and (min-width: 1400px) and (max-width:1900px) {
     div.right {
       position: relative;
       float: right;
-      margin-right: 25%;
+      margin-right: 20%;
     }
   }
   
@@ -15,6 +15,11 @@ div.right {
   div.right {
     position: relative;
     float: right;
-    margin-right: 5%;
+    margin-right: 0%;
   }
 }
+.card {
+  max-width: 900px;
+  margin: 8px;
+}
+

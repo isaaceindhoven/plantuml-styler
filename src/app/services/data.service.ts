@@ -21,7 +21,6 @@ export class DataService {
     }
     return r;
   }
-
   append3bytes(b1, b2, b3) {
     var c1 = b1 >> 2;
     var c2 = ((b1 & 0x3) << 4) | (b2 >> 4);
@@ -34,7 +33,6 @@ export class DataService {
     r += this.encode6bit(c4 & 0x3F);
     return r;
   }
-
   encode6bit(b) {
     if (b < 10) {
       return String.fromCharCode(48 + b);
@@ -56,11 +54,9 @@ export class DataService {
     }
     return '?';
   }
-
   replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
   }
-
   toImageNode(document: Document) {
     this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
@@ -71,12 +67,11 @@ export class DataService {
         image.setAttributeNS(null, 'height', element.getAttribute('height'))
         image.setAttributeNS(null, 'x', element.getAttribute('x'))
         image.setAttributeNS(null, 'y', element.getAttribute('y'))
-        image.setAttributeNS(null, 'href', this.img)
+        image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.img)
         element.parentNode.replaceChild(image, element);
       }
     });
   }
-
   toEllipseNode(document: Document) {
     this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
@@ -95,7 +90,6 @@ export class DataService {
       }
     });
   }
-
   toCircleNode(document: Document) {
     this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
@@ -112,7 +106,6 @@ export class DataService {
       }
     });
   }
-
   hideNotes() {
     this.getTagList('path').forEach((element: SVGRectElement) => {
       if (element.getAttribute('class') == null) {
@@ -127,7 +120,6 @@ export class DataService {
       }
     });
   }
-
   showNotes() {
     var notes: any = document.getElementsByName('note')
     var list = Array.from(notes);
@@ -135,7 +127,6 @@ export class DataService {
       element.setAttribute('display', '');
     });
   }
-
   removeStyling() {
     this.removeStyleFrom('rect');
     this.removeStyleFrom('ellipse');
