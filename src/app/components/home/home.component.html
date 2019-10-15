@@ -43,29 +43,21 @@
                 <button mat-raised-button (click)="toRounded(tA.value)">Rounded corners</button>
                 <button mat-raised-button (click)="toCircles(tA.value)">Circles</button>
                 <button mat-raised-button (click)="toEllipse(tA.value)">Ellipses</button>
-                <button mat-raised-button (click)="toRectangle()">Rectangles</button>
-                &nbsp;
-                <label class="buttonClass" for="img">Images</label>
+                <button mat-raised-button (click)="generateSvg(tA.value)">Rectangles</button>
+                &nbsp;<label class="buttonClass" for="img">Images</label>
                 <input hidden #img id="img" type="file" accept="image/*" (change)="toImage(img, tA.value)"
                     value="Image"><br><br>
-                <!-- <section > -->
                 <mat-checkbox color="primary" class="example-margin" (change)="changeHidden(tA.value)">hide notes
                 </mat-checkbox>
-                <!-- </section> -->
-
-
             </mat-card-actions>
         </mat-card>
-        <mat-card class="card">
+        <mat-card class="diagram">
             <mat-card-header>
                 <mat-card-title>Diagram</mat-card-title>
             </mat-card-header>
             <mat-card-content>
                 <div [innerHTML]="svg | trustHtml"></div>
             </mat-card-content>
-            <mat-card-actions>
-
-            </mat-card-actions>
         </mat-card>
     </ng-container>
 </div>

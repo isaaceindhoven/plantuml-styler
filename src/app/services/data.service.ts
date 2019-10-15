@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { filter } from 'minimatch';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +6,7 @@ import { filter } from 'minimatch';
 export class DataService {
   constructor() { }
   img: any;
+  actors: string[]= [];
   encode64(data) {
     var r = "";
     for (var i = 0; i < data.length; i += 3) {
@@ -97,7 +97,16 @@ export class DataService {
         var circle = document.createElementNS(ns, 'circle');
         var r = (((element.getAttribute('width') as unknown as number) / 2) * 0.9);
         var cx = (+(element.getAttribute('x') as unknown as number) + (r * 1.12));
-        var cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.7));
+        var cy;
+        if ((element.getAttribute('width') as unknown as number) >= 50) {
+          cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.5));
+        } else if ((element.getAttribute('width') as unknown as number) >= 100) {
+          cy = (+(element.getAttribute('y') as unknown as number) - (r * 1.5));
+        } else if ((element.getAttribute('width') as unknown as number) >= 130) {
+          cy = (+(element.getAttribute('y') as unknown as number) - (r * 4));
+        } else {
+          cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.8));
+        }
         circle.setAttributeNS(null, 'filter', element.getAttribute('filter'))
         circle.setAttributeNS(null, 'r', r.toString())
         circle.setAttributeNS(null, 'cx', cx.toString())
@@ -160,5 +169,35 @@ export class DataService {
         element.removeAttribute('style');
       }
     });
+  }
+  findNamesInText() {
+    var last;
+    this.getTagList('text').forEach((element: SVGRectElement) => {
+      if (last) {
+        if (element.textContent == last.textContent) {
+          element.setAttribute('name', 'participant');
+          last.setAttribute('name', 'participant');
+        }
+        else {
+          last = element;
+        }
+      } else {
+        last = element;
+      }
+    });
+  }
+  removeTextFromParticipants() {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
+      if ((element.getAttribute('name') == 'participant')) {
+        if(!this.actors.includes(element.textContent)){
+          element.setAttribute('display', 'none');
+        }
+      }
+    });
+  }
+  addToActors(actor) {
+    this.actors.push(actor);
+    console.log(this.actors);
+    
   }
 }

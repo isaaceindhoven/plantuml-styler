@@ -36,7 +36,7 @@ svg g rect {
   /* fill: url(#image); */
   fill: var(--secondary-color);
   stroke-dasharray: 1000;
-  animation: draw 1s linear;
+  animation: draw 2s linear;
 }
 
 svg g path {
@@ -44,7 +44,7 @@ svg g path {
   stroke: var(--quaternary-color);
   stroke-width: 1.5;
   stroke-dasharray: 1000;
-  animation: draw 1s linear;
+  animation: draw 2s linear;
 }
 
 svg g polygon {

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ElementRef, Renderer2 } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 declare var deflate: any
 import * as svg from 'save-svg-as-png'
@@ -33,16 +33,19 @@ export class HomeComponent implements OnInit {
     this.toRectangle();
     text = "skinparam notefontsize 12 \n " + text
     text = "skinparam roundcorner 1 \n " + text
+    this.getActors(text);
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.svg = data;
         setTimeout(() => {
           document.getElementsByTagName('svg')[1].setAttribute('id', 'svgTag');
+          this.dataservice.findNamesInText();
           this.dataservice.toImageNode(document)
           this.dataservice.removeStyling();
           this.addListners();
           this.setColors()
+          this.dataservice.removeTextFromParticipants()
         }, 1);
       }
     )
@@ -51,6 +54,7 @@ export class HomeComponent implements OnInit {
     this.toRectangle();
     text = "skinparam notefontsize 12 \n " + text
     text = "skinparam roundcorner 20 \n " + text
+    this.getActors(text);
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
@@ -61,6 +65,7 @@ export class HomeComponent implements OnInit {
           this.dataservice.removeStyling();
           this.addListners();
           this.setColors()
+          this.dataservice.findNamesInText();
         }, 1);
       }
     )
@@ -69,6 +74,7 @@ export class HomeComponent implements OnInit {
     this.toRectangle();
     text = "skinparam notefontsize 12 \n " + text
     text = "skinparam roundcorner 20 \n " + text
+    this.getActors(text);
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
@@ -79,6 +85,7 @@ export class HomeComponent implements OnInit {
           this.dataservice.removeStyling();
           this.addListners();
           this.setColors()
+          this.dataservice.findNamesInText();
         }, 1);
       }
     )
@@ -87,6 +94,7 @@ export class HomeComponent implements OnInit {
     this.toRectangle();
     text = "skinparam notefontsize 12 \n " + text
     text = "skinparam roundcorner 20 \n " + text
+    this.getActors(text);
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
@@ -102,6 +110,7 @@ export class HomeComponent implements OnInit {
           }
           this.addListners();
           this.setColors()
+          this.dataservice.findNamesInText();
         }, 1);
       }
     )
@@ -123,7 +132,8 @@ export class HomeComponent implements OnInit {
       this.dataservice.removeStyling();
       this.HideNotes();
       this.addListners();
-      this.setColors()
+      this.setColors();
+      this.dataservice.findNamesInText();
     }, 1);
   }
   private setColors() {
@@ -156,38 +166,33 @@ export class HomeComponent implements OnInit {
   addListners() {
     this.dataservice.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
-        element.addEventListener('mouseover', () => {
-          this.ShowNotes();
-        });
-        element.addEventListener('mouseenter', () => {
-          this.ShowNotes();
-        });
-        element.addEventListener('mouseleave', () => {
-          this.HideNotes();
-        })
+        this.addListenersTo(element)
       }
     })
+    this.dataservice.getTagList('image').forEach((element: SVGRectElement) => {
+      this.addListenersTo(element)
+    })
     this.dataservice.getTagList('ellipse').forEach((element: SVGRectElement) => {
-      element.addEventListener('mouseover', () => {
-        this.ShowNotes();
-      });
-      element.addEventListener('mouseenter', () => {
-        this.ShowNotes();
-      });
-      element.addEventListener('mouseleave', () => {
-        this.HideNotes();
-      })
+      this.addListenersTo(element)
     })
     this.dataservice.getTagList('circle').forEach((element: SVGRectElement) => {
-      element.addEventListener('mouseover', () => {
-        this.ShowNotes();
-      });
-      element.addEventListener('mouseenter', () => {
-        this.ShowNotes();
-      });
-      element.addEventListener('mouseleave', () => {
-        this.HideNotes();
-      })
+      this.addListenersTo(element)
+    })
+    this.dataservice.getTagList('text').forEach((element: SVGRectElement) => {
+      if (element.getAttribute('name') == 'participant') {
+        this.addListenersTo(element)
+      }
+    })
+  }
+  addListenersTo(element) {
+    element.addEventListener('mouseover', () => {
+      this.ShowNotes();
+    });
+    element.addEventListener('mouseenter', () => {
+      this.ShowNotes();
+    });
+    element.addEventListener('mouseleave', () => {
+      this.HideNotes();
     })
   }
   changeHidden() {
@@ -199,9 +204,11 @@ export class HomeComponent implements OnInit {
       this.ShowNotes()
     }
   }
-  generateSvg(text) {
-    text = "skinparam roundcorner 1  \n " + text
-    text = "skinparam notefontsize 12 \n " + text
+  generateSvg(text: string) {
+    text = "skinparam roundcorner 1  \n " + text;
+    text = "skinparam notefontsize 12 \n " + text;
+    text = this.dataservice.replaceAll(text, 'Actor', 'actor')
+    this.getActors(text);
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
@@ -210,5 +217,23 @@ export class HomeComponent implements OnInit {
         this.addListners();
       }
     )
+  }
+  getActors(text: string) {
+    if (text.includes('actor')) {
+      this.dataservice.actors = [];
+      var newtext = text.split('actor ')[1];
+      var actor = newtext.split('\n')[0];
+      newtext = text.replace(`actor ${actor}`, '')
+      this.dataservice.addToActors(actor)
+      console.log(newtext);
+      while (newtext.includes('actor')) {
+        var newer = newtext;
+        var newtext2 = newtext.split('actor ')[1];
+        var actor = newtext2.split('\n')[0];
+        newtext = newer.replace(`actor ${actor}`, '')
+        this.dataservice.addToActors(actor)
+        console.log(newtext);
+      }
+    }
   }
 }
