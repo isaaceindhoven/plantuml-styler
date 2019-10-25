@@ -27,6 +27,7 @@
     "file-system": "^2.2.2",
     "flex-layout": "^1.0.1",
     "hammerjs": "^2.0.8",
+    "ngx-color-picker": "^8.2.0",
     "node-nailgun-client": "^0.1.2",
     "node-nailgun-server": "^0.3.0",
     "rxjs": "~6.4.0",

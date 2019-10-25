@@ -43,6 +43,7 @@ import {
   MatTooltipModule,
   MatTreeModule,
 } from '@angular/material';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   exports: [
@@ -88,6 +89,7 @@ import {
     MatTreeModule,
     PortalModule,
     ScrollingModule,
+    FormsModule
   ]
 })
 export class MaterialModule {}

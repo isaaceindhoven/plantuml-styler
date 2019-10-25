@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
+import { filter } from 'minimatch';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  constructor() { }
-  img: any;
-  actors: string[]= [];
+  constructor(private http: HttpClient) { }
+  actors: string[] = [];
   encode64(data) {
     var r = "";
     for (var i = 0; i < data.length; i += 3) {
@@ -57,67 +58,15 @@ export class DataService {
   replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
   }
-  toImageNode(document: Document) {
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
-      if (element.getAttribute('rx') != null) {
-        var ns = 'http://www.w3.org/2000/svg'
-        var image = document.createElementNS(ns, 'image');
-        image.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-        image.setAttributeNS(null, 'width', element.getAttribute('width'))
-        image.setAttributeNS(null, 'height', element.getAttribute('height'))
-        image.setAttributeNS(null, 'x', element.getAttribute('x'))
-        image.setAttributeNS(null, 'y', element.getAttribute('y'))
-        image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.img)
-        element.parentNode.replaceChild(image, element);
-      }
-    });
-  }
-  toEllipseNode(document: Document) {
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
-      if (element.getAttribute('rx') != null) {
-        var ns = 'http://www.w3.org/2000/svg'
-        var ellipse = document.createElementNS(ns, 'ellipse');
-        var rx = ((element.getAttribute('width') as unknown as number) / 2);
-        var ry = ((element.getAttribute('height') as unknown as number) / 2);
-        var cx = (+(element.getAttribute('x') as unknown as number) + rx);
-        var cy = (+(element.getAttribute('y') as unknown as number) + ry);
-        ellipse.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-        ellipse.setAttributeNS(null, 'rx', rx.toString())
-        ellipse.setAttributeNS(null, 'ry', ry.toString())
-        ellipse.setAttributeNS(null, 'cx', cx.toString())
-        ellipse.setAttributeNS(null, 'cy', cy.toString())
-        element.parentNode.replaceChild(ellipse, element);
-      }
-    });
-  }
-  toCircleNode(document: Document) {
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
-      if (element.getAttribute('rx') != null) {
-        var ns = 'http://www.w3.org/2000/svg'
-        var circle = document.createElementNS(ns, 'circle');
-        var r = (((element.getAttribute('width') as unknown as number) / 2) * 0.9);
-        var cx = (+(element.getAttribute('x') as unknown as number) + (r * 1.12));
-        var cy;
-        if ((element.getAttribute('width') as unknown as number) >= 50) {
-          cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.5));
-        } else if ((element.getAttribute('width') as unknown as number) >= 100) {
-          cy = (+(element.getAttribute('y') as unknown as number) - (r * 1.5));
-        } else if ((element.getAttribute('width') as unknown as number) >= 130) {
-          cy = (+(element.getAttribute('y') as unknown as number) - (r * 4));
-        } else {
-          cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.8));
-        }
-        circle.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-        circle.setAttributeNS(null, 'r', r.toString())
-        circle.setAttributeNS(null, 'cx', cx.toString())
-        circle.setAttributeNS(null, 'cy', cy.toString())
-        element.parentNode.replaceChild(circle, element);
-      }
-    });
-  }
   hideNotes() {
     this.getTagList('path').forEach((element: SVGRectElement) => {
       if (element.getAttribute('class') == null) {
+        element.setAttribute('display', 'none');
+        element.setAttribute('name', 'note');
+      }
+    });
+    this.getTagList('polygon').forEach((element: SVGRectElement) => {
+      if (element.getAttribute('points').split(',').length >= 9) {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
@@ -136,68 +85,13 @@ export class DataService {
       element.setAttribute('display', '');
     });
   }
-  removeStyling() {
-    this.removeStyleFrom('rect');
-    this.removeStyleFrom('ellipse');
-    this.removeStyleFrom('path');
-    this.removeStyleFrom('line');
-    this.removeStyleFrom('polygon');
-    this.removeStyleFrom('polyline');
-    this.removeStyleFrom('text');
-  }
   getTagList(type) {
     return Array.from(document.getElementsByTagName(type));
   }
-  removeStyleFrom(type) {
-    this.getTagList(type).forEach(element => {
-      if (element.getAttribute('fill') == 'none') {
-        if (type == 'path')
-          element.setAttribute('class', 'actor')
-        element.setAttribute('class', element.getAttribute('class') + ' transparent')
-      }
-      element.removeAttribute('fill');
-      if (element.getAttribute('style')) {
-        if (element.getAttribute('style').includes('dasharray: 5.0,5.0')) {
-          element.setAttribute('class', element.getAttribute('class') + ' dashed')
-        }
-        if (element.getAttribute('style').includes('dasharray: 2.0,2.0')) {
-          element.setAttribute('class', element.getAttribute('class') + ' dotted')
-        }
-        if (element.getAttribute('style').includes('dasharray: 1.0,4.0')) {
-          element.setAttribute('class', element.getAttribute('class') + ' skipped')
-        }
-        element.removeAttribute('style');
-      }
-    });
-  }
-  findNamesInText() {
-    var last;
-    this.getTagList('text').forEach((element: SVGRectElement) => {
-      if (last) {
-        if (element.textContent == last.textContent) {
-          element.setAttribute('name', 'participant');
-          last.setAttribute('name', 'participant');
-        }
-        else {
-          last = element;
-        }
-      } else {
-        last = element;
-      }
-    });
-  }
-  removeTextFromParticipants() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
-      if ((element.getAttribute('name') == 'participant')) {
-        if(!this.actors.includes(element.textContent)){
-          element.setAttribute('display', 'none');
-        }
-      }
-    });
-  }
   addToActors(actor) {
     this.actors.push(actor);
-    console.log(this.actors);
-    
+  }
+  getFonts() {
+    return this.http.get('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBwIX97bVWr3-6AIUvGkcNnmFgirefZ6Sw');
   }
 }

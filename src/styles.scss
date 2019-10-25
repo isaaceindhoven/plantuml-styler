@@ -63,7 +63,7 @@ svg g polyline {
 
 svg g text {
   fill: var(--text-color);
-  font-family: var(--font-stack);
+  font-family: var(--font-stack),'Tahoma';
   font-size: 14;
 }
 
@@ -80,6 +80,10 @@ svg g line.dotted {
 svg g line.skipped {
   stroke-dasharray: 1, 4;
   animation: dash 2s linear;
+}
+
+svg g line.labelDivider {
+  stroke-width: 2px;
 }
 
 svg g path.actor {

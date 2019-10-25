@@ -7,7 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TrustHtmlPipe } from './trusthtmlpipe.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'material-module';
-import { FlexLayoutModule} from '@angular/flex-layout'
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ColorPickerModule } from 'ngx-color-picker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { FlexLayoutModule} from '@angular/flex-layout'
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    ColorPickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
