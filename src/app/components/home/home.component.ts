@@ -12,49 +12,22 @@ import { StylingService } from 'src/app/services/styling.service'
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  svg: any
-  rectangled: any;
-  png: any
-  text: any = "Bob->Alice : hello"
-  hiddenNotes: boolean = true;
-  hiddenFootnotes: boolean = true;
-  hiddenShadows: boolean = true;
-  isThemed: boolean = false;
-  textImages: boolean = false;
-  participantpadding = 0;
-  participantfontsize = 13;
-  sequencetextsize = 13;
-  shapes = ['Rectangle', 'Rounded', 'Ellipse', 'Circle'];
-  autonumber = ['None', 'Default', 'Circular', 'Rectangular', 'Rounded', 'Rectangular-Framed', 'Circular-Framed', 'Rounded-Framed'];
-  actors = ['Default', 'Modern'];
-  breaks = ['Default', 'Squiggly'];
-  fonts = ['Tahoma'];
-  themes = ['PlantUML', 'ISAAC'];
-  color1 = '';
-  color2 = '';
-  color3 = '';
-  color4 = '';
-  color5 = '';
-  selectedSize = '14'
-  selectedTheme = 'PlantUML';
-  selectedFont = 'Tahoma';
-  selectedBreak = 'Default';
-  selectedActor = 'Default';
-  selectedShape = 'Rectangle';
-  selectedNumber = 'None';
-  img;
+
   constructor(private http: HttpClient, private dataservice: DataService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, ) { }
   ngOnInit() {
-    this.generateSvg(this.text)
+    this.updateSVG('')
+    this.generateSvg(this.dataservice.text)
     this.dataservice.getFonts().subscribe(data => {
-      this.fonts = Array.from((data as any).items);
+      this.dataservice.fonts = Array.from((data as any).items);
     })
 
-    this.color1 = '#a80036'
-    this.color2 = '#fefece'
-    this.color3 = '#fbfb77'
-    this.color4 = '#3a3a3a'
-    this.color5 = '#000000'
+    this.dataservice.color1 = '#a80036'
+    this.dataservice.color2 = '#fefece'
+    this.dataservice.color3 = '#fbfb77'
+    this.dataservice.color4 = '#3a3a3a'
+    this.dataservice.color5 = '#000000'
+    this.dataservice.color6 = '#a80036'
+
   }
   download() {
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1 }, (uri) => {
@@ -66,24 +39,25 @@ export class HomeComponent implements OnInit {
     })
   }
   setStyle() {
-    if (this.isThemed) {
-      if (this.selectedTheme == 'PlantUML') {
+    if (this.dataservice.isThemed) {
+      if (this.dataservice.selectedTheme == 'PlantUML') {
         this.plantumlStyle()
       }
-      else if (this.selectedTheme == 'ISAAC') {
+      else if (this.dataservice.selectedTheme == 'ISAAC') {
         this.isaacStyle();
       }
     } else {
-      document.getElementById('svgTag').style.setProperty(`--primary-color`, this.color1)
-      document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.color2)
-      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, this.color3)
-      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.color4)
-      document.getElementById('svgTag').style.setProperty(`--text-color`, this.color5);
+      document.getElementById('svgTag').style.setProperty(`--primary-color`, this.dataservice.color1)
+      document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.dataservice.color2)
+      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, this.dataservice.color3)
+      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.dataservice.color4)
+      document.getElementById('svgTag').style.setProperty(`--text-color`, this.dataservice.color5);
+      document.getElementById('svgTag').style.setProperty(`--line-color`, this.dataservice.color6);
     }
   }
   setFont() {
     if (document.getElementById('googlelink')) {
-      document.getElementById('googlelink').setAttribute('href', 'http://fonts.googleapis.com/css?family=' + this.selectedFont);
+      document.getElementById('googlelink').setAttribute('href', 'http://fonts.googleapis.com/css?family=' + this.dataservice.selectedFont);
     } else {
       var headID = document.getElementsByTagName('head')[0];
       var link = document.createElement('link');
@@ -91,16 +65,16 @@ export class HomeComponent implements OnInit {
       link.rel = 'stylesheet';
       link.id = 'googlelink'
       headID.appendChild(link);
-      link.href = 'http://fonts.googleapis.com/css?family=' + this.selectedFont;
+      link.href = 'http://fonts.googleapis.com/css?family=' + this.dataservice.selectedFont;
     }
 
-    document.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont)
+    document.getElementById('svgTag').style.setProperty(`--font-stack`, this.dataservice.selectedFont)
   }
   triggerResize() {
-    document.getElementById('svgTag').style.setProperty(`--font-size`, this.selectedSize)
+    document.getElementById('svgTag').style.setProperty(`--font-size`, this.dataservice.selectedSize)
   }
   setImage(image, text) {
-    this.img = image;
+    this.dataservice.img = image;
     setTimeout(() => {
       this.generateSvg(text);
     }, 100);
@@ -113,12 +87,12 @@ export class HomeComponent implements OnInit {
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
-        this.svg = data;
+        this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.stylingservice.toImageNode()
           this.readySVG();
-          if (!this.textImages)
+          if (!this.dataservice.textImages)
             this.stylingservice.removeTextFromParticipants()
         }, 50);
       }
@@ -131,7 +105,7 @@ export class HomeComponent implements OnInit {
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
-        this.svg = data;
+        this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.stylingservice.toEllipseNode()
@@ -147,7 +121,7 @@ export class HomeComponent implements OnInit {
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
-        this.svg = data;
+        this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.stylingservice.toCircleNode()
@@ -163,11 +137,20 @@ export class HomeComponent implements OnInit {
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
-        this.svg = data;
+        this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.readySVG();
         }, 50);
+      });
+  }
+  resetRectangle(text) {
+    text = "skinparam roundcorner 1  \n " + text;
+    text = "skinparam notefontsize 12 \n " + text;
+    var t = unescape(encodeURIComponent(text))
+    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+      data => {
+        this.updateSVG(data);
       });
   }
   toRounded(text) {
@@ -177,7 +160,7 @@ export class HomeComponent implements OnInit {
     var t = unescape(encodeURIComponent(text))
     this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
-        this.svg = data;
+        this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.readySVG();
@@ -189,7 +172,7 @@ export class HomeComponent implements OnInit {
     this.dataservice.showNotes();
   }
   HideNotes() {
-    if (!this.hiddenNotes) {
+    if (!this.dataservice.hiddenNotes) {
       this.dataservice.hideNotes();
     } else {
       this.dataservice.showNotes();
@@ -208,10 +191,11 @@ export class HomeComponent implements OnInit {
     this.setActors();
     this.setBreak();
     this.setFont();
+    this.setStroke();
     this.triggerResize()
   }
   setActors() {
-    switch (this.selectedActor) {
+    switch (this.dataservice.selectedActor) {
       case 'Default':
         break;
       case 'Modern':
@@ -221,47 +205,53 @@ export class HomeComponent implements OnInit {
         break;
     }
   }
-  private setColors() {
-    if (this.isThemed) {
-      if (this.selectedTheme == 'PlantUML') {
+  setColors() {
+    if (this.dataservice.isThemed) {
+      if (this.dataservice.selectedTheme == 'PlantUML') {
         document.getElementById('svgTag').style.setProperty(`--primary-color`, '#a80036')
         document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#fefece')
         document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#fbfb77')
         document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#3a3a3a')
         document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
+        document.getElementById('svgTag').style.setProperty(`--line-color`, '#a80036');
       }
-      else if (this.selectedTheme == 'ISAAC') {
+      else if (this.dataservice.selectedTheme == 'ISAAC') {
         document.getElementById('svgTag').style.setProperty(`--primary-color`, '#009ddc')
         document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#ffffff')
         document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#f3f3f3')
         document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#009ddc')
         document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
+        document.getElementById('svgTag').style.setProperty(`--line-color`, '#009ddc');
       }
     } else {
-      document.getElementById('svgTag').style.setProperty(`--primary-color`, this.color1)
-      document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.color2)
-      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, this.color3)
-      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.color4)
-      document.getElementById('svgTag').style.setProperty(`--text-color`, this.color5);
+      document.getElementById('svgTag').style.setProperty(`--primary-color`, this.dataservice.color1)
+      document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.dataservice.color2)
+      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, this.dataservice.color3)
+      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.dataservice.color4)
+      document.getElementById('svgTag').style.setProperty(`--text-color`, this.dataservice.color5);
+      document.getElementById('svgTag').style.setProperty(`--line-color`, this.dataservice.color6);
     }
   }
+  setStroke() {
+    document.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.dataservice.participantstroke.toString())
+  }
   isaacStyle() {
-    this.selectedBreak = 'Squiggly';
-    this.selectedNumber = 'Circular';
-    this.selectedShape = 'Rounded';
-    this.selectedActor = 'Modern';
-    this.selectedFont = 'Tahoma'
-    this.hiddenFootnotes = false;
-    this.generateSvg(this.text);
+    this.dataservice.selectedBreak = 'Squiggly';
+    this.dataservice.selectedNumber = 'Circular';
+    this.dataservice.selectedShape = 'Rounded';
+    this.dataservice.selectedActor = 'Modern';
+    this.dataservice.selectedFont = 'Tahoma'
+    this.dataservice.hiddenFootnotes = false;
+    this.generateSvg(this.dataservice.text);
   }
   plantumlStyle() {
-    this.selectedBreak = 'Default';
-    this.selectedNumber = 'None';
-    this.selectedShape = 'Rectangle';
-    this.selectedActor = 'Default';
-    this.selectedFont = 'Roboto'
-    this.hiddenFootnotes = true;
-    this.generateSvg(this.text);
+    this.dataservice.selectedBreak = 'Default';
+    this.dataservice.selectedNumber = 'None';
+    this.dataservice.selectedShape = 'Rectangle';
+    this.dataservice.selectedActor = 'Default';
+    this.dataservice.selectedFont = 'Roboto'
+    this.dataservice.hiddenFootnotes = true;
+    this.generateSvg(this.dataservice.text);
   }
   addListners() {
     this.dataservice.getTagList('rect').forEach((element: SVGRectElement) => {
@@ -300,7 +290,7 @@ export class HomeComponent implements OnInit {
     })
   }
   changeHidden() {
-    if (!this.hiddenNotes) {
+    if (!this.dataservice.hiddenNotes) {
       this.HideNotes()
     }
     else {
@@ -311,21 +301,21 @@ export class HomeComponent implements OnInit {
     this.generateSvg(text)
   }
   generateSvg(text: string) {
-    this.text = text;
+    this.dataservice.text = text;
     text = this.dataservice.replaceAll(text, 'Actor', 'actor')
-    if (!this.hiddenFootnotes)
+    if (!this.dataservice.hiddenFootnotes)
       text = 'hide footbox \n' + text
-    if (!this.hiddenShadows)
+    if (!this.dataservice.hiddenShadows)
       text = 'skinparam Shadowing false \n' + text
 
-    text = `skinparam   ParticipantPadding  ${this.participantpadding} \n` + text
-    text = `skinparam   ParticipantFontSize ${this.participantfontsize} \n` + text
-    text = `skinparam   ActorFontSize ${this.participantfontsize} \n` + text
-    text = `skinparam   ArrowFontSize  ${this.sequencetextsize} \n` + text
+    text = `skinparam   ParticipantPadding  ${this.dataservice.participantpadding} \n` + text
+    text = `skinparam   ParticipantFontSize ${this.dataservice.participantfontsize} \n` + text
+    text = `skinparam   ActorFontSize ${this.dataservice.participantfontsize} \n` + text
+    text = `skinparam   ArrowFontSize  ${this.dataservice.sequencetextsize} \n` + text
 
     text = 'skinparam SequenceDividerFontSize 14 \n' + text
     text = 'skinparam SequenceDividerFontSize 14 \n' + text
-    switch (this.selectedNumber) {
+    switch (this.dataservice.selectedNumber) {
       case 'None':
         break;
       case 'Default':
@@ -334,42 +324,51 @@ export class HomeComponent implements OnInit {
         break;
       case 'Circular':
         text = 'autonumber 1\n' + text;
+        text = `skinparam   Padding  4 \n` + text
         break;
       case 'Rectangular':
         text = 'autonumber 1\n' + text;
+        text = `skinparam   Padding  4 \n` + text
         break;
       case 'Rectangular-Framed':
+        text = `skinparam   Padding  4 \n` + text
         text = 'autonumber 1\n' + text;
         break;
       case 'Circular-Framed':
+        text = `skinparam   Padding  4 \n` + text
         text = 'autonumber 1\n' + text;
         break;
       case 'Rounded-Framed':
+        text = `skinparam   Padding  4 \n` + text
         text = 'autonumber 1\n' + text;
         break;
       case 'Rounded':
+        text = `skinparam   Padding  4 \n` + text
         text = 'autonumber 1\n' + text;
         break;
       default:
         break;
     }
-    this.clearSVG();
     setTimeout(() => {
-      switch (this.selectedShape) {
+      switch (this.dataservice.selectedShape) {
         case 'Rectangle':
           this.toRectangle(text);
           break;
         case 'Rounded':
+          this.resetRectangle(text)
           this.toRounded(text);
           break;
         case 'Ellipse':
+          this.resetRectangle(text)
           this.toEllipse(text);
           break;
         case 'Circle':
+          this.resetRectangle(text)
           this.toCircles(text);
           break;
         case 'Images':
-          this.toImage(this.img, text);
+          this.resetRectangle(text)
+          this.toImage(this.dataservice.img, text);
           break;
         default:
           this.toRectangle(text);
@@ -377,47 +376,47 @@ export class HomeComponent implements OnInit {
       }
     }, 100);
   }
-  clearSVG() {
+  updateSVG(data) {
     if (document.getElementsByTagName('svg')[0]) {
-      this.svg = `<svg 
-      height="${document.getElementsByTagName('svg')[0].getAttribute('height')}" 
-      width="${document.getElementsByTagName('svg')[0].getAttribute('width')}">
-      </svg>`
+      this.dataservice.svg = '<svg></svg>'
+      setTimeout(() => {
+        this.dataservice.svg = data;
+      }, 1);
     }
     else {
-      this.svg = ''
+      this.dataservice.svg = '<svg></svg>'
     }
 
   }
   setAutoNumberLabel() {
-    if (this.selectedNumber == 'Circular') {
+    if (this.dataservice.selectedNumber == 'Circular') {
       this.autonumberservice.clearLabels();
       this.autonumberservice.setAutonumberCircular();
-    } else if (this.selectedNumber == 'Rectangular') {
+    } else if (this.dataservice.selectedNumber == 'Rectangular') {
       this.autonumberservice.clearLabels();
       this.autonumberservice.setAutonumberRectangular();
-    } else if (this.selectedNumber == 'Rectangular-Framed') {
+    } else if (this.dataservice.selectedNumber == 'Rectangular-Framed') {
       this.autonumberservice.clearLabels();
       this.autonumberservice.setAutonumberRectangularFramed();
-    } else if (this.selectedNumber == 'Rounded-Framed') {
+    } else if (this.dataservice.selectedNumber == 'Rounded-Framed') {
       this.autonumberservice.clearLabels();
       this.autonumberservice.setAutonumberRoundedFramed();
-    } else if (this.selectedNumber == 'Circular-Framed') {
+    } else if (this.dataservice.selectedNumber == 'Circular-Framed') {
       this.autonumberservice.clearLabels();
       this.autonumberservice.setAutonumberCircularFramed();
-    } else if (this.selectedNumber == 'Rounded') {
+    } else if (this.dataservice.selectedNumber == 'Rounded') {
       this.autonumberservice.clearLabels();
       this.autonumberservice.setAutonumberRounded();
     }
   }
   setBreak() {
-    if (this.selectedBreak == 'Squiggly') {
+    if (this.dataservice.selectedBreak == 'Squiggly') {
       this.stylingservice.setSquiggly();
     }
   }
   getActors(text: string) {
     if (text.includes('actor')) {
-      this.dataservice.actors = [];
+      this.dataservice.actorlist = [];
       var newtext = text.split('actor ')[1];
       var actor = (newtext.split('\n')[0]).trim();
       newtext = text.replace(`actor ${actor}`, '')

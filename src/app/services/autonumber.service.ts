@@ -8,22 +8,28 @@ export class AutoNumberService {
   constructor(private data: DataService) { }
   setAutonumberCircular() {
     this.data.getTagList('text').forEach((element: SVGRectElement) => {
-      if (element.getAttribute('font-weight') == 'bold' && element.getAttribute('font-size') != '14') {
-        var ns = 'http://www.w3.org/2000/svg'
-        var circle = document.createElementNS(ns, 'circle');
-        var r = (element.getAttribute('textLength').length as unknown as number);
-        var extra = 1;
-        if (r == 2) {
-          extra = 5;
+      if (element.previousElementSibling) {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
+          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+          var ns = 'http://www.w3.org/2000/svg'
+          var circle = document.createElementNS(ns, 'circle');
+          var r = (element.getAttribute('textLength').length as unknown as number);
+          var fs = (element.getAttribute('font-size') as unknown as number);
+          console.log(fs);
+
+          var extra = (fs / 13);
+          if (r == 2) {
+            extra = (fs / 13) * 5;
+          }
+          r = (((fs / 13) * 10) + (r * 2));
+          var cx = (+(element.getAttribute('x') as unknown as number) - (fs / 13) + ((r * 0.4) + extra));
+          var cy = (+(element.getAttribute('y') as unknown as number) + ((fs / 13) * 2) - (r / 2));
+          circle.setAttributeNS(null, 'r', r.toString())
+          circle.setAttributeNS(null, 'cx', cx.toString())
+          circle.setAttributeNS(null, 'cy', cy.toString())
+          circle.setAttributeNS(null, 'name', 'label')
+          element.parentNode.insertBefore(circle, element)
         }
-        r = (6 + (r * 2));
-        var cx = (+(element.getAttribute('x') as unknown as number) + ((r * 0.4) + extra));
-        var cy = (+(element.getAttribute('y') as unknown as number) - (r / 2));
-        circle.setAttributeNS(null, 'r', r.toString())
-        circle.setAttributeNS(null, 'cx', cx.toString())
-        circle.setAttributeNS(null, 'cy', cy.toString())
-        circle.setAttributeNS(null, 'name', 'label')
-        element.parentNode.insertBefore(circle, element)
       }
     })
   }

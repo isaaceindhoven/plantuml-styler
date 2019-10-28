@@ -9,6 +9,8 @@ export class StylingService {
   img: any;
 
   setSquiggly() {
+    console.log('squiggly');
+    
     Array.from(document.getElementsByClassName('null skipped')).forEach((element: SVGLineElement) => {
       var distance = ((+(element.getAttribute('y2') as unknown as number) - (element.getAttribute('y1') as unknown as number)) / 3);
       var width = 20;
@@ -160,7 +162,7 @@ export class StylingService {
   removeTextFromParticipants() {
     this.data.getTagList('text').forEach((element: SVGRectElement) => {
       if ((element.getAttribute('name') == 'participant')) {
-        if (!this.data.actors.includes(element.textContent)) {
+        if (!this.data.actorlist.includes(element.textContent)) {
           element.setAttribute('display', 'none');
         }
       }

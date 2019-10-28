@@ -7,7 +7,40 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DataService {
   constructor(private http: HttpClient) { }
-  actors: string[] = [];
+  actorlist: string[] = [];
+  svg: any
+  rectangled: any;
+  png: any
+  text: any = "Bob->Alice : hello"
+  hiddenNotes: boolean = true;
+  hiddenFootnotes: boolean = true;
+  hiddenShadows: boolean = true;
+  isThemed: boolean = false;
+  textImages: boolean = false;
+  participantpadding = 0;
+  participantfontsize = 13;
+  participantstroke = 1.5;
+  sequencetextsize = 13;
+  shapes = ['Rectangle', 'Rounded', 'Ellipse', 'Circle'];
+  autonumber = ['None', 'Default', 'Circular', 'Rectangular', 'Rounded', 'Rectangular-Framed', 'Circular-Framed', 'Rounded-Framed'];
+  actors = ['Default', 'Modern'];
+  breaks = ['Default', 'Squiggly'];
+  fonts = ['Tahoma'];
+  themes = ['PlantUML', 'ISAAC'];
+  color1 = '';
+  color2 = '';
+  color3 = '';
+  color4 = '';
+  color5 = '';
+  color6 = '';
+  selectedSize = '14'
+  selectedTheme = 'PlantUML';
+  selectedFont = 'Tahoma';
+  selectedBreak = 'Default';
+  selectedActor = 'Default';
+  selectedShape = 'Rectangle';
+  selectedNumber = 'None';
+  img;
   encode64(data) {
     var r = "";
     for (var i = 0; i < data.length; i += 3) {
@@ -89,7 +122,7 @@ export class DataService {
     return Array.from(document.getElementsByTagName(type));
   }
   addToActors(actor) {
-    this.actors.push(actor);
+    this.actorlist.push(actor);
   }
   getFonts() {
     return this.http.get('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBwIX97bVWr3-6AIUvGkcNnmFgirefZ6Sw');

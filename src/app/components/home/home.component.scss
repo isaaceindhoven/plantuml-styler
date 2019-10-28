@@ -3,14 +3,14 @@ div.right {
   float: right;
   margin-right: 40%;
 }
-@media screen and (min-width: 1400px) and (max-width:1900px) {
-    div.right {
-      position: relative;
-      float: right;
-      margin-right: 20%;
-    }
+@media screen and (min-width: 1400px) and (max-width: 1900px) {
+  div.right {
+    position: relative;
+    float: right;
+    margin-right: 20%;
   }
-  
+}
+
 @media (max-width: 1400px) {
   div.right {
     position: relative;
@@ -18,11 +18,57 @@ div.right {
     margin-right: 0%;
   }
 }
+
+#scrollbar::-webkit-scrollbar-track
+{
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+	background-color: #ffffff;
+}
+
+#scrollbar::-webkit-scrollbar
+{
+  width: 5px;
+  height: 5px;
+	background-color: #ffffff;
+}
+
+#scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: #009edc;
+}
+
 .card {
   max-width: 360px;
   margin: 8px;
 }
 
 .diagram {
+  max-width: 1400px;
+  max-height: 900px;
+  overflow: scroll;
   margin: 8px;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Tahoma, "Helvetica Neue", sans-serif;
+}
+
+.mat-mini-fab {
+  background-color: #009ddc;
+  color: #ffffff;
+}
+
+.example-header-image {
+  background-image: url("../../../assets/isaac-icon-logo-rgb-250px.png");
+  background-size: cover;
+}
+
+.coding {
+  font-family: Consolas, "Courier New", monospace;
 }
