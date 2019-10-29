@@ -29,12 +29,15 @@ $text-color: #000000;
   --text-color: #000000;
   --line-color: #a80036;
   --participant-stroke-width: 1.5;
+  --label-border-color: #a80036;
+  --label-background-color: #fefece;
+  --label-text-color: #000000;
 }
 svg g ellipse,
 svg g circle,
 svg g rect {
   stroke: var(--primary-color);
-  stroke-width:var(--participant-stroke-width);
+  stroke-width: var(--participant-stroke-width);
   /* fill: url(#image); */
   fill: var(--secondary-color);
   stroke-dasharray: 3000;
@@ -65,7 +68,7 @@ svg g polyline {
 
 svg g text {
   fill: var(--text-color);
-  font-family: var(--font-stack),'Tahoma';
+  font-family: var(--font-stack), "Tahoma";
   font-size: 14;
 }
 
@@ -88,6 +91,14 @@ svg g line.labelDivider {
   stroke-width: 2px;
 }
 
+svg g .label {
+  stroke: var(--label-border-color);
+  fill: var(--label-background-color);
+}
+svg g .labelText {
+  fill: var(--label-text-color);
+}
+
 svg g path.actor {
   stroke: var(--primary-color);
   stroke-width: 2;
@@ -108,4 +119,3 @@ svg g path.database {
   stroke: var(--primary-color);
   stroke-width: 1.5px;
 }
-

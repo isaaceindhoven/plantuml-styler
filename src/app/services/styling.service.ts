@@ -9,8 +9,6 @@ export class StylingService {
   img: any;
 
   setSquiggly() {
-    console.log('squiggly');
-    
     Array.from(document.getElementsByClassName('null skipped')).forEach((element: SVGLineElement) => {
       var distance = ((+(element.getAttribute('y2') as unknown as number) - (element.getAttribute('y1') as unknown as number)) / 3);
       var width = 20;

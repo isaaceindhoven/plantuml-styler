@@ -27,7 +27,9 @@ export class HomeComponent implements OnInit {
     this.dataservice.color4 = '#3a3a3a'
     this.dataservice.color5 = '#000000'
     this.dataservice.color6 = '#a80036'
-
+    this.dataservice.color7 = '#a80036'
+    this.dataservice.color8 = '#fefece'
+    this.dataservice.color9 = '#000000'
   }
   download() {
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1 }, (uri) => {
@@ -46,6 +48,9 @@ export class HomeComponent implements OnInit {
       else if (this.dataservice.selectedTheme == 'ISAAC') {
         this.isaacStyle();
       }
+      else if (this.dataservice.selectedTheme == 'Johan') {
+        this.JohanStyle();
+      }
     } else {
       document.getElementById('svgTag').style.setProperty(`--primary-color`, this.dataservice.color1)
       document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.dataservice.color2)
@@ -53,6 +58,9 @@ export class HomeComponent implements OnInit {
       document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.dataservice.color4)
       document.getElementById('svgTag').style.setProperty(`--text-color`, this.dataservice.color5);
       document.getElementById('svgTag').style.setProperty(`--line-color`, this.dataservice.color6);
+      document.getElementById('svgTag').style.setProperty(`--label-border-color`, this.dataservice.color7);
+      document.getElementById('svgTag').style.setProperty(`--label-background-color`, this.dataservice.color8);
+      document.getElementById('svgTag').style.setProperty(`--label-text-color`, this.dataservice.color9);
     }
   }
   setFont() {
@@ -214,6 +222,9 @@ export class HomeComponent implements OnInit {
         document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#3a3a3a')
         document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
         document.getElementById('svgTag').style.setProperty(`--line-color`, '#a80036');
+        document.getElementById('svgTag').style.setProperty(`--label-border-color`, '#a80036');
+        document.getElementById('svgTag').style.setProperty(`--label-background-color`, '#fefece');
+        document.getElementById('svgTag').style.setProperty(`--label-text-color`, '#000000');
       }
       else if (this.dataservice.selectedTheme == 'ISAAC') {
         document.getElementById('svgTag').style.setProperty(`--primary-color`, '#009ddc')
@@ -222,6 +233,20 @@ export class HomeComponent implements OnInit {
         document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#009ddc')
         document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
         document.getElementById('svgTag').style.setProperty(`--line-color`, '#009ddc');
+        document.getElementById('svgTag').style.setProperty(`--label-border-color`, '#009ddc');
+        document.getElementById('svgTag').style.setProperty(`--label-background-color`, '#ffffff');
+        document.getElementById('svgTag').style.setProperty(`--label-text-color`, '#000000');
+      }
+      else if (this.dataservice.selectedTheme == 'Johan') {
+        document.getElementById('svgTag').style.setProperty(`--primary-color`, '#a6dee1')
+        document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#a6dee1')
+        document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#32bdb8')
+        document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#32bdb8')
+        document.getElementById('svgTag').style.setProperty(`--text-color`, '#737373');
+        document.getElementById('svgTag').style.setProperty(`--line-color`, '#737373');
+        document.getElementById('svgTag').style.setProperty(`--label-border-color`, '#32bdb8');
+        document.getElementById('svgTag').style.setProperty(`--label-background-color`, '#32bdb8');
+        document.getElementById('svgTag').style.setProperty(`--label-text-color`, '#ffffff');
       }
     } else {
       document.getElementById('svgTag').style.setProperty(`--primary-color`, this.dataservice.color1)
@@ -230,6 +255,10 @@ export class HomeComponent implements OnInit {
       document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.dataservice.color4)
       document.getElementById('svgTag').style.setProperty(`--text-color`, this.dataservice.color5);
       document.getElementById('svgTag').style.setProperty(`--line-color`, this.dataservice.color6);
+      document.getElementById('svgTag').style.setProperty(`--label-border-color`, this.dataservice.color7);
+      document.getElementById('svgTag').style.setProperty(`--label-background-color`, this.dataservice.color8);
+      document.getElementById('svgTag').style.setProperty(`--label-text-color`, this.dataservice.color9);
+
     }
   }
   setStroke() {
@@ -242,6 +271,21 @@ export class HomeComponent implements OnInit {
     this.dataservice.selectedActor = 'Modern';
     this.dataservice.selectedFont = 'Tahoma'
     this.dataservice.hiddenFootnotes = false;
+    this.dataservice.hiddenShadows = true;
+    this.dataservice.participantfontsize = 13;
+    this.dataservice.sequencetextsize = 13;
+    this.generateSvg(this.dataservice.text);
+  }
+  JohanStyle() {
+    this.dataservice.selectedBreak = 'Squiggly';
+    this.dataservice.selectedNumber = 'Circular';
+    this.dataservice.selectedShape = 'Rectangle';
+    this.dataservice.selectedActor = 'Modern';
+    this.dataservice.selectedFont = 'Muli'
+    this.dataservice.hiddenFootnotes = false;
+    this.dataservice.hiddenShadows = false;
+    this.dataservice.participantfontsize = 18;
+    this.dataservice.sequencetextsize = 13;
     this.generateSvg(this.dataservice.text);
   }
   plantumlStyle() {
@@ -250,7 +294,10 @@ export class HomeComponent implements OnInit {
     this.dataservice.selectedShape = 'Rectangle';
     this.dataservice.selectedActor = 'Default';
     this.dataservice.selectedFont = 'Roboto'
-    this.dataservice.hiddenFootnotes = true;
+    this.dataservice.hiddenFootnotes = false;
+    this.dataservice.hiddenShadows = false;
+    this.dataservice.participantfontsize = 15;
+    this.dataservice.sequencetextsize = 13;
     this.generateSvg(this.dataservice.text);
   }
   addListners() {
