@@ -52,15 +52,16 @@ export class HomeComponent implements OnInit {
         this.JohanStyle();
       }
     } else {
-      document.getElementById('svgTag').style.setProperty(`--primary-color`, this.dataservice.color1)
-      document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.dataservice.color2)
-      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, this.dataservice.color3)
-      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.dataservice.color4)
-      document.getElementById('svgTag').style.setProperty(`--text-color`, this.dataservice.color5);
-      document.getElementById('svgTag').style.setProperty(`--line-color`, this.dataservice.color6);
-      document.getElementById('svgTag').style.setProperty(`--label-border-color`, this.dataservice.color7);
-      document.getElementById('svgTag').style.setProperty(`--label-background-color`, this.dataservice.color8);
-      document.getElementById('svgTag').style.setProperty(`--label-text-color`, this.dataservice.color9);
+      this.dataservice.addColorToStyle(
+        this.dataservice.color1,
+        this.dataservice.color2,
+        this.dataservice.color3,
+        this.dataservice.color4,
+        this.dataservice.color5,
+        this.dataservice.color6,
+        this.dataservice.color7,
+        this.dataservice.color8,
+        this.dataservice.color9)
     }
   }
   setFont() {
@@ -83,6 +84,12 @@ export class HomeComponent implements OnInit {
   }
   setImage(image, text) {
     this.dataservice.img = image;
+    setTimeout(() => {
+      this.generateSvg(text);
+    }, 100);
+  }
+  setJSON(json, text) {
+    this.dataservice.loadConfig(json);
     setTimeout(() => {
       this.generateSvg(text);
     }, 100);
@@ -195,7 +202,7 @@ export class HomeComponent implements OnInit {
     this.setColors()
     this.stylingservice.findNamesInText();
     this.addListners();
-    this.setAutoNumberLabel();
+    this.autonumberservice.setAutoNumberLabel();
     this.setActors();
     this.setBreak();
     this.setFont();
@@ -216,48 +223,52 @@ export class HomeComponent implements OnInit {
   setColors() {
     if (this.dataservice.isThemed) {
       if (this.dataservice.selectedTheme == 'PlantUML') {
-        document.getElementById('svgTag').style.setProperty(`--primary-color`, '#a80036')
-        document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#fefece')
-        document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#fbfb77')
-        document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#3a3a3a')
-        document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
-        document.getElementById('svgTag').style.setProperty(`--line-color`, '#a80036');
-        document.getElementById('svgTag').style.setProperty(`--label-border-color`, '#a80036');
-        document.getElementById('svgTag').style.setProperty(`--label-background-color`, '#fefece');
-        document.getElementById('svgTag').style.setProperty(`--label-text-color`, '#000000');
+        this.dataservice.addColorToStyle(
+          '#a80036',
+          '#fefece',
+          '#fbfb77',
+          '#3a3a3a',
+          '#000000',
+          '#a80036',
+          '#a80036',
+          '#fefece',
+          '#000000')
       }
       else if (this.dataservice.selectedTheme == 'ISAAC') {
-        document.getElementById('svgTag').style.setProperty(`--primary-color`, '#009ddc')
-        document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#ffffff')
-        document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#f3f3f3')
-        document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#009ddc')
-        document.getElementById('svgTag').style.setProperty(`--text-color`, '#000000');
-        document.getElementById('svgTag').style.setProperty(`--line-color`, '#009ddc');
-        document.getElementById('svgTag').style.setProperty(`--label-border-color`, '#009ddc');
-        document.getElementById('svgTag').style.setProperty(`--label-background-color`, '#ffffff');
-        document.getElementById('svgTag').style.setProperty(`--label-text-color`, '#000000');
+        this.dataservice.addColorToStyle(
+          '#009ddc',
+          '#ffffff',
+          '#f3f3f3',
+          '#009ddc',
+          '#000000',
+          '#009ddc',
+          '#009ddc',
+          '#ffffff',
+          '#000000')
       }
       else if (this.dataservice.selectedTheme == 'Johan') {
-        document.getElementById('svgTag').style.setProperty(`--primary-color`, '#a6dee1')
-        document.getElementById('svgTag').style.setProperty(`--secondary-color`, '#a6dee1')
-        document.getElementById('svgTag').style.setProperty(`--tertiary-color`, '#32bdb8')
-        document.getElementById('svgTag').style.setProperty(`--quaternary-color`, '#32bdb8')
-        document.getElementById('svgTag').style.setProperty(`--text-color`, '#737373');
-        document.getElementById('svgTag').style.setProperty(`--line-color`, '#737373');
-        document.getElementById('svgTag').style.setProperty(`--label-border-color`, '#32bdb8');
-        document.getElementById('svgTag').style.setProperty(`--label-background-color`, '#32bdb8');
-        document.getElementById('svgTag').style.setProperty(`--label-text-color`, '#ffffff');
+        this.dataservice.addColorToStyle(
+          '#a6dee1',
+          '#a6dee1',
+          '#32bdb8',
+          '#32bdb8',
+          '#737373',
+          '#737373',
+          '#32bdb8',
+          '#32bdb8',
+          '#ffffff')
       }
     } else {
-      document.getElementById('svgTag').style.setProperty(`--primary-color`, this.dataservice.color1)
-      document.getElementById('svgTag').style.setProperty(`--secondary-color`, this.dataservice.color2)
-      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, this.dataservice.color3)
-      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, this.dataservice.color4)
-      document.getElementById('svgTag').style.setProperty(`--text-color`, this.dataservice.color5);
-      document.getElementById('svgTag').style.setProperty(`--line-color`, this.dataservice.color6);
-      document.getElementById('svgTag').style.setProperty(`--label-border-color`, this.dataservice.color7);
-      document.getElementById('svgTag').style.setProperty(`--label-background-color`, this.dataservice.color8);
-      document.getElementById('svgTag').style.setProperty(`--label-text-color`, this.dataservice.color9);
+      this.dataservice.addColorToStyle(
+        this.dataservice.color1,
+        this.dataservice.color2,
+        this.dataservice.color3,
+        this.dataservice.color4,
+        this.dataservice.color5,
+        this.dataservice.color6,
+        this.dataservice.color7,
+        this.dataservice.color8,
+        this.dataservice.color9)
 
     }
   }
@@ -348,54 +359,7 @@ export class HomeComponent implements OnInit {
     this.generateSvg(text)
   }
   generateSvg(text: string) {
-    this.dataservice.text = text;
-    text = this.dataservice.replaceAll(text, 'Actor', 'actor')
-    if (!this.dataservice.hiddenFootnotes)
-      text = 'hide footbox \n' + text
-    if (!this.dataservice.hiddenShadows)
-      text = 'skinparam Shadowing false \n' + text
-
-    text = `skinparam   ParticipantPadding  ${this.dataservice.participantpadding} \n` + text
-    text = `skinparam   ParticipantFontSize ${this.dataservice.participantfontsize} \n` + text
-    text = `skinparam   ActorFontSize ${this.dataservice.participantfontsize} \n` + text
-    text = `skinparam   ArrowFontSize  ${this.dataservice.sequencetextsize} \n` + text
-
-    text = 'skinparam SequenceDividerFontSize 14 \n' + text
-    text = 'skinparam SequenceDividerFontSize 14 \n' + text
-    switch (this.dataservice.selectedNumber) {
-      case 'None':
-        break;
-      case 'Default':
-        text = 'autonumber 1\n' + text;
-        this.autonumberservice.clearLabels();
-        break;
-      case 'Circular':
-        text = 'autonumber 1\n' + text;
-        text = `skinparam   Padding  4 \n` + text
-        break;
-      case 'Rectangular':
-        text = 'autonumber 1\n' + text;
-        text = `skinparam   Padding  4 \n` + text
-        break;
-      case 'Rectangular-Framed':
-        text = `skinparam   Padding  4 \n` + text
-        text = 'autonumber 1\n' + text;
-        break;
-      case 'Circular-Framed':
-        text = `skinparam   Padding  4 \n` + text
-        text = 'autonumber 1\n' + text;
-        break;
-      case 'Rounded-Framed':
-        text = `skinparam   Padding  4 \n` + text
-        text = 'autonumber 1\n' + text;
-        break;
-      case 'Rounded':
-        text = `skinparam   Padding  4 \n` + text
-        text = 'autonumber 1\n' + text;
-        break;
-      default:
-        break;
-    }
+    text = this.dataservice.changeText(text)
     setTimeout(() => {
       switch (this.dataservice.selectedShape) {
         case 'Rectangle':
@@ -434,27 +398,6 @@ export class HomeComponent implements OnInit {
       this.dataservice.svg = '<svg></svg>'
     }
 
-  }
-  setAutoNumberLabel() {
-    if (this.dataservice.selectedNumber == 'Circular') {
-      this.autonumberservice.clearLabels();
-      this.autonumberservice.setAutonumberCircular();
-    } else if (this.dataservice.selectedNumber == 'Rectangular') {
-      this.autonumberservice.clearLabels();
-      this.autonumberservice.setAutonumberRectangular();
-    } else if (this.dataservice.selectedNumber == 'Rectangular-Framed') {
-      this.autonumberservice.clearLabels();
-      this.autonumberservice.setAutonumberRectangularFramed();
-    } else if (this.dataservice.selectedNumber == 'Rounded-Framed') {
-      this.autonumberservice.clearLabels();
-      this.autonumberservice.setAutonumberRoundedFramed();
-    } else if (this.dataservice.selectedNumber == 'Circular-Framed') {
-      this.autonumberservice.clearLabels();
-      this.autonumberservice.setAutonumberCircularFramed();
-    } else if (this.dataservice.selectedNumber == 'Rounded') {
-      this.autonumberservice.clearLabels();
-      this.autonumberservice.setAutonumberRounded();
-    }
   }
   setBreak() {
     if (this.dataservice.selectedBreak == 'Squiggly') {

@@ -333,16 +333,25 @@ export class AutoNumberService {
       }
     })
   }
-  clearLabels() {
-    this.data.getTagList('circle').forEach((element: SVGRectElement) => {
-      if (element.getAttribute('name') == 'label') {
-        element.replaceWith()
-      }
-    })
-    this.data.getTagList('rect').forEach((element: SVGRectElement) => {
-      if (element.getAttribute('name') == 'label') {
-        element.replaceWith()
-      }
-    })
+  setAutoNumberLabel() {
+    if (this.data.selectedNumber == 'Circular') {
+      this.data.clearLabels();
+      this.setAutonumberCircular();
+    } else if (this.data.selectedNumber == 'Rectangular') {
+      this.data.clearLabels();
+      this.setAutonumberRectangular();
+    } else if (this.data.selectedNumber == 'Rectangular-Framed') {
+      this.data.clearLabels();
+      this.setAutonumberRectangularFramed();
+    } else if (this.data.selectedNumber == 'Rounded-Framed') {
+      this.data.clearLabels();
+      this.setAutonumberRoundedFramed();
+    } else if (this.data.selectedNumber == 'Circular-Framed') {  
+      this.data.clearLabels();
+      this.setAutonumberCircularFramed();
+    } else if (this.data.selectedNumber == 'Rounded') {
+      this.data.clearLabels();
+      this.setAutonumberRounded();
+    }
   }
 }

@@ -32,9 +32,24 @@
                             <mat-select [(value)]="dataservice.selectedTheme" (selectionChange)="setStyle()">
                                 <mat-option *ngFor="let theme of dataservice.themes" [value]="theme">
                                     {{theme}}
-                                </mat-option>                         
+                                </mat-option>
                             </mat-select>
                         </mat-form-field>
+                        <br>
+                        <span>Your style</span>
+                        <br>
+                        <button mat-mini-fab color="primary" (click)="dataservice.saveConfig()">
+                            <i class="material-icons">
+                                get_app
+                            </i>
+                        </button>
+                        <button mat-mini-fab color="primary" (click)="json.click()">
+                            <i class="material-icons">
+                                publish
+                            </i>
+                        </button>
+                        <input hidden #json id="jsonInput" type="file" accept="application/json"
+                            (change)="setJSON(json, tA.value)" value="Json">
                     </mat-expansion-panel>
                 </mat-accordion>
                 <!--Colors-->
@@ -47,120 +62,147 @@
                         </mat-expansion-panel-header>
                         <table>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Borders
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color1}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color1" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="primary" [style.background]="dataservice.color1"
-                                        [(colorPicker)]="dataservice.color1" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="primary"
+                                        [style.background]="dataservice.color1" [(colorPicker)]="dataservice.color1"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Backgrounds
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color2}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color2" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="secondary" [style.background]="dataservice.color2"
-                                        [(colorPicker)]="dataservice.color2" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="secondary"
+                                        [style.background]="dataservice.color2" [(colorPicker)]="dataservice.color2"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Note backgrounds
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color3}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color3" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="tertiary" [style.background]="dataservice.color3"
-                                        [(colorPicker)]="dataservice.color3" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="tertiary"
+                                        [style.background]="dataservice.color3" [(colorPicker)]="dataservice.color3"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Note borders
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color4}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color4" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="quaternary" [style.background]="dataservice.color4"
-                                        [(colorPicker)]="dataservice.color4" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="quaternary"
+                                        [style.background]="dataservice.color4" [(colorPicker)]="dataservice.color4"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Text color
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color5}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color5" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="text" [style.background]="dataservice.color5"
-                                        [(colorPicker)]="dataservice.color5" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
+                                        [style.background]="dataservice.color5" [(colorPicker)]="dataservice.color5"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Lines
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color6}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color6" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="text" [style.background]="dataservice.color6"
-                                        [(colorPicker)]="dataservice.color6" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
+                                        [style.background]="dataservice.color6" [(colorPicker)]="dataservice.color6"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Number border
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color7}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color7" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="text" [style.background]="dataservice.color7"
-                                        [(colorPicker)]="dataservice.color7" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
+                                        [style.background]="dataservice.color7" [(colorPicker)]="dataservice.color7"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Number background
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color8}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color8" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="text" [style.background]="dataservice.color8"
-                                        [(colorPicker)]="dataservice.color8" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
+                                        [style.background]="dataservice.color8" [(colorPicker)]="dataservice.color8"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
-                                <td>
+                                <td style="width: 50%;">
                                     Number text
                                 </td>
-                                <td>
-                                    <span style="float: left;">{{dataservice.color9}}</span>
+                                <td style="width: 25%;">
+                                    <input matInput class="inputHover" (change)="setColors()" type="text"
+                                        [(ngModel)]="dataservice.color9" />
                                 </td>
                                 <td></td>
-                                <td>
-                                    <input style="width: 100px;" id="text" [style.background]="dataservice.color9"
-                                        [(colorPicker)]="dataservice.color9" (colorPickerChange)="setColors()" />
+                                <td style="width: 35%;">
+                                    <input [cpPresetColors]="['#fff']"
+                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
+                                        [style.background]="dataservice.color9" [(colorPicker)]="dataservice.color9"
+                                        (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                         </table>
