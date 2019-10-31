@@ -9,28 +9,29 @@
             </mat-card-header>
             <mat-card-content>
                 <mat-form-field style="width: 100%">
-                    <textarea class="coding" #tA matInput style="width: 100%" rows="10" (keyup)="generateSvg(tA.value)"
-                        placeholder="Plant UML Code">Bob->Alice : hello</textarea>
+                    <textarea class="coding" id="tA" #tA matInput style="width: 100%" rows="10"
+                        (keyup)="generateSvg(tA.value)" placeholder="Plant UML Code">Bob->Alice : hello</textarea>
                 </mat-form-field>
                 <!--Themes-->
                 <mat-accordion>
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title id="themesAccordion">
                                 Themes
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <mat-slide-toggle *ngIf="dataservice.isThemed" color="primary" class="example-margin"
-                            [(ngModel)]="dataservice.isThemed" (change)="setStyle()">Use theme
+                        <mat-slide-toggle #usetheme id="usetheme" *ngIf="dataservice.isThemed" color="primary"
+                            class="example-margin" [(ngModel)]="dataservice.isThemed" (change)="setStyle()">Use theme
                         </mat-slide-toggle>
-                        <mat-slide-toggle *ngIf="!dataservice.isThemed" color="primary" class="example-margin"
-                            [(ngModel)]="dataservice.isThemed" (change)="setStyle()">No theme
+                        <mat-slide-toggle #notheme id="notheme" *ngIf="!dataservice.isThemed" color="primary"
+                            class="example-margin" [(ngModel)]="dataservice.isThemed" (change)="setStyle()">No theme
                         </mat-slide-toggle>
                         <br><br>
                         <mat-form-field>
                             <mat-label>Theme</mat-label>
-                            <mat-select [(value)]="dataservice.selectedTheme" (selectionChange)="setStyle()">
-                                <mat-option *ngFor="let theme of dataservice.themes" [value]="theme">
+                            <mat-select #selecttheme id="selecttheme" [(value)]="dataservice.selectedTheme"
+                                (selectionChange)="setStyle()">
+                                <mat-option id="{{theme}}" *ngFor="let theme of dataservice.themes" [value]="theme">
                                     {{theme}}
                                 </mat-option>
                             </mat-select>
@@ -38,7 +39,7 @@
                         <br>
                         <span>Your style</span>
                         <br>
-                        <button mat-mini-fab color="primary" (click)="dataservice.saveConfig()">
+                        <button mat-mini-fab color="primary" (click)="dataservice.saveConfig(false)">
                             <i class="material-icons">
                                 get_app
                             </i>
@@ -56,7 +57,7 @@
                 <mat-accordion>
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title id="colorsAccordion">
                                 Colors
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -66,15 +67,14 @@
                                     Borders
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color1" />
+                                    <input matInput id="color1input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color1" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="primary"
-                                        [style.background]="dataservice.color1" [(colorPicker)]="dataservice.color1"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="primary" [style.background]="dataservice.color1"
+                                        [(colorPicker)]="dataservice.color1" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -82,15 +82,14 @@
                                     Backgrounds
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color2" />
+                                    <input matInput id="color2input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color2" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="secondary"
-                                        [style.background]="dataservice.color2" [(colorPicker)]="dataservice.color2"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="secondary" [style.background]="dataservice.color2"
+                                        [(colorPicker)]="dataservice.color2" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -98,15 +97,14 @@
                                     Note backgrounds
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color3" />
+                                    <input matInput id="color3input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color3" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="tertiary"
-                                        [style.background]="dataservice.color3" [(colorPicker)]="dataservice.color3"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="tertiary" [style.background]="dataservice.color3"
+                                        [(colorPicker)]="dataservice.color3" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -114,15 +112,14 @@
                                     Note borders
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color4" />
+                                    <input matInput id="color4input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color4" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="quaternary"
-                                        [style.background]="dataservice.color4" [(colorPicker)]="dataservice.color4"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="quaternary" [style.background]="dataservice.color4"
+                                        [(colorPicker)]="dataservice.color4" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -130,15 +127,14 @@
                                     Text color
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color5" />
+                                    <input matInput id="color5input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color5" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
-                                        [style.background]="dataservice.color5" [(colorPicker)]="dataservice.color5"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="text" [style.background]="dataservice.color5"
+                                        [(colorPicker)]="dataservice.color5" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -146,15 +142,14 @@
                                     Lines
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color6" />
+                                    <input matInput id="color6input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color6" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
-                                        [style.background]="dataservice.color6" [(colorPicker)]="dataservice.color6"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="text" [style.background]="dataservice.color6"
+                                        [(colorPicker)]="dataservice.color6" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -162,15 +157,14 @@
                                     Number border
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color7" />
+                                    <input matInput id="color7input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color7" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
-                                        [style.background]="dataservice.color7" [(colorPicker)]="dataservice.color7"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="text" [style.background]="dataservice.color7"
+                                        [(colorPicker)]="dataservice.color7" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -178,15 +172,14 @@
                                     Number background
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color8" />
+                                    <input matInput id="color8input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color8" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
-                                        [style.background]="dataservice.color8" [(colorPicker)]="dataservice.color8"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="text" [style.background]="dataservice.color8"
+                                        [(colorPicker)]="dataservice.color8" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                             <tr>
@@ -194,22 +187,21 @@
                                     Number text
                                 </td>
                                 <td style="width: 25%;">
-                                    <input matInput class="inputHover" (change)="setColors()" type="text"
-                                        [(ngModel)]="dataservice.color9" />
+                                    <input matInput id="color9input" class="inputHover" (change)="setColors()"
+                                        type="text" [(ngModel)]="dataservice.color9" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
-                                    <input [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 100%;" id="text"
-                                        [style.background]="dataservice.color9" [(colorPicker)]="dataservice.color9"
-                                        (colorPickerChange)="setColors()" />
+                                    <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true" style="width: 100%;"
+                                        id="text" [style.background]="dataservice.color9"
+                                        [(colorPicker)]="dataservice.color9" (colorPickerChange)="setColors()" />
                                 </td>
                             </tr>
                         </table>
                     </mat-expansion-panel>
                 </mat-accordion>
                 <!--Fonts-->
-                <mat-accordion>
+                <mat-accordion #fontsAccordion id="fontsAccordion">
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -242,8 +234,8 @@
                 <!--Styling-->
                 <mat-accordion>
                     <mat-expansion-panel>
-                        <mat-expansion-panel-header>
-                            <mat-panel-title>
+                        <mat-expansion-panel-header id="stylingAccordionclose">
+                            <mat-panel-title id="stylingAccordion">
                                 Styling
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -269,9 +261,9 @@
                         </mat-slide-toggle>
                         <mat-form-field>
                             <mat-label>Numbers</mat-label>
-                            <mat-select [(value)]="dataservice.selectedNumber"
+                            <mat-select id="NumberSelect" [(value)]="dataservice.selectedNumber"
                                 (selectionChange)="generateSvg(tA.value)">
-                                <mat-option *ngFor="let number of dataservice.autonumber" [value]="number">
+                                <mat-option id="{{number}}" *ngFor="let number of dataservice.autonumber" [value]="number">
                                     {{number}}
                                 </mat-option>
                             </mat-select>
@@ -286,8 +278,8 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Breaks</mat-label>
-                            <mat-select [(value)]="dataservice.selectedBreak" (selectionChange)="generateSvg(tA.value)">
-                                <mat-option *ngFor="let break of dataservice.breaks" [value]="break">
+                            <mat-select id="BreakSelect" [(value)]="dataservice.selectedBreak" (selectionChange)="generateSvg(tA.value)">
+                                <mat-option id="{{break}}" *ngFor="let break of dataservice.breaks" [value]="break">
                                     {{break}}
                                 </mat-option>
                             </mat-select>
@@ -321,7 +313,7 @@
                     </mat-expansion-panel>
                 </mat-accordion>
                 <!--Actions-->
-                <mat-accordion>
+                <mat-accordion #actionsAccordion id="actionsAccordion">
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
                             <mat-panel-title>

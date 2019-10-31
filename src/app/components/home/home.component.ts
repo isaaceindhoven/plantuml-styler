@@ -5,6 +5,9 @@ import * as svg from 'save-svg-as-png'
 import { DataService } from 'src/app/services/data.service'
 import { AutoNumberService } from 'src/app/services/autonumber.service'
 import { StylingService } from 'src/app/services/styling.service'
+import * as JSZip from 'jszip'
+import { saveAs } from 'file-saver';
+import { environment } from 'src/environments/environment.prod'
 
 @Component({
   selector: 'app-home',
@@ -13,7 +16,7 @@ import { StylingService } from 'src/app/services/styling.service'
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient, private dataservice: DataService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, ) { }
+  constructor(private http: HttpClient, public dataservice: DataService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, ) { }
   ngOnInit() {
     this.updateSVG('')
     this.generateSvg(this.dataservice.text)
@@ -32,13 +35,17 @@ export class HomeComponent implements OnInit {
     this.dataservice.color9 = '#000000'
   }
   download() {
-    svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1 }, (uri) => {
-      var a = document.createElement('a');
-      a.download = "image.png";
-      a.href = uri
-      document.body.appendChild(a);
-      a.click();
-    })
+    svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1 }, (data) => {
+      var zip = new JSZip();
+      zip.file("code.puml", this.dataservice.text);
+      zip.file("style.json", this.dataservice.saveConfig(true));
+      data = data.replace('data:image/png;base64,', '')
+      zip.file("diagram.png", data, { base64: true });
+      zip.generateAsync({ type: "blob" })
+        .then(function (blob) {
+          saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
+        });
+    });
   }
   setStyle() {
     if (this.dataservice.isThemed) {
@@ -100,7 +107,7 @@ export class HomeComponent implements OnInit {
     text = "skinparam roundcorner 1 \n " + text
     this.getActors(text);
     var t = unescape(encodeURIComponent(text))
-    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+    this.http.get(environment.api.base + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.updateSVG(data);
         setTimeout(() => {
@@ -109,7 +116,7 @@ export class HomeComponent implements OnInit {
           this.readySVG();
           if (!this.dataservice.textImages)
             this.stylingservice.removeTextFromParticipants()
-        }, 50);
+        }, 1);
       }
     )
   }
@@ -118,14 +125,14 @@ export class HomeComponent implements OnInit {
     text = "skinparam roundcorner 20 \n " + text
     this.getActors(text);
     var t = unescape(encodeURIComponent(text))
-    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+    this.http.get(environment.api.base + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.stylingservice.toEllipseNode()
           this.readySVG();
-        }, 50);
+        }, 1);
       }
     )
   }
@@ -134,14 +141,14 @@ export class HomeComponent implements OnInit {
     text = "skinparam roundcorner 20 \n " + text
     this.getActors(text);
     var t = unescape(encodeURIComponent(text))
-    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+    this.http.get(environment.api.base + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.stylingservice.toCircleNode()
           this.readySVG();
-        }, 50);
+        }, 1);
       }
     )
   }
@@ -150,20 +157,20 @@ export class HomeComponent implements OnInit {
     text = "skinparam notefontsize 12 \n " + text;
     this.getActors(text);
     var t = unescape(encodeURIComponent(text))
-    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+    this.http.get(environment.api.base + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.readySVG();
-        }, 50);
+        }, 1);
       });
   }
   resetRectangle(text) {
     text = "skinparam roundcorner 1  \n " + text;
     text = "skinparam notefontsize 12 \n " + text;
     var t = unescape(encodeURIComponent(text))
-    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+    this.http.get(environment.api.base + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.updateSVG(data);
       });
@@ -173,13 +180,13 @@ export class HomeComponent implements OnInit {
     text = "skinparam roundcorner 20 \n " + text
     this.getActors(text);
     var t = unescape(encodeURIComponent(text))
-    this.http.get("http://www.plantuml.com/plantuml/svg/" + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+    this.http.get(environment.api.base + this.dataservice.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.updateSVG(data);
         setTimeout(() => {
           this.setSvgTag();
           this.readySVG();
-        }, 50);
+        }, 1);
       }
     )
   }
@@ -305,9 +312,9 @@ export class HomeComponent implements OnInit {
     this.dataservice.selectedShape = 'Rectangle';
     this.dataservice.selectedActor = 'Default';
     this.dataservice.selectedFont = 'Roboto'
-    this.dataservice.hiddenFootnotes = false;
-    this.dataservice.hiddenShadows = false;
-    this.dataservice.participantfontsize = 15;
+    this.dataservice.hiddenFootnotes = true;
+    this.dataservice.hiddenShadows = true;
+    this.dataservice.participantfontsize = 13;
     this.dataservice.sequencetextsize = 13;
     this.generateSvg(this.dataservice.text);
   }
@@ -330,11 +337,6 @@ export class HomeComponent implements OnInit {
       this.addListenersTo(element)
       this.addListenersTo(element.nextElementSibling)
     })
-    // this.dataservice.getTagList('text').forEach((element: SVGRectElement) => {
-    //   if (element.getAttribute('name') == 'participant') {
-    //     this.addListenersTo(element)
-    //   }
-    // })
   }
   addListenersTo(element) {
     element.addEventListener('mouseover', () => {
@@ -385,17 +387,19 @@ export class HomeComponent implements OnInit {
           this.toRectangle(text);
           break;
       }
-    }, 100);
+    }, 1);
   }
   updateSVG(data) {
     if (document.getElementsByTagName('svg')[0]) {
-      this.dataservice.svg = '<svg></svg>'
+      // this.dataservice.svg = `<svg 
+      // height="${document.getElementsByTagName('svg')[0].getAttribute('height')}" 
+      // width="${document.getElementsByTagName('svg')[0].getAttribute('width')}"></svg>`
       setTimeout(() => {
         this.dataservice.svg = data;
       }, 1);
     }
     else {
-      this.dataservice.svg = '<svg></svg>'
+      this.dataservice.svg = `<svg height="1" width="1"></svg>`
     }
 
   }

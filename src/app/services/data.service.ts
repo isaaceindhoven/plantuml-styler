@@ -206,75 +206,78 @@ export class DataService {
     document.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
     document.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
   }
-  saveConfig() {
-    var json = JSON.stringify({
-      color1: this.color1,
-      color2: this.color2,
-      color3: this.color3,
-      color4: this.color4,
-      color5: this.color5,
-      color6: this.color6,
-      color7: this.color7,
-      color8: this.color8,
-      color9: this.color9,
-      selectedSize: this.selectedSize,
-      selectedTheme: this.selectedTheme,
-      selectedFont: this.selectedFont,
-      selectedBreak: this.selectedBreak,
-      selectedActor: this.selectedActor,
-      selectedShape: this.selectedShape,
-      selectedNumber: this.selectedNumber,
-      hiddenNotes: this.hiddenNotes,
-      hiddenFootnotes: this.hiddenFootnotes,
-      hiddenShadows: this.hiddenShadows,
-      isThemed: this.isThemed,
-      textImages: this.textImages,
-      participantpadding: this.participantpadding,
-      participantfontsize: this.participantfontsize,
-      participantstroke: this.participantstroke,
-      sequencetextsize: this.sequencetextsize,
-    });
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
-    var a = document.createElement('a');
-    a.download = "style.json";
-    a.href = dataStr;
-    document.body.appendChild(a);
-    a.click();
+  saveConfig(returning) {
+  var json = JSON.stringify({
+    color1: this.color1,
+    color2: this.color2,
+    color3: this.color3,
+    color4: this.color4,
+    color5: this.color5,
+    color6: this.color6,
+    color7: this.color7,
+    color8: this.color8,
+    color9: this.color9,
+    selectedSize: this.selectedSize,
+    selectedTheme: this.selectedTheme,
+    selectedFont: this.selectedFont,
+    selectedBreak: this.selectedBreak,
+    selectedActor: this.selectedActor,
+    selectedShape: this.selectedShape,
+    selectedNumber: this.selectedNumber,
+    hiddenNotes: this.hiddenNotes,
+    hiddenFootnotes: this.hiddenFootnotes,
+    hiddenShadows: this.hiddenShadows,
+    isThemed: this.isThemed,
+    textImages: this.textImages,
+    participantpadding: this.participantpadding,
+    participantfontsize: this.participantfontsize,
+    participantstroke: this.participantstroke,
+    sequencetextsize: this.sequencetextsize,
+  });
+  if(returning){
+    return json;
   }
-  loadConfig(json) {
-    var reader = new FileReader();
-    reader.onload = (event)=>{
-      this.onConfigReaderLoad(event);
-    } 
-    reader.readAsText(json.files[0]);
+  var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
+  var a = document.createElement('a');
+  a.download = "style.json";
+  a.href = dataStr;
+  document.body.appendChild(a);
+  a.click();
+}
+loadConfig(json) {
+  var reader = new FileReader();
+  reader.onload = (event) => {
+    this.onConfigReaderLoad(event);
   }
-  onConfigReaderLoad(event) {
-    var json = JSON.parse(event.target.result);
-    this.color1 = json.color1;
-    this.color2 = json.color2;
-    this.color3 = json.color3;
-    this.color4 = json.color4;
-    this.color5 = json.color5;
-    this.color6 = json.color6;
-    this.color7 = json.color7;
-    this.color8 = json.color8;
-    this.color9 = json.color9;
-    this.selectedSize = json.selectedSize;
-    this.selectedTheme = json.selectedTheme;
-    this.selectedFont = json.selectedFont;
-    this.selectedBreak = json.selectedBreak;
-    this.selectedActor = json.selectedActor;
-    this.selectedShape = json.selectedShape;
-    this.selectedNumber = json.selectedNumber;
-    this.hiddenNotes = json.hiddenNotes;
-    this.hiddenFootnotes = json.hiddenFootnotes;
-    this.hiddenShadows = json.hiddenShadows;
-    this.isThemed = json.isThemed;
-    this.textImages = json.textImages;
-    this.participantpadding = json.participantpadding;
-    this.participantfontsize = json.participantfontsize;
-    this.participantstroke = json.participantstroke;
-    this.sequencetextsize = json.sequencetextsize;
-  }
+  reader.readAsText(json.files[0]);
+}
+onConfigReaderLoad(event) {
+  var json = JSON.parse(event.target.result);
+  this.color1 = json.color1;
+  this.color2 = json.color2;
+  this.color3 = json.color3;
+  this.color4 = json.color4;
+  this.color5 = json.color5;
+  this.color6 = json.color6;
+  this.color7 = json.color7;
+  this.color8 = json.color8;
+  this.color9 = json.color9;
+  this.selectedSize = json.selectedSize;
+  this.selectedTheme = json.selectedTheme;
+  this.selectedFont = json.selectedFont;
+  this.selectedBreak = json.selectedBreak;
+  this.selectedActor = json.selectedActor;
+  this.selectedShape = json.selectedShape;
+  this.selectedNumber = json.selectedNumber;
+  this.hiddenNotes = json.hiddenNotes;
+  this.hiddenFootnotes = json.hiddenFootnotes;
+  this.hiddenShadows = json.hiddenShadows;
+  this.isThemed = json.isThemed;
+  this.textImages = json.textImages;
+  this.participantpadding = json.participantpadding;
+  this.participantfontsize = json.participantfontsize;
+  this.participantstroke = json.participantstroke;
+  this.sequencetextsize = json.sequencetextsize;
+}
 
 }
