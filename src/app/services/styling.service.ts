@@ -45,7 +45,7 @@ export class StylingService {
       image.setAttributeNS(null, 'height', '45')
       image.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString())
       image.setAttributeNS(null, 'y', (element.previousSibling as SVGCircleElement).getAttribute('cy'));
-      image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '../../assets/customer.png');
+      image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'assets/customer.png');
       (element.previousSibling as SVGCircleElement).replaceWith();
       element.replaceWith(image)
     })
