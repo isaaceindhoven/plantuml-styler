@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import * as JSZip from 'jszip'
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 export class DataService {
 
   constructor(private http: HttpClient) { }
+  refresh: boolean = false;
   actorlist: string[] = [];
   svg: any
   rectangled: any;
@@ -28,13 +30,13 @@ export class DataService {
   themedParticipantfontsize = 13;
   themedParticipantstroke = 1.5;
   themedSequencetextsize = 13;
-  types = ['Sequence', 'Usecase'];
+  types = ['Sequence', 'Usecase', 'Class'];
   shapes = ['Rectangle', 'Rounded', 'Ellipse', 'Circle'];
   autonumber = ['None', 'Default', 'Circular', 'Rectangular', 'Rounded', 'Rectangular-Framed', 'Circular-Framed', 'Rounded-Framed'];
   actors = ['Default', 'Modern'];
   breaks = ['Default', 'Squiggly'];
   fonts = ['Tahoma'];
-  themes = ['PlantUML', 'ISAAC', 'Johan'];
+  themes = ['PlantUML', 'ISAAC', 'Johan', 'Graytone'];
   color1 = '';
   color2 = '';
   color3 = '';
@@ -167,7 +169,7 @@ export class DataService {
         text = 'skinparam Shadowing false \n' + text
 
       text = `skinparam   ParticipantPadding  ${this.themedParticipantpadding} \n` + text
-      text = `skinparam   ParticipantFontSize ${this.themedParticipantstroke} \n` + text
+      text = `skinparam   ParticipantFontSize ${this.themedParticipantfontsize} \n` + text
       text = `skinparam   ActorFontSize ${this.themedParticipantfontsize} \n` + text
       text = `skinparam   ArrowFontSize  ${this.themedSequencetextsize} \n` + text
 
@@ -208,18 +210,18 @@ export class DataService {
           break;
       }
     }
-    else{
+    else {
       text = this.replaceAll(text, 'Actor', 'actor')
       if (!this.hiddenFootnotes)
         text = 'hide footbox \n' + text
       if (!this.hiddenShadows)
         text = 'skinparam Shadowing false \n' + text
-  
+
       text = `skinparam   ParticipantPadding  ${this.participantpadding} \n` + text
       text = `skinparam   ParticipantFontSize ${this.participantfontsize} \n` + text
       text = `skinparam   ActorFontSize ${this.participantfontsize} \n` + text
       text = `skinparam   ArrowFontSize  ${this.sequencetextsize} \n` + text
-  
+
       text = 'skinparam SequenceDividerFontSize 14 \n' + text
       text = 'skinparam SequenceDividerFontSize 14 \n' + text
       switch (this.selectedNumber) {
@@ -313,7 +315,19 @@ export class DataService {
     reader.onload = (event) => {
       this.onConfigReaderLoad(event);
     }
-    reader.readAsText(json.files[0]);
+    reader.readAsText(json);
+  }
+  loadCode(puml) {
+    var reader = new FileReader();
+    reader.onload = (event) => {
+      this.onCodeReaderLoad(event);
+    }
+    reader.readAsText(puml);
+  }
+  onCodeReaderLoad(event) {
+    var puml = event.target.result;
+    this.text = puml;
+    document.getElementById('tA').textContent = puml;
   }
   onConfigReaderLoad(event) {
     var json = JSON.parse(event.target.result);

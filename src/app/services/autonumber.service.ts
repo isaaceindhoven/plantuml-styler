@@ -16,8 +16,6 @@ export class AutoNumberService {
           var circle = document.createElementNS(ns, 'circle');
           var r = (element.getAttribute('textLength').length as unknown as number);
           var fs = (element.getAttribute('font-size') as unknown as number);
-          console.log(fs);
-
           var extra = (fs / 13);
           if (r == 2) {
             extra = (fs / 13) * 5;
@@ -334,24 +332,48 @@ export class AutoNumberService {
     })
   }
   setAutoNumberLabel() {
-    if (this.data.selectedNumber == 'Circular') {
-      this.data.clearLabels();
-      this.setAutonumberCircular();
-    } else if (this.data.selectedNumber == 'Rectangular') {
-      this.data.clearLabels();
-      this.setAutonumberRectangular();
-    } else if (this.data.selectedNumber == 'Rectangular-Framed') {
-      this.data.clearLabels();
-      this.setAutonumberRectangularFramed();
-    } else if (this.data.selectedNumber == 'Rounded-Framed') {
-      this.data.clearLabels();
-      this.setAutonumberRoundedFramed();
-    } else if (this.data.selectedNumber == 'Circular-Framed') {  
-      this.data.clearLabels();
-      this.setAutonumberCircularFramed();
-    } else if (this.data.selectedNumber == 'Rounded') {
-      this.data.clearLabels();
-      this.setAutonumberRounded();
+    if (this.data.isThemed) {
+      if (this.data.themedNumber == 'Circular') {
+        this.data.clearLabels();
+        this.setAutonumberCircular();
+      } else if (this.data.themedNumber == 'Rectangular') {
+        this.data.clearLabels();
+        this.setAutonumberRectangular();
+      } else if (this.data.themedNumber == 'Rectangular-Framed') {
+        this.data.clearLabels();
+        this.setAutonumberRectangularFramed();
+      } else if (this.data.themedNumber == 'Rounded-Framed') {
+        this.data.clearLabels();
+        this.setAutonumberRoundedFramed();
+      } else if (this.data.themedNumber == 'Circular-Framed') {
+        this.data.clearLabels();
+        this.setAutonumberCircularFramed();
+      } else if (this.data.themedNumber == 'Rounded') {
+        this.data.clearLabels();
+        this.setAutonumberRounded();
+      }
     }
+    else {
+      if (this.data.selectedNumber == 'Circular') {
+        this.data.clearLabels();
+        this.setAutonumberCircular();
+      } else if (this.data.selectedNumber == 'Rectangular') {
+        this.data.clearLabels();
+        this.setAutonumberRectangular();
+      } else if (this.data.selectedNumber == 'Rectangular-Framed') {
+        this.data.clearLabels();
+        this.setAutonumberRectangularFramed();
+      } else if (this.data.selectedNumber == 'Rounded-Framed') {
+        this.data.clearLabels();
+        this.setAutonumberRoundedFramed();
+      } else if (this.data.selectedNumber == 'Circular-Framed') {
+        this.data.clearLabels();
+        this.setAutonumberCircularFramed();
+      } else if (this.data.selectedNumber == 'Rounded') {
+        this.data.clearLabels();
+        this.setAutonumberRounded();
+      }
+    }
+
   }
 }

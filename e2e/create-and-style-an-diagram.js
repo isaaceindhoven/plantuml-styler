@@ -14,8 +14,6 @@ test('My first test', async t => {
         .click(page.textArea)
         .pressKey('ctrl+a delete')
         .typeText(page.textArea, `title <b>Server flow</b>\nactor Customer\nparticipant Merchant\nparticipant SDK\nautonumber 1\nCustomer->Merchant:Start checkout\n... ...\nautonumber 11\nMerchant->SDK:client.createPayment(//body//)\nSDK->Merchant:Return //CreatePaymentResponse//\nMerchant	->	Merchant:	Store relevant information\nMerchant	->	ThirdParty:	302 //redirectUrl//\nThirdParty	->	Merchant:	GET //returnUrl//\nMerchant	->	Merchant:	Compare //RETURNMAC// from //returnUrl// with stored value\nMerchant	->	SDK:		client.getPayment(//paymentId//)\nSDK->Merchant:Return //PaymentResponse//\nMerchant->Merchant:Check status and act on response (e.g. deliver goods)\nMerchant->Customer:Return control to customer`, { paste: true })
-        .click(page.themeSelect)
-        .click(page.interfaceSelectPlantuml)
         .click(page.usetheme)
         .click(page.themes)
         .click(page.colors)
