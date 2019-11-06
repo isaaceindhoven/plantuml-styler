@@ -5,9 +5,12 @@ import { DataService } from './data.service';
   providedIn: 'root'
 })
 export class AutoNumberService {
-  constructor(private data: DataService) { }
+  constructor() { }
+  getTagList(type) {
+    return Array.from(document.getElementsByTagName(type));
+  }
   setAutonumberCircular() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -34,7 +37,7 @@ export class AutoNumberService {
     })
   }
   setAutonumberRectangular() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -54,7 +57,7 @@ export class AutoNumberService {
     })
   }
   setAutonumberRectangularFramed() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -138,7 +141,7 @@ export class AutoNumberService {
     })
   }
   setAutonumberCircularFramed() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -225,7 +228,7 @@ export class AutoNumberService {
     })
   }
   setAutonumberRoundedFramed() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -310,7 +313,7 @@ export class AutoNumberService {
     })
   }
   setAutonumberRounded() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -330,50 +333,5 @@ export class AutoNumberService {
         }
       }
     })
-  }
-  setAutoNumberLabel() {
-    if (this.data.isThemed) {
-      if (this.data.themedNumber == 'Circular') {
-        this.data.clearLabels();
-        this.setAutonumberCircular();
-      } else if (this.data.themedNumber == 'Rectangular') {
-        this.data.clearLabels();
-        this.setAutonumberRectangular();
-      } else if (this.data.themedNumber == 'Rectangular-Framed') {
-        this.data.clearLabels();
-        this.setAutonumberRectangularFramed();
-      } else if (this.data.themedNumber == 'Rounded-Framed') {
-        this.data.clearLabels();
-        this.setAutonumberRoundedFramed();
-      } else if (this.data.themedNumber == 'Circular-Framed') {
-        this.data.clearLabels();
-        this.setAutonumberCircularFramed();
-      } else if (this.data.themedNumber == 'Rounded') {
-        this.data.clearLabels();
-        this.setAutonumberRounded();
-      }
-    }
-    else {
-      if (this.data.selectedNumber == 'Circular') {
-        this.data.clearLabels();
-        this.setAutonumberCircular();
-      } else if (this.data.selectedNumber == 'Rectangular') {
-        this.data.clearLabels();
-        this.setAutonumberRectangular();
-      } else if (this.data.selectedNumber == 'Rectangular-Framed') {
-        this.data.clearLabels();
-        this.setAutonumberRectangularFramed();
-      } else if (this.data.selectedNumber == 'Rounded-Framed') {
-        this.data.clearLabels();
-        this.setAutonumberRoundedFramed();
-      } else if (this.data.selectedNumber == 'Circular-Framed') {
-        this.data.clearLabels();
-        this.setAutonumberCircularFramed();
-      } else if (this.data.selectedNumber == 'Rounded') {
-        this.data.clearLabels();
-        this.setAutonumberRounded();
-      }
-    }
-
   }
 }

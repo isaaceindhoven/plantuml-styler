@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from 'material-module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { NgxFileDropModule } from 'ngx-file-drop';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
     BrowserAnimationsModule,
     MaterialModule,
     FlexLayoutModule,
-    ColorPickerModule
+    ColorPickerModule,
+    NgxFileDropModule
   ],
   providers: [],
   bootstrap: [AppComponent]

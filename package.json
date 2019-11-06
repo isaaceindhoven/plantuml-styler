@@ -31,6 +31,7 @@
     "jspdf": "^1.5.3",
     "jszip": "^3.2.2",
     "ngx-color-picker": "^8.2.0",
+    "ngx-file-drop": "^8.0.8",
     "node-nailgun-client": "^0.1.2",
     "node-nailgun-server": "^0.3.0",
     "node-stream-zip": "^1.8.2",

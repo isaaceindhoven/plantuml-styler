@@ -5,9 +5,12 @@ import { DataService } from './data.service';
   providedIn: 'root'
 })
 export class StylingService {
-  constructor(private data: DataService) { }
-  img: any;
-
+  constructor() { }
+  actorlist: string[] = [];
+  image;
+  getTagList(type) {
+    return Array.from(document.getElementsByTagName(type));
+  }
   setSquiggly() {
     Array.from(document.getElementsByClassName('null skipped')).forEach((element: SVGLineElement) => {
       var distance = ((+(element.getAttribute('y2') as unknown as number) - (element.getAttribute('y1') as unknown as number)) / 3);
@@ -51,7 +54,7 @@ export class StylingService {
     })
   }
   toImageNode() {
-    this.data.getTagList('rect').forEach((element: SVGRectElement) => {
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var image = document.createElementNS(ns, 'image');
@@ -60,13 +63,13 @@ export class StylingService {
         image.setAttributeNS(null, 'height', element.getAttribute('height'))
         image.setAttributeNS(null, 'x', element.getAttribute('x'))
         image.setAttributeNS(null, 'y', element.getAttribute('y'))
-        image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.img)
+        image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.image)
         element.parentNode.replaceChild(image, element);
       }
     });
   }
   toEllipseNode() {
-    this.data.getTagList('rect').forEach((element: SVGRectElement) => {
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var ellipse = document.createElementNS(ns, 'ellipse');
@@ -84,7 +87,7 @@ export class StylingService {
     });
   }
   toCircleNode() {
-    this.data.getTagList('rect').forEach((element: SVGRectElement) => {
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var circle = document.createElementNS(ns, 'circle');
@@ -118,7 +121,7 @@ export class StylingService {
     this.removeStyleFrom('text');
   }
   removeStyleFrom(type) {
-    this.data.getTagList(type).forEach(element => {
+    this.getTagList(type).forEach(element => {
       if (element.getAttribute('fill') == 'none') {
         if (type == 'path' && element.previousSibling)
           element.setAttribute('class', 'actor')
@@ -143,7 +146,7 @@ export class StylingService {
   }
   findNamesInText() {
     var last;
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if (last) {
         if (element.textContent == last.textContent) {
           element.setAttribute('name', 'participant');
@@ -158,9 +161,9 @@ export class StylingService {
     });
   }
   removeTextFromParticipants() {
-    this.data.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList('text').forEach((element: SVGRectElement) => {
       if ((element.getAttribute('name') == 'participant')) {
-        if (!this.data.actorlist.includes(element.textContent)) {
+        if (!this.actorlist.includes(element.textContent)) {
           element.setAttribute('display', 'none');
         }
       }
