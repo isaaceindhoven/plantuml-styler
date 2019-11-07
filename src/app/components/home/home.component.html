@@ -169,7 +169,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color1input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color1" />
                                         </td>
                                         <td></td>
@@ -177,7 +177,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="primary" [style.background]="generate.color1"
                                                 [(colorPicker)]="generate.color1"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -186,7 +186,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color2input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color2" />
                                         </td>
                                         <td></td>
@@ -194,7 +194,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="secondary" [style.background]="generate.color2"
                                                 [(colorPicker)]="generate.color2"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -203,7 +203,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color3input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color3" />
                                         </td>
                                         <td></td>
@@ -211,7 +211,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="tertiary" [style.background]="generate.color3"
                                                 [(colorPicker)]="generate.color3"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -220,7 +220,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color4input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color4" />
                                         </td>
                                         <td></td>
@@ -228,7 +228,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="quaternary"
                                                 [style.background]="generate.color4" [(colorPicker)]="generate.color4"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -237,7 +237,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color5input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color5" />
                                         </td>
                                         <td></td>
@@ -245,7 +245,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="text" [style.background]="generate.color5"
                                                 [(colorPicker)]="generate.color5"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -257,7 +257,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color6input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color6" />
                                         </td>
                                         <td></td>
@@ -265,7 +265,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="text" [style.background]="generate.color6"
                                                 [(colorPicker)]="generate.color6"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr *ngIf="generate.selectedType == 'Sequence'">
@@ -274,7 +274,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color7input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color7" />
                                         </td>
                                         <td></td>
@@ -282,7 +282,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="text" [style.background]="generate.color7"
                                                 [(colorPicker)]="generate.color7"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr *ngIf="generate.selectedType == 'Sequence'">
@@ -291,7 +291,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color8input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color8" />
                                         </td>
                                         <td></td>
@@ -299,7 +299,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="text" [style.background]="generate.color8"
                                                 [(colorPicker)]="generate.color8"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                     <tr *ngIf="generate.selectedType == 'Sequence'">
@@ -308,7 +308,7 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color9input" class="inputHover"
-                                                (change)="generate.setColors(document)" type="text"
+                                                (change)="generate.setColors(null)" type="text"
                                                 [(ngModel)]="generate.color9" />
                                         </td>
                                         <td></td>
@@ -316,7 +316,7 @@
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="text" [style.background]="generate.color9"
                                                 [(colorPicker)]="generate.color9"
-                                                (colorPickerChange)="generate.setColors(document)" />
+                                                (colorPickerChange)="generate.setColors(null)" />
                                         </td>
                                     </tr>
                                 </table>

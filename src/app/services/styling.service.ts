@@ -213,7 +213,7 @@ export class StylingService {
     }
   }
   addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM) {
-    if(!oDOM){
+    if (!oDOM) {
       oDOM = document;
     }
     if (oDOM.getElementById('svgTag')) {
@@ -248,9 +248,9 @@ export class StylingService {
         this.toEllipseNode(oDOM);
         break;
       case "Images":
-        this.toImageNode(oDOM);
         if (!textImages)
           this.removeTextFromParticipants(oDOM)
+        this.toImageNode(oDOM);
         break;
       default:
         break;

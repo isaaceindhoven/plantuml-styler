@@ -84,7 +84,7 @@ export class ImportExportService {
       } else {
         this.gen.halfwayDoneProcessing = true;
       }
-    }, 10);
+    }, 100);
 
   }
   onConfigReaderLoad(event) {

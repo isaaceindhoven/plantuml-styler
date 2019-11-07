@@ -97,12 +97,12 @@ export class GenerateService {
   styleSVG(oDOM) {
     //removing all the styling PlantUML puts on it
     this.styling.removeStyling(oDOM);
+    this.styling.findNamesInText(oDOM);
     this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
     this.isThemed ?
       (this.themedHiddenNotes ? this.hideNotes() : this.showNotes()) :
       (this.hiddenNotes ? this.hideNotes() : this.showNotes());
     this.setColors(oDOM);
-    this.styling.findNamesInText(oDOM);
     this.addListners();
     this.setAutoNumberLabel(oDOM);
     this.isThemed ?
@@ -121,8 +121,9 @@ export class GenerateService {
 
   changeText(oDOM, text: string) {
     this.text = text;
+    this.styling.getActors(text);
     if (this.isThemed) {
-      text = this.utility.replaceAll(text, 'Actor', 'actor')
+      text = this.utility.replaceAll(text, 'Actor', 'actor');
       if (!this.themedHiddenFootnotes)
         text = 'hide footbox \n' + text
       if (!this.themedHiddenShadows)
@@ -232,9 +233,7 @@ export class GenerateService {
           var oParser = new DOMParser();
           var oDOM = oParser.parseFromString(data, "image/svg+xml");
           // generate.svg = data;
-          setTimeout(() => {
-            resolve(oDOM);
-          }, 100);
+          resolve(oDOM);
         });
     });
   }
@@ -296,7 +295,7 @@ export class GenerateService {
           '#a80036',
           '#a80036',
           '#fefece',
-          '#000000', 
+          '#000000',
           oDOM)
       }
       else if (this.selectedTheme == 'ISAAC') {
@@ -309,7 +308,7 @@ export class GenerateService {
           '#009ddc',
           '#009ddc',
           '#ffffff',
-          '#000000', 
+          '#000000',
           oDOM)
       }
       else if (this.selectedTheme == 'Johan') {
@@ -322,7 +321,7 @@ export class GenerateService {
           '#737373',
           '#32bdb8',
           '#32bdb8',
-          '#ffffff', 
+          '#ffffff',
           oDOM)
       }
       else if (this.selectedTheme == 'Graytone') {
@@ -335,7 +334,7 @@ export class GenerateService {
           '#bfbcbc',
           '#bfbcbc',
           '#ffffff',
-          '#707070', 
+          '#707070',
           oDOM)
       }
     } else {
@@ -348,7 +347,7 @@ export class GenerateService {
         this.color6,
         this.color7,
         this.color8,
-        this.color9, 
+        this.color9,
         oDOM)
 
     }

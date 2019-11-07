@@ -131,7 +131,7 @@ export class HomeComponent implements OnInit {
 
   }
   setImage(image, text) {
-    this.generate.img = image;
+    this.stylingservice.image = window.URL.createObjectURL(image.files[0])
     setTimeout(() => {
       this.generate.generateSVG(text);
     }, 100);
