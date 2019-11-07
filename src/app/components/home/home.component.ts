@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 declare var deflate: any
 import * as svg from 'save-svg-as-png'
-import { DataService } from 'src/app/services/data.service'
 import { AutoNumberService } from 'src/app/services/autonumber.service'
 import { StylingService } from 'src/app/services/styling.service'
 import * as JSZip from 'jszip'
@@ -13,6 +12,8 @@ import jsPDF from 'jspdf';
 import { ZipService } from 'src/app/services/zip.service'
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 import { MatExpansionPanel } from '@angular/material'
+import { GenerateService } from 'src/app/services/generate.service'
+import { ImportExportService } from 'src/app/services/importexport.service'
 
 @Component({
   selector: 'app-home',
@@ -23,52 +24,51 @@ export class HomeComponent implements OnInit {
 
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
-  constructor(private http: HttpClient, public dataservice: DataService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, private zipservice: ZipService) { }
+  constructor(private generate: GenerateService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService) { }
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
-      if(!this.isOpen){
+      if (!this.isOpen) {
         this.isOpen = true;
       }
     }, false);
     window.addEventListener("drop", e => {
       e && e.preventDefault();
     }, false);
-    this.dataservice.updateSVG('')
-    this.dataservice.generateSvg(this.dataservice.text)
-    this.dataservice.getFonts().subscribe(data => {
-      this.dataservice.fonts = Array.from((data as any).items);
+    this.generate.generateSVG(this.generate.text)
+    this.stylingservice.getFonts().subscribe(data => {
+      this.generate.fonts = Array.from((data as any).items);
     })
 
-    this.dataservice.color1 = '#a80036'
-    this.dataservice.color2 = '#fefece'
-    this.dataservice.color3 = '#fbfb77'
-    this.dataservice.color4 = '#3a3a3a'
-    this.dataservice.color5 = '#000000'
-    this.dataservice.color6 = '#a80036'
-    this.dataservice.color7 = '#a80036'
-    this.dataservice.color8 = '#fefece'
-    this.dataservice.color9 = '#000000'
+    this.generate.color1 = '#a80036'
+    this.generate.color2 = '#fefece'
+    this.generate.color3 = '#fbfb77'
+    this.generate.color4 = '#3a3a3a'
+    this.generate.color5 = '#000000'
+    this.generate.color6 = '#a80036'
+    this.generate.color7 = '#a80036'
+    this.generate.color8 = '#fefece'
+    this.generate.color9 = '#000000'
   }
   dropped(files: NgxFileDropEntry[]) {
     console.log('dropped');
 
     this.files = files;
-    for (const droppedFile of files) {
-      // Is it a file?
-      if (droppedFile.fileEntry.isFile) {
-        const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-        fileEntry.file((file: File) => {
-          console.log(file);
-          this.fileLoading(file)
-        });
-      } else {
-        // It was a directory (empty directories are added, otherwise only files)
-        const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
-        console.log("error");
-      }
+    const droppedFile = files[0];
+    // Is it a file?
+    if (droppedFile.fileEntry.isFile) {
+      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+      fileEntry.file((file: File) => {
+        console.log(file);
+        this.loadFile(file)
+      });
+    } else {
+      // It was a directory (empty directories are added, otherwise only files)
+      const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
+      console.log(droppedFile.relativePath, fileEntry);
+      console.log("error");
     }
+
   }
   // async loadFile(fileEntry) {
 
@@ -80,36 +80,36 @@ export class HomeComponent implements OnInit {
   //         if (entry.filename == 'code.puml') {
   //           var newdata = this.zipservice.getData(entry);
   //           newdata.data.subscribe(blob => {
-  //             this.dataservice.loadCode(blob)
+  //             this.generate.loadCode(blob)
   //           })
   //         }
   //         if (entry.filename == 'style.json') {
   //           var newdata = this.zipservice.getData(entry);
   //           newdata.data.subscribe(blob => {
-  //             this.dataservice.loadConfig(blob);
+  //             this.generate.loadConfig(blob);
   //           })
   //         }
   //       });
   //     })
   //   } else if (file.type == 'application/json') {
-  //     this.dataservice.loadConfig(file);
+  //     this.generate.loadConfig(file);
   //   }
   //   else if (file.name.endsWith('.puml')) {
-  //     this.dataservice.loadCode(file)
+  //     this.generate.loadCode(file)
   //   }
   //   else if (file.type == 'text/plain') {
-  //     this.dataservice.loadCode(file)
+  //     this.generate.loadCode(file)
   //   }
   //   );
   // }
   download() {
     var zip = new JSZip();
     var doc = new jsPDF('landscape', 'px');
-    zip.file("code.puml", this.dataservice.text);
+    zip.file("code.puml", this.generate.text);
     var svgstring = document.getElementById('svgTag').outerHTML;
     svgstring = svgstring.replace("<defs>", `<defs>${this.getSVGStyle()}`)
     zip.file("diagram.svg", svgstring);
-    zip.file("style.json", this.dataservice.saveConfig(true));
+    zip.file("style.json", this.impoexpo.saveConfig(true));
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3, backgroundColor: '#fefefe' }, (data) => {
       data = data.replace('data:image/png;base64,', '')
       zip.file("diagram.png", data, { base64: true });
@@ -131,39 +131,84 @@ export class HomeComponent implements OnInit {
 
   }
   setImage(image, text) {
-    this.dataservice.img = image;
+    this.generate.img = image;
     setTimeout(() => {
-      this.dataservice.generateSvg(text);
+      this.generate.generateSVG(text);
     }, 100);
   }
 
-  fileLoading(file) {
-    var entries = this.zipservice.getEntries(file);
-    entries.subscribe(data => {
-      console.log("data", data);
-      data.forEach(entry => {
-        console.log("entry", entry);
-        if (entry.filename == 'code.puml') {
-          var newdata = this.zipservice.getData(entry);
-          newdata.data.subscribe(blob => {
-            this.dataservice.loadCode(blob)
-          })
-        }
-        if (entry.filename == 'style.json') {
-          var newdata = this.zipservice.getData(entry);
-          newdata.data.subscribe(blob => {
-            this.dataservice.loadConfig(blob);
-          })
-        }
-      });
-    })
+  loadFile(file) {
+    if (file.type == 'application/zip') {
+      var entries = this.zipservice.getEntries(file);
+      entries.subscribe(data => {
+        data.forEach(entry => {
+          if (entry.filename == 'code.puml') {
+            var newdata = this.zipservice.getData(entry);
+            newdata.data.subscribe(blob => {
+              this.impoexpo.loadCode(blob)
+            })
+          }
+          if (entry.filename == 'style.json') {
+            var newdata = this.zipservice.getData(entry);
+            newdata.data.subscribe(blob => {
+              this.impoexpo.loadConfig(blob);
+            })
+          }
+        });
+      })
+    }
+    else if (file.type == 'application/x-zip-compressed') {
+      var entries = this.zipservice.getEntries(file);
+      entries.subscribe(data => {
+        data.forEach(entry => {
+          if (entry.filename == 'code.puml') {
+            var newdata = this.zipservice.getData(entry);
+            newdata.data.subscribe(blob => {
+              this.impoexpo.loadCode(blob)
+            })
+          }
+          if (entry.filename == 'style.json') {
+            var newdata = this.zipservice.getData(entry);
+            newdata.data.subscribe(blob => {
+              this.impoexpo.loadConfig(blob);
+            })
+          }
+        });
+      })
+    } else if (file.type == 'application/json') {
+      this.impoexpo.loadConfig(file);
+    }
+    else if (file.name.endsWith('.puml')) {
+      this.impoexpo.loadCode(file)
+    }
+    else if (file.type == 'text/plain') {
+      this.impoexpo.loadCode(file)
+    }
+    // var entries = this.zipservice.getEntries(file);
+    // entries.subscribe(data => {
+    //   console.log("data", data);
+    //   data.forEach(entry => {
+    //     console.log("entry", entry);
+    //     if (entry.filename == 'code.puml') {
+    //       var newdata = this.zipservice.getData(entry);
+    //       newdata.data.subscribe(blob => {
+    //         this.generate.loadCode(blob)
+    //       })
+    //     }
+    //     if (entry.filename == 'style.json') {
+    //       var newdata = this.zipservice.getData(entry);
+    //       newdata.data.subscribe(blob => {
+    //         this.generate.loadConfig(blob);
+    //       })
+    //     }
+    //   });
+    // })
   }
 
   fileChanged(event) {
     const file = event.target.files[0];
     console.log('filechanged', file);
-
-    this.fileLoading(file);
+    this.loadFile(file);
   }
   getSVGStyle() {
     return `<style>svg g ellipse,

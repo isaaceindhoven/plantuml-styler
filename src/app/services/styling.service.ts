@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StylingService {
-  constructor() { }
+  constructor( private http: HttpClient) { }
   actorlist: string[] = [];
+  oldActorElements: any[] = [];
   image;
   getTagList(type) {
     return Array.from(document.getElementsByTagName(type));
@@ -40,6 +42,7 @@ export class StylingService {
     })
   }
   setNewActor() {
+    this.oldActorElements = [];
     Array.from(document.getElementsByClassName('actor transparent')).forEach((element: SVGPathElement) => {
       var ns = 'http://www.w3.org/2000/svg'
       var image = document.createElementNS(ns, 'image');
@@ -49,6 +52,7 @@ export class StylingService {
       image.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString())
       image.setAttributeNS(null, 'y', (element.previousSibling as SVGCircleElement).getAttribute('cy'));
       image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'assets/customer.png');
+      this.oldActorElements.push(element.previousSibling, element);
       (element.previousSibling as SVGCircleElement).replaceWith();
       element.replaceWith(image)
     })
@@ -168,5 +172,76 @@ export class StylingService {
         }
       }
     });
+  }
+  clearLabels() {
+    this.getTagList('circle').forEach((element: SVGRectElement) => {
+      if (element.getAttribute('name') == 'label') {
+        element.replaceWith()
+      }
+    })
+    this.getTagList('rect').forEach((element: SVGRectElement) => {
+      if (element.getAttribute('name') == 'label') {
+        element.replaceWith()
+      }
+    })
+  }
+  addToActors(actor) {
+    this.actorlist.push(actor);
+  }
+  getActors(text: string) {
+    if (text.includes('actor')) {
+      this.actorlist = [];
+      var newtext = text.split('actor ')[1];
+      if (newtext) {
+        var actor = (newtext.split('\n')[0]).trim();
+        newtext = text.replace(`actor ${actor}`, '')
+        this.addToActors(actor)
+      } else {
+        newtext = text.split('actor')[1];
+      }
+      while (newtext.includes('actor')) {
+        var newer = newtext;
+        var newtext2 = newtext.split('actor ')[1];
+        if (newtext2) {
+          var actor = (newtext2.split('\n')[0]).trim();
+          newtext = newer.replace(`actor ${actor}`, '')
+          this.addToActors(actor)
+        } else {
+          newtext = newtext.split('actor')[1];
+        }
+      }
+    }
+  }
+  addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9) {
+    document.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
+    document.getElementById('svgTag').style.setProperty(`--secondary-color`, color2)
+    document.getElementById('svgTag').style.setProperty(`--tertiary-color`, color3)
+    document.getElementById('svgTag').style.setProperty(`--quaternary-color`, color4)
+    document.getElementById('svgTag').style.setProperty(`--text-color`, color5);
+    document.getElementById('svgTag').style.setProperty(`--line-color`, color6);
+    document.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
+    document.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
+    document.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+
+  }
+  setNode(type, textImages) {
+    switch (type) {
+      case "Circle":
+        this.toCircleNode();
+        break;
+      case "Ellipse":
+        this.toEllipseNode();
+        break;
+      case "Images":
+        this.toImageNode();
+        if (!textImages)
+          this.removeTextFromParticipants()
+        break;
+      default:
+        break;
+    }
+  }
+  getFonts() {
+    return this.http.get('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBwIX97bVWr3-6AIUvGkcNnmFgirefZ6Sw');
   }
 }

@@ -269,8 +269,6 @@ export class DataService {
     return text;
   }
   addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9) {
-
-    this.setSvgTag();
     document.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
     document.getElementById('svgTag').style.setProperty(`--secondary-color`, color2)
     document.getElementById('svgTag').style.setProperty(`--tertiary-color`, color3)
@@ -402,85 +400,7 @@ export class DataService {
       this.halfwayDoneProcessing = true;
     }
   }
-  isaacStyle() {
-    this.themedBreak = 'Squiggly';
-    this.themedNumber = 'Circular';
-    this.themedShape = 'Rounded';
-    this.themedActor = 'Modern';
-    this.themedFont = 'Tahoma'
-    this.themedHiddenFootnotes = false;
-    this.themedHiddenShadows = true;
-    this.themedParticipantfontsize = 13;
-    this.themedSequencetextsize = 13;
-    this.generateSvg(this.text);
-  }
-  JohanStyle() {
-    this.themedBreak = 'Squiggly';
-    this.themedNumber = 'Circular';
-    this.themedShape = 'Rectangle';
-    this.themedActor = 'Modern';
-    this.themedFont = 'Muli'
-    this.themedHiddenFootnotes = false;
-    this.themedHiddenShadows = false;
-    this.themedParticipantfontsize = 18;
-    this.themedSequencetextsize = 13;
-    this.generateSvg(this.text);
-  }
-  GrayToneStyle() {
-    this.themedBreak = 'Squiggly';
-    this.themedNumber = 'Circular';
-    this.themedShape = 'Rectangle';
-    this.themedActor = 'Modern';
-    this.themedFont = 'Open Sans'
-    this.themedHiddenFootnotes = false;
-    this.themedHiddenShadows = false;
-    this.themedParticipantfontsize = 18;
-    this.themedSequencetextsize = 13;
-    this.themedParticipantstroke = 2;
-    this.generateSvg(this.text);
-  }
-  plantumlStyle() {
-    this.themedBreak = 'Default';
-    this.themedNumber = 'None';
-    this.themedShape = 'Rectangle';
-    this.themedActor = 'Default';
-    this.themedFont = 'Roboto'
-    this.themedHiddenFootnotes = true;
-    this.themedHiddenShadows = true;
-    this.themedParticipantfontsize = 13;
-    this.themedSequencetextsize = 13;
-    this.generateSvg(this.text);
-  }
-  async setStyle() {
-    setTimeout(() => {
-      if (this.isThemed) {
-        if (this.selectedTheme == 'PlantUML') {
-          this.plantumlStyle()
-        }
-        else if (this.selectedTheme == 'ISAAC') {
-          this.isaacStyle();
-        }
-        else if (this.selectedTheme == 'Johan') {
-          this.JohanStyle();
-        }
-        else if (this.selectedTheme == 'Graytone') {
-          this.GrayToneStyle();
-        }
-      } else {
-        this.addColorToStyle(
-          this.color1,
-          this.color2,
-          this.color3,
-          this.color4,
-          this.color5,
-          this.color6,
-          this.color7,
-          this.color8,
-          this.color9)
-
-      }
-    }, 100);
-  }
+  
   getActors(text: string) {
     if (text.includes('actor')) {
       this.stylingservice.actorlist = [];
@@ -492,7 +412,6 @@ export class DataService {
       } else {
         newtext = text.split('actor')[1];
       }
-
       while (newtext.includes('actor')) {
         var newer = newtext;
         var newtext2 = newtext.split('actor ')[1];
@@ -503,16 +422,12 @@ export class DataService {
         } else {
           newtext = newtext.split('actor')[1];
         }
-
-
       }
     }
   }
   updateSVG(data) {
     if (document.getElementsByTagName('svg')[0]) {
-      setTimeout(() => {
-        this.svg = data;
-      }, 50);
+      this.svg = data;
     }
     else {
       this.svg = `<svg height="1" width="1"></svg>`
@@ -756,7 +671,7 @@ export class DataService {
           this.readySVG();
           if (!this.textImages)
             this.stylingservice.removeTextFromParticipants()
-        }, 50);
+        }, 200);
       }
     )
   }
@@ -772,7 +687,7 @@ export class DataService {
           this.setSvgTag();
           this.stylingservice.toEllipseNode()
           this.readySVG();
-        }, 50);
+        }, 200);
       }
     )
   }
@@ -788,7 +703,7 @@ export class DataService {
           this.setSvgTag();
           this.stylingservice.toCircleNode()
           this.readySVG();
-        }, 50);
+        }, 200);
       }
     )
   }
@@ -803,7 +718,7 @@ export class DataService {
         setTimeout(() => {
           this.setSvgTag();
           this.readySVG();
-        }, 50);
+        }, 200);
       });
   }
   resetRectangle(text) {
@@ -826,7 +741,7 @@ export class DataService {
         setTimeout(() => {
           this.setSvgTag();
           this.readySVG();
-        }, 50);
+        }, 200);
       }
     )
   }
@@ -935,8 +850,10 @@ export class DataService {
     }
   }
   startGeneration() {
-    this.setStyle().then(() => {
-      this.generateSvg(this.text);
-    })
+    // this.setStyle().then(() => {
+    //   this.generateSvg(this.text);
+    // })
+    // this.setStyle();
+    this.generateSvg(this.text);
   }
 }

@@ -10,7 +10,7 @@
             <mat-card-content>
                 <mat-form-field style="width: 100%">
                     <textarea class="coding" id="tA" #tA matInput style="width: 100%" rows="10"
-                        (keyup)="dataservice.generateSvg(tA.value)"
+                        (keyup)="generate.generateSVG(tA.value,false, false)"
                         placeholder="Plant UML Code">Bob->Alice : hello</textarea>
                 </mat-form-field>
                 <mat-accordion id="scrollbar1">
@@ -27,8 +27,8 @@
                                 Upload file
                             </ng-template>
                         </ngx-file-drop>
-                        <input hidden #jsons id="jsonInput" type="file" accept=".zip" (change)="fileChanged($event)"
-                            value="Json">
+                        <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt"
+                            (change)="fileChanged($event)" value="Json">
                     </mat-expansion-panel>
                     <!--Themes-->
                     <mat-expansion-panel>
@@ -37,22 +37,22 @@
                                 Themes
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <span *ngIf="dataservice.selectedType == 'Sequence'">
-                            <mat-slide-toggle #usetheme id="usetheme" *ngIf="dataservice.isThemed" color="primary"
-                                class="example-margin" [(ngModel)]="dataservice.isThemed"
-                                (change)="dataservice.setStyle();dataservice.generateSvg(tA.value);">Use
+                        <span *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-slide-toggle #usetheme id="usetheme" *ngIf="generate.isThemed" color="primary"
+                                class="example-margin" [(ngModel)]="generate.isThemed"
+                                (change)="generate.generateSVG(tA.value);">Use
                                 theme
                             </mat-slide-toggle>
-                            <mat-slide-toggle #notheme id="notheme" *ngIf="!dataservice.isThemed" color="primary"
-                                class="example-margin" [(ngModel)]="dataservice.isThemed"
-                                (change)="dataservice.setStyle();dataservice.generateSvg(tA.value);">No theme
+                            <mat-slide-toggle #notheme id="notheme" *ngIf="!generate.isThemed" color="primary"
+                                class="example-margin" [(ngModel)]="generate.isThemed"
+                                (change)="generate.generateSVG(tA.value);">No theme
                             </mat-slide-toggle>
                             <br><br>
                             <mat-form-field>
                                 <mat-label>Theme</mat-label>
-                                <mat-select #selecttheme id="selecttheme" [(value)]="dataservice.selectedTheme"
-                                    (selectionChange)="dataservice.setStyle()">
-                                    <mat-option id="{{theme}}" *ngFor="let theme of dataservice.themes" [value]="theme">
+                                <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
+                                    (selectionChange)="generate.generateSVG(tA.value);">
+                                    <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
                                         {{theme}}
                                     </mat-option>
                                 </mat-select>
@@ -61,7 +61,7 @@
                         </span>
                     </mat-expansion-panel>
                     <!--Styling-->
-                    <mat-expansion-panel [disabled]="dataservice.isThemed">
+                    <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header id="stylingAccordionclose">
                             <mat-panel-title id="stylingAccordion">
                                 Styling
@@ -75,23 +75,23 @@
                                         Options
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
-                                <mat-form-field *ngIf="dataservice.selectedType == 'Sequence'">
+                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                                     <mat-label>Shape</mat-label>
-                                    <mat-select [(value)]="dataservice.selectedShape"
-                                        (selectionChange)="dataservice.generateSvg(tA.value)">
-                                        <mat-option *ngFor="let shape of dataservice.shapes" [value]="shape">
+                                    <mat-select [(value)]="generate.selectedShape"
+                                        (selectionChange)="generate.generateSVG(tA.value)">
+                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
                                             {{shape}}
                                         </mat-option>
-                                        <mat-option (click)="img.click();dataservice.generateSvg(tA.value);"
+                                        <mat-option (click)="img.click();generate.generateSVG(tA.value);"
                                             [value]="'Images'">
                                             Images
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <mat-form-field *ngIf="dataservice.selectedType != 'Sequence'">
+                                <mat-form-field *ngIf="generate.selectedType != 'Sequence'">
                                     <mat-label>Shape</mat-label>
-                                    <mat-select [(value)]="dataservice.selectedShape"
-                                        (selectionChange)="dataservice.generateSvg(tA.value)">
+                                    <mat-select [(value)]="generate.selectedShape"
+                                        (selectionChange)="generate.generateSVG(tA.value)">
                                         <mat-option [value]="'Rectangle'">
                                             Rectangle
                                         </mat-option>
@@ -101,19 +101,19 @@
                                     </mat-select>
                                 </mat-form-field>
                                 &nbsp;
-                                <mat-slide-toggle *ngIf="dataservice.selectedShape=='Images' && dataservice.textImages"
-                                    color="primary" class="example-margin" [(ngModel)]="dataservice.textImages"
-                                    (change)="dataservice.generateSvg(tA.value)">With text
+                                <mat-slide-toggle *ngIf="generate.selectedShape=='Images' && generate.textImages"
+                                    color="primary" class="example-margin" [(ngModel)]="generate.textImages"
+                                    (change)="generate.generateSVG(tA.value)">With text
                                 </mat-slide-toggle>
-                                <mat-slide-toggle *ngIf="dataservice.selectedShape=='Images' && !dataservice.textImages"
-                                    color="primary" class="example-margin" [(ngModel)]="dataservice.textImages"
-                                    (change)="dataservice.generateSvg(tA.value)">No text
+                                <mat-slide-toggle *ngIf="generate.selectedShape=='Images' && !generate.textImages"
+                                    color="primary" class="example-margin" [(ngModel)]="generate.textImages"
+                                    (change)="generate.generateSVG(tA.value)">No text
                                 </mat-slide-toggle>
-                                <mat-form-field *ngIf="dataservice.selectedType == 'Sequence'">
+                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                                     <mat-label>Numbers</mat-label>
-                                    <mat-select id="NumberSelect" [(value)]="dataservice.selectedNumber"
-                                        (selectionChange)="dataservice.generateSvg(tA.value)">
-                                        <mat-option id="{{number}}" *ngFor="let number of dataservice.autonumber"
+                                    <mat-select id="NumberSelect" [(value)]="generate.selectedNumber"
+                                        (selectionChange)="generate.generateSVG(tA.value)">
+                                        <mat-option id="{{number}}" *ngFor="let number of generate.autonumber"
                                             [value]="number">
                                             {{number}}
                                         </mat-option>
@@ -121,39 +121,39 @@
                                 </mat-form-field>
                                 <mat-form-field>
                                     <mat-label>Actors</mat-label>
-                                    <mat-select [(value)]="dataservice.selectedActor"
-                                        (selectionChange)="dataservice.generateSvg(tA.value)">
-                                        <mat-option *ngFor="let actor of dataservice.actors" [value]="actor">
+                                    <mat-select [(value)]="generate.selectedActor"
+                                        (selectionChange)="generate.generateSVG(tA.value)">
+                                        <mat-option *ngFor="let actor of generate.actors" [value]="actor">
                                             {{actor}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <mat-form-field *ngIf="dataservice.selectedType == 'Sequence'">
+                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                                     <mat-label>Breaks</mat-label>
-                                    <mat-select id="BreakSelect" [(value)]="dataservice.selectedBreak"
-                                        (selectionChange)="dataservice.generateSvg(tA.value)">
-                                        <mat-option id="{{break}}" *ngFor="let break of dataservice.breaks"
+                                    <mat-select id="BreakSelect" [(value)]="generate.selectedBreak"
+                                        (selectionChange)="generate.generateSVG(tA.value)">
+                                        <mat-option id="{{break}}" *ngFor="let break of generate.breaks"
                                             [value]="break">
                                             {{break}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <mat-form-field *ngIf="dataservice.selectedType == 'Sequence'">
+                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                                     <mat-label>Participant padding</mat-label>
                                     <input matInput type="number" placeholder="0"
-                                        [(ngModel)]="dataservice.participantpadding"
-                                        (change)="dataservice.generateSvg(tA.value)">
+                                        [(ngModel)]="generate.participantpadding"
+                                        (change)="generate.generateSVG(tA.value)">
                                 </mat-form-field>
                                 <mat-form-field>
                                     <mat-label>Border width</mat-label>
                                     <input matInput type="number" placeholder="0" step="0.5"
-                                        [(ngModel)]="dataservice.participantstroke" (change)="dataservice.setStroke()">
+                                        [(ngModel)]="generate.participantstroke" (change)="generate.setStroke()">
                                 </mat-form-field>
                                 <input hidden #img id="img" type="file" accept="image/*"
                                     (change)="setImage(img, tA.value)" value="Image">
                             </mat-expansion-panel>
                             <!--Colors-->
-                            <mat-expansion-panel [disabled]="dataservice.isThemed">
+                            <mat-expansion-panel [disabled]="generate.isThemed">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title id="colorsAccordion">
                                         Colors
@@ -161,24 +161,23 @@
                                 </mat-expansion-panel-header>
                                 <table>
                                     <tr>
-                                        <td style="width: 50%;" *ngIf="dataservice.selectedType == 'Sequence'">
+                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Sequence'">
                                             Borders
                                         </td>
-                                        <td style="width: 50%;" *ngIf="dataservice.selectedType == 'Usecase'">
+                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Usecase'">
                                             Borders and lines
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color1input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color1" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color1" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="primary"
-                                                [style.background]="dataservice.color1"
-                                                [(colorPicker)]="dataservice.color1"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="primary" [style.background]="generate.color1"
+                                                [(colorPicker)]="generate.color1"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -187,16 +186,15 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color2input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color2" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color2" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="secondary"
-                                                [style.background]="dataservice.color2"
-                                                [(colorPicker)]="dataservice.color2"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="secondary" [style.background]="generate.color2"
+                                                [(colorPicker)]="generate.color2"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -205,16 +203,15 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color3input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color3" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color3" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="tertiary"
-                                                [style.background]="dataservice.color3"
-                                                [(colorPicker)]="dataservice.color3"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="tertiary" [style.background]="generate.color3"
+                                                [(colorPicker)]="generate.color3"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -223,16 +220,15 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color4input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color4" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color4" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                                 style="width: 100%;" id="quaternary"
-                                                [style.background]="dataservice.color4"
-                                                [(colorPicker)]="dataservice.color4"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                [style.background]="generate.color4" [(colorPicker)]="generate.color4"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -241,92 +237,92 @@
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color5input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color5" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color5" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="dataservice.color5"
-                                                [(colorPicker)]="dataservice.color5"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="text" [style.background]="generate.color5"
+                                                [(colorPicker)]="generate.color5"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="width: 50%;" *ngIf="dataservice.selectedType == 'Sequence'">
+                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Sequence'">
                                             Lines
                                         </td>
-                                        <td style="width: 50%;" *ngIf="dataservice.selectedType == 'Usecase'">
+                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Usecase'">
                                             Arrows
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color6input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color6" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color6" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="dataservice.color6"
-                                                [(colorPicker)]="dataservice.color6"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="text" [style.background]="generate.color6"
+                                                [(colorPicker)]="generate.color6"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
-                                    <tr *ngIf="dataservice.selectedType == 'Sequence'">
+                                    <tr *ngIf="generate.selectedType == 'Sequence'">
                                         <td style="width: 50%;">
                                             Number border
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color7input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color7" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color7" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="dataservice.color7"
-                                                [(colorPicker)]="dataservice.color7"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="text" [style.background]="generate.color7"
+                                                [(colorPicker)]="generate.color7"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
-                                    <tr *ngIf="dataservice.selectedType == 'Sequence'">
+                                    <tr *ngIf="generate.selectedType == 'Sequence'">
                                         <td style="width: 50%;">
                                             Number background
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color8input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color8" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color8" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="dataservice.color8"
-                                                [(colorPicker)]="dataservice.color8"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="text" [style.background]="generate.color8"
+                                                [(colorPicker)]="generate.color8"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
-                                    <tr *ngIf="dataservice.selectedType == 'Sequence'">
+                                    <tr *ngIf="generate.selectedType == 'Sequence'">
                                         <td style="width: 50%;">
                                             Number text
                                         </td>
                                         <td style="width: 25%;">
                                             <input matInput id="color9input" class="inputHover"
-                                                (change)="dataservice.setColors()" type="text"
-                                                [(ngModel)]="dataservice.color9" />
+                                                (change)="generate.setColors()" type="text"
+                                                [(ngModel)]="generate.color9" />
                                         </td>
                                         <td></td>
                                         <td style="width: 35%;">
                                             <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="dataservice.color9"
-                                                [(colorPicker)]="dataservice.color9"
-                                                (colorPickerChange)="dataservice.setColors()" />
+                                                style="width: 100%;" id="text" [style.background]="generate.color9"
+                                                [(colorPicker)]="generate.color9"
+                                                (colorPickerChange)="generate.setColors()" />
                                         </td>
                                     </tr>
                                 </table>
                             </mat-expansion-panel>
                             <!--Fonts-->
-                            <mat-expansion-panel [disabled]="dataservice.isThemed">
+                            <mat-expansion-panel [disabled]="generate.isThemed">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title id="fontsAccordion">
                                         Fonts
@@ -334,29 +330,29 @@
                                 </mat-expansion-panel-header>
                                 <mat-form-field>
                                     <mat-label>Font</mat-label>
-                                    <mat-select [(value)]="dataservice.selectedFont"
-                                        (selectionChange)="dataservice.setFont()">
+                                    <mat-select [(value)]="generate.selectedFont"
+                                        (selectionChange)="generate.setFont()">
                                         <mat-option [value]="'Tahoma'">
                                             Tahoma
                                         </mat-option>
-                                        <mat-option *ngFor="let font of dataservice.fonts" [value]="font.family">
+                                        <mat-option *ngFor="let font of generate.fonts" [value]="font.family">
                                             {{font.family}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field>
-                                    <mat-label *ngIf="dataservice.selectedType == 'Sequence'">Participant font size
+                                    <mat-label *ngIf="generate.selectedType == 'Sequence'">Participant font size
                                     </mat-label>
-                                    <mat-label *ngIf="dataservice.selectedType == 'Usecase'">Actor font size</mat-label>
+                                    <mat-label *ngIf="generate.selectedType == 'Usecase'">Actor font size</mat-label>
                                     <input matInput type="number" placeholder="0"
-                                        [(ngModel)]="dataservice.participantfontsize"
-                                        (change)="dataservice.generateSvg(tA.value)">
+                                        [(ngModel)]="generate.participantfontsize"
+                                        (change)="generate.generateSVG(tA.value)">
                                 </mat-form-field>
-                                <mat-form-field *ngIf="dataservice.selectedType == 'Sequence'">
+                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                                     <mat-label>Diagram font size</mat-label>
                                     <input matInput type="number" placeholder="0"
-                                        [(ngModel)]="dataservice.sequencetextsize"
-                                        (change)="dataservice.generateSvg(tA.value)">
+                                        [(ngModel)]="generate.sequencetextsize"
+                                        (change)="generate.generateSVG(tA.value)">
                                 </mat-form-field>
                             </mat-expansion-panel>
                             <!--Toggles-->
@@ -367,25 +363,25 @@
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <section class="example-section">
-                                    <mat-slide-toggle *ngIf="dataservice.selectedType == 'Sequence'" color="primary"
-                                        class="example-margin" [(ngModel)]="dataservice.hiddenNotes"
-                                        (change)="dataservice.changeHidden()">
+                                    <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                                        class="example-margin" [(ngModel)]="generate.hiddenNotes"
+                                        (change)="generate.changeHidden()">
                                         Notes
                                     </mat-slide-toggle>
-                                    <mat-slide-toggle *ngIf="dataservice.selectedType == 'Usecase'" color="primary"
-                                        class="example-margin" [(ngModel)]="dataservice.hiddenNotes"
-                                        (change)="dataservice.changeHidden()">
+                                    <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
+                                        class="example-margin" [(ngModel)]="generate.hiddenNotes"
+                                        (change)="generate.changeHidden()">
                                         Notes and arrows
                                     </mat-slide-toggle>
-                                    <br *ngIf="dataservice.selectedType == 'Sequence'">
-                                    <mat-slide-toggle *ngIf="dataservice.selectedType == 'Sequence'" color="primary"
-                                        class="example-margin" [(ngModel)]="dataservice.hiddenFootnotes"
-                                        (change)="dataservice.changeFootnotes(tA.value)">Footnotes
+                                    <br *ngIf="generate.selectedType == 'Sequence'">
+                                    <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                                        class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
+                                        (change)="generate.changeFootnotes(tA.value)">Footnotes
                                     </mat-slide-toggle>
                                     <br>
                                     <mat-slide-toggle color="primary" class="example-margin"
-                                        [(ngModel)]="dataservice.hiddenShadows"
-                                        (change)="dataservice.changeFootnotes(tA.value)">
+                                        [(ngModel)]="generate.hiddenShadows"
+                                        (change)="generate.changeFootnotes(tA.value)">
                                         Backdrop
                                         shadows
                                     </mat-slide-toggle>
@@ -433,7 +429,7 @@
                 <mat-card-title>Diagram</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-                <div [innerHTML]="dataservice.svg | trustHtml"></div>
+                <div [innerHTML]="generate.svg | trustHtml"></div>
             </mat-card-content>
         </mat-card>
     </ng-container>
