@@ -331,7 +331,7 @@
                                 <mat-form-field>
                                     <mat-label>Font</mat-label>
                                     <mat-select [(value)]="generate.selectedFont"
-                                        (selectionChange)="generate.setFont()">
+                                        (selectionChange)="generate.generateSVG(tA.value)">
                                         <mat-option [value]="'Tahoma'">
                                             Tahoma
                                         </mat-option>
@@ -365,23 +365,23 @@
                                 <section class="example-section">
                                     <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
                                         class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                        (change)="generate.changeHidden()">
+                                        (change)="generate.generateSVG(tA.value)">
                                         Notes
                                     </mat-slide-toggle>
                                     <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
                                         class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                        (change)="generate.changeHidden()">
+                                        (change)="generate.generateSVG(tA.value)">
                                         Notes and arrows
                                     </mat-slide-toggle>
                                     <br *ngIf="generate.selectedType == 'Sequence'">
                                     <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
                                         class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
-                                        (change)="generate.changeFootnotes(tA.value)">Footnotes
+                                        (change)="generate.generateSVG(tA.value)">Footnotes
                                     </mat-slide-toggle>
                                     <br>
                                     <mat-slide-toggle color="primary" class="example-margin"
                                         [(ngModel)]="generate.hiddenShadows"
-                                        (change)="generate.changeFootnotes(tA.value)">
+                                        (change)="generate.generateSVG(tA.value)">
                                         Backdrop
                                         shadows
                                     </mat-slide-toggle>

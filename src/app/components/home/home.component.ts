@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
-  constructor(private generate: GenerateService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService) { }
+  constructor(public generate: GenerateService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService) { }
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
