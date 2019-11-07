@@ -78,13 +78,11 @@ export class GenerateService {
       //setting the variables to the ones needed for themes
       this.setTheme();
       //make the text ready for generation
-      text = this.changeText(text);
-      this.resetRectangle(this.text)
+      text = this.changeText(document, text);
       //generate the svg and set it to the svg variable while checking if its rounded 
-      this.isThemed ? await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this)
-      setTimeout(() => {
-        this.styleSVG();
-      }, 100);
+      var oDOM;
+      this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this)
+      this.styleSVG(oDOM);
     }, 300);
   }
   resetRectangle(text) {
@@ -96,29 +94,32 @@ export class GenerateService {
         this.svg = data;
       });
   }
-  styleSVG() {
+  styleSVG(oDOM) {
     //removing all the styling PlantUML puts on it
-    this.styling.removeStyling();
-    this.isThemed ? this.styling.setNode(this.themedShape, this.textImages) : this.styling.setNode(this.selectedShape, this.textImages);
+    this.styling.removeStyling(oDOM);
+    this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
     this.isThemed ?
       (this.themedHiddenNotes ? this.hideNotes() : this.showNotes()) :
       (this.hiddenNotes ? this.hideNotes() : this.showNotes());
-    this.setColors();
-    this.styling.findNamesInText();
+    this.setColors(oDOM);
+    this.styling.findNamesInText(oDOM);
     this.addListners();
-    this.setAutoNumberLabel();
+    this.setAutoNumberLabel(oDOM);
     this.isThemed ?
-      (this.themedActor == 'Modern' ? this.styling.setNewActor() : null) :
-      (this.selectedActor == 'Modern' ? this.styling.setNewActor() : null);
+      (this.themedActor == 'Modern' ? this.styling.setNewActor(oDOM) : null) :
+      (this.selectedActor == 'Modern' ? this.styling.setNewActor(oDOM) : null);
     this.isThemed ?
-      (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly() : null) :
-      (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly() : null);
-    this.setFont();
-    this.setStroke();
-    this.triggerResize();
+      (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null) :
+      (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
+    this.setFont(oDOM);
+    this.setStroke(oDOM);
+    this.triggerResize(oDOM);
+    var s = new XMLSerializer();
+    var str = s.serializeToString((oDOM as XMLDocument).firstChild);
+    this.svg = str;
   }
 
-  changeText(text: string) {
+  changeText(oDOM, text: string) {
     this.text = text;
     if (this.isThemed) {
       text = this.utility.replaceAll(text, 'Actor', 'actor')
@@ -139,7 +140,7 @@ export class GenerateService {
           break;
         case 'Default':
           text = 'autonumber 1\n' + text;
-          this.styling.clearLabels();
+          this.styling.clearLabels(oDOM);
           break;
         case 'Circular':
           text = 'autonumber 1\n' + text;
@@ -188,7 +189,7 @@ export class GenerateService {
           break;
         case 'Default':
           text = 'autonumber 1\n' + text;
-          this.styling.clearLabels();
+          this.styling.clearLabels(oDOM);
           break;
         case 'Circular':
           text = 'autonumber 1\n' + text;
@@ -230,7 +231,7 @@ export class GenerateService {
           data = (data as string).replace("<svg", `<svg id="svgTag"`);
           var oParser = new DOMParser();
           var oDOM = oParser.parseFromString(data, "image/svg+xml");
-          generate.svg = data;
+          // generate.svg = data;
           setTimeout(() => {
             resolve(oDOM);
           }, 100);
@@ -283,7 +284,7 @@ export class GenerateService {
       }
     }
   }
-  setColors() {
+  setColors(oDOM) {
     if (this.isThemed) {
       if (this.selectedTheme == 'PlantUML') {
         this.styling.addColorToStyle(
@@ -295,7 +296,8 @@ export class GenerateService {
           '#a80036',
           '#a80036',
           '#fefece',
-          '#000000')
+          '#000000', 
+          oDOM)
       }
       else if (this.selectedTheme == 'ISAAC') {
         this.styling.addColorToStyle(
@@ -307,7 +309,8 @@ export class GenerateService {
           '#009ddc',
           '#009ddc',
           '#ffffff',
-          '#000000')
+          '#000000', 
+          oDOM)
       }
       else if (this.selectedTheme == 'Johan') {
         this.styling.addColorToStyle(
@@ -319,7 +322,8 @@ export class GenerateService {
           '#737373',
           '#32bdb8',
           '#32bdb8',
-          '#ffffff')
+          '#ffffff', 
+          oDOM)
       }
       else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
@@ -331,7 +335,8 @@ export class GenerateService {
           '#bfbcbc',
           '#bfbcbc',
           '#ffffff',
-          '#707070')
+          '#707070', 
+          oDOM)
       }
     } else {
       this.styling.addColorToStyle(
@@ -343,7 +348,8 @@ export class GenerateService {
         this.color6,
         this.color7,
         this.color8,
-        this.color9)
+        this.color9, 
+        oDOM)
 
     }
   }
@@ -378,51 +384,51 @@ export class GenerateService {
       this.hideNotes();
     })
   }
-  setAutoNumberLabel() {
+  setAutoNumberLabel(oDOM) {
     if (this.isThemed) {
       if (this.themedNumber == 'Circular') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberCircular();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberCircular(oDOM);
       } else if (this.themedNumber == 'Rectangular') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRectangular();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRectangular(oDOM);
       } else if (this.themedNumber == 'Rectangular-Framed') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRectangularFramed();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRectangularFramed(oDOM);
       } else if (this.themedNumber == 'Rounded-Framed') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRoundedFramed();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRoundedFramed(oDOM);
       } else if (this.themedNumber == 'Circular-Framed') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberCircularFramed();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberCircularFramed(oDOM);
       } else if (this.themedNumber == 'Rounded') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRounded();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRounded(oDOM);
       }
     }
     else {
       if (this.selectedNumber == 'Circular') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberCircular();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberCircular(oDOM);
       } else if (this.selectedNumber == 'Rectangular') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRectangular();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRectangular(oDOM);
       } else if (this.selectedNumber == 'Rectangular-Framed') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRectangularFramed();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRectangularFramed(oDOM);
       } else if (this.selectedNumber == 'Rounded-Framed') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRoundedFramed();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRoundedFramed(oDOM);
       } else if (this.selectedNumber == 'Circular-Framed') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberCircularFramed();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberCircularFramed(oDOM);
       } else if (this.selectedNumber == 'Rounded') {
-        this.styling.clearLabels();
-        this.autonumbering.setAutonumberRounded();
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberRounded(oDOM);
       }
     }
   }
-  setFont() {
+  setFont(oDOM) {
     if (document.getElementById('googlelink')) {
       document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.selectedFont);
     } else {
@@ -434,18 +440,18 @@ export class GenerateService {
       headID.appendChild(link);
       link.href = 'https://fonts.googleapis.com/css?family=' + this.selectedFont;
     }
-    document.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont)
+    oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont)
   }
-  setStroke() {
+  setStroke(oDOM) {
     if (this.isThemed) {
-      document.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.themedParticipantstroke.toString())
+      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.themedParticipantstroke.toString())
     }
     else {
-      document.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.participantstroke.toString())
+      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.participantstroke.toString())
     }
   }
-  triggerResize() {
-    document.getElementById('svgTag').style.setProperty(`--font-size`, this.selectedSize)
+  triggerResize(oDOM) {
+    oDOM.getElementById('svgTag').style.setProperty(`--font-size`, this.selectedSize)
   }
   isaacStyle() {
     this.themedBreak = 'Squiggly';

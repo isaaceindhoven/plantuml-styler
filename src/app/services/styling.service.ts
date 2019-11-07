@@ -1,36 +1,36 @@
 import { Injectable } from '@angular/core';
-import { DataService } from './data.service';
+// import { DataService } from './data.service';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StylingService {
-  constructor( private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
   actorlist: string[] = [];
   oldActorElements: any[] = [];
   image;
-  getTagList(type) {
-    return Array.from(document.getElementsByTagName(type));
+  getTagList(oDOM, type): Element[] {
+    return Array.from(oDOM.getElementsByTagName(type));
   }
-  setSquiggly() {
-    Array.from(document.getElementsByClassName('null skipped')).forEach((element: SVGLineElement) => {
+  setSquiggly(oDOM) {
+    Array.from(oDOM.getElementsByClassName('null skipped')).forEach((element: SVGLineElement) => {
       var distance = ((+(element.getAttribute('y2') as unknown as number) - (element.getAttribute('y1') as unknown as number)) / 3);
       var width = 20;
       var ns = 'http://www.w3.org/2000/svg'
-      var line1 = document.createElementNS(ns, 'line');
+      var line1 = oDOM.createElementNS(ns, 'line');
       line1.setAttributeNS(null, 'x1', element.getAttribute('x2'));
       line1.setAttributeNS(null, 'x2', (+(element.getAttribute('x2') as unknown as number) - width).toString());
       line1.setAttributeNS(null, 'y1', element.previousElementSibling.getAttribute('y2'));
       line1.setAttributeNS(null, 'y2', (+(element.previousElementSibling.getAttribute('y2') as unknown as number) + distance).toString());
 
-      var line2 = document.createElementNS(ns, 'line');
+      var line2 = oDOM.createElementNS(ns, 'line');
       line2.setAttributeNS(null, 'x1', (+(element.getAttribute('x2') as unknown as number) - width).toString());
       line2.setAttributeNS(null, 'x2', (+(element.getAttribute('x2') as unknown as number) + width).toString());
       line2.setAttributeNS(null, 'y1', line1.getAttribute('y2'));
       line2.setAttributeNS(null, 'y2', (+(line1.getAttribute('y2') as unknown as number) + distance).toString());
 
-      var line3 = document.createElementNS(ns, 'line');
+      var line3 = oDOM.createElementNS(ns, 'line');
       line3.setAttributeNS(null, 'x1', (+(element.getAttribute('x2') as unknown as number) + width).toString());
       line3.setAttributeNS(null, 'x2', element.getAttribute('x2'));
       line3.setAttributeNS(null, 'y1', line2.getAttribute('y2'));
@@ -41,11 +41,11 @@ export class StylingService {
       element.replaceWith(line3);
     })
   }
-  setNewActor() {
+  setNewActor(oDOM) {
     this.oldActorElements = [];
-    Array.from(document.getElementsByClassName('actor transparent')).forEach((element: SVGPathElement) => {
+    Array.from(oDOM.getElementsByClassName('actor transparent')).forEach((element: SVGPathElement) => {
       var ns = 'http://www.w3.org/2000/svg'
-      var image = document.createElementNS(ns, 'image');
+      var image = oDOM.createElementNS(ns, 'image');
       image.setAttributeNS(null, 'filter', element.getAttribute('filter'))
       image.setAttributeNS(null, 'width', '45')
       image.setAttributeNS(null, 'height', '45')
@@ -57,11 +57,11 @@ export class StylingService {
       element.replaceWith(image)
     })
   }
-  toImageNode() {
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
+  toImageNode(oDOM) {
+    this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
-        var image = document.createElementNS(ns, 'image');
+        var image = oDOM.createElementNS(ns, 'image');
         image.setAttributeNS(null, 'filter', element.getAttribute('filter'))
         image.setAttributeNS(null, 'width', element.getAttribute('width'))
         image.setAttributeNS(null, 'height', element.getAttribute('height'))
@@ -72,11 +72,11 @@ export class StylingService {
       }
     });
   }
-  toEllipseNode() {
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
+  toEllipseNode(oDOM) {
+    this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
-        var ellipse = document.createElementNS(ns, 'ellipse');
+        var ellipse = oDOM.createElementNS(ns, 'ellipse');
         var rx = ((element.getAttribute('width') as unknown as number) / 2);
         var ry = ((element.getAttribute('height') as unknown as number) / 2);
         var cx = (+(element.getAttribute('x') as unknown as number) + rx);
@@ -90,11 +90,11 @@ export class StylingService {
       }
     });
   }
-  toCircleNode() {
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
+  toCircleNode(oDOM) {
+    this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
-        var circle = document.createElementNS(ns, 'circle');
+        var circle = oDOM.createElementNS(ns, 'circle');
         var r = (((element.getAttribute('width') as unknown as number) / 2) * 0.9);
         var cx = (+(element.getAttribute('x') as unknown as number) + (r * 1.12));
         var cy;
@@ -115,17 +115,17 @@ export class StylingService {
       }
     });
   }
-  removeStyling() {
-    this.removeStyleFrom('rect');
-    this.removeStyleFrom('ellipse');
-    this.removeStyleFrom('path');
-    this.removeStyleFrom('line');
-    this.removeStyleFrom('polygon');
-    this.removeStyleFrom('polyline');
-    this.removeStyleFrom('text');
+  removeStyling(oDOM) {
+    this.removeStyleFrom(oDOM, 'rect');
+    this.removeStyleFrom(oDOM, 'ellipse');
+    this.removeStyleFrom(oDOM, 'path');
+    this.removeStyleFrom(oDOM, 'line');
+    this.removeStyleFrom(oDOM, 'polygon');
+    this.removeStyleFrom(oDOM, 'polyline');
+    this.removeStyleFrom(oDOM, 'text');
   }
-  removeStyleFrom(type) {
-    this.getTagList(type).forEach(element => {
+  removeStyleFrom(oDOM, type) {
+    this.getTagList(oDOM, type).forEach(element => {
       if (element.getAttribute('fill') == 'none') {
         if (type == 'path' && element.previousSibling)
           element.setAttribute('class', 'actor')
@@ -148,9 +148,9 @@ export class StylingService {
       }
     });
   }
-  findNamesInText() {
+  findNamesInText(oDOM) {
     var last;
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (last) {
         if (element.textContent == last.textContent) {
           element.setAttribute('name', 'participant');
@@ -164,8 +164,8 @@ export class StylingService {
       }
     });
   }
-  removeTextFromParticipants() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  removeTextFromParticipants(oDOM) {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if ((element.getAttribute('name') == 'participant')) {
         if (!this.actorlist.includes(element.textContent)) {
           element.setAttribute('display', 'none');
@@ -173,13 +173,13 @@ export class StylingService {
       }
     });
   }
-  clearLabels() {
-    this.getTagList('circle').forEach((element: SVGRectElement) => {
+  clearLabels(oDOM) {
+    this.getTagList(oDOM, 'circle').forEach((element: SVGRectElement) => {
       if (element.getAttribute('name') == 'label') {
         element.replaceWith()
       }
     })
-    this.getTagList('rect').forEach((element: SVGRectElement) => {
+    this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('name') == 'label') {
         element.replaceWith()
       }
@@ -212,30 +212,45 @@ export class StylingService {
       }
     }
   }
-  addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9) {
-    document.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
-    document.getElementById('svgTag').style.setProperty(`--secondary-color`, color2)
-    document.getElementById('svgTag').style.setProperty(`--tertiary-color`, color3)
-    document.getElementById('svgTag').style.setProperty(`--quaternary-color`, color4)
-    document.getElementById('svgTag').style.setProperty(`--text-color`, color5);
-    document.getElementById('svgTag').style.setProperty(`--line-color`, color6);
-    document.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
-    document.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
-    document.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
-
+  addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM) {
+    if(!oDOM){
+      oDOM = document;
+    }
+    if (oDOM.getElementById('svgTag')) {
+      oDOM.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
+      oDOM.getElementById('svgTag').style.setProperty(`--secondary-color`, color2)
+      oDOM.getElementById('svgTag').style.setProperty(`--tertiary-color`, color3)
+      oDOM.getElementById('svgTag').style.setProperty(`--quaternary-color`, color4)
+      oDOM.getElementById('svgTag').style.setProperty(`--text-color`, color5);
+      oDOM.getElementById('svgTag').style.setProperty(`--line-color`, color6);
+      oDOM.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
+      oDOM.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
+      oDOM.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+    }
+    if (document.getElementById('svgTag')) {
+      document.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
+      document.getElementById('svgTag').style.setProperty(`--secondary-color`, color2)
+      document.getElementById('svgTag').style.setProperty(`--tertiary-color`, color3)
+      document.getElementById('svgTag').style.setProperty(`--quaternary-color`, color4)
+      document.getElementById('svgTag').style.setProperty(`--text-color`, color5);
+      document.getElementById('svgTag').style.setProperty(`--line-color`, color6);
+      document.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
+      document.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
+      document.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+    }
   }
-  setNode(type, textImages) {
+  setNode(oDOM, type, textImages) {
     switch (type) {
       case "Circle":
-        this.toCircleNode();
+        this.toCircleNode(oDOM);
         break;
       case "Ellipse":
-        this.toEllipseNode();
+        this.toEllipseNode(oDOM);
         break;
       case "Images":
-        this.toImageNode();
+        this.toImageNode(oDOM);
         if (!textImages)
-          this.removeTextFromParticipants()
+          this.removeTextFromParticipants(oDOM)
         break;
       default:
         break;

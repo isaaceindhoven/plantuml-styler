@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { DataService } from './data.service';
+// import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AutoNumberService {
   constructor() { }
-  getTagList(type) {
-    return Array.from(document.getElementsByTagName(type));
+  getTagList(oDOM, type) {
+    return Array.from(oDOM.getElementsByTagName(type));
   }
-  setAutonumberCircular() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  setAutonumberCircular(oDOM) {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -36,8 +36,8 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRectangular() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  setAutonumberRectangular(oDOM) {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -56,8 +56,8 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRectangularFramed() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  setAutonumberRectangularFramed(oDOM) {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -140,8 +140,8 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberCircularFramed() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  setAutonumberCircularFramed(oDOM) {
+    this.getTagList(oDOM,'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -227,8 +227,8 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRoundedFramed() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  setAutonumberRoundedFramed(oDOM) {
+    this.getTagList(oDOM,'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
@@ -312,8 +312,8 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRounded() {
-    this.getTagList('text').forEach((element: SVGRectElement) => {
+  setAutonumberRounded(oDOM) {
+    this.getTagList(oDOM,'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
