@@ -8,12 +8,29 @@
                 <mat-card-subtitle>Sequence Diagram Styler</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
-                <mat-form-field style="width: 100%">
-                    <textarea class="coding" id="tA" #tA matInput style="width: 100%" rows="10"
-                        (keyup)="generate.generateSVG(tA.value)"
-                        placeholder="Plant UML Code">Bob->Alice : hello</textarea>
-                </mat-form-field>
                 <mat-accordion id="scrollbar1">
+                    <!--Text-->
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title id="importAccordion">
+                                Text
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-form-field style="width: 100%">
+                            <textarea class="coding" id="tA" #tA matInput style="width: 100%" rows="10"
+                                (keyup)="generate.generateSVG(tA.value)"
+                                placeholder="Plant UML Code">Bob->Alice : hello</textarea>
+                        </mat-form-field>
+
+                        <a target="_blank"
+                            href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html">
+                            <button mat-icon-button color="primary">
+                                Syntax <i class="material-icons">
+                                    launch
+                                </i>
+                            </button>
+                        </a>
+                    </mat-expansion-panel>
                     <!--Import-->
                     <mat-expansion-panel [(expanded)]="isOpen">
                         <mat-expansion-panel-header>
@@ -24,7 +41,8 @@
                         <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
                             (click)="jsons.click()">
                             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
-                                Upload file
+                                <span style="text-align: center;">Upload file<br>
+                                    Accepts: .zip, .json, .txt, .puml</span>
                             </ng-template>
                         </ngx-file-drop>
                         <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt"
@@ -50,7 +68,8 @@
                             <br><br>
                             <mat-form-field>
                                 <mat-label>Theme</mat-label>
-                                <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
+                                <mat-select #selecttheme [disabled]="!generate.isThemed" id="selecttheme"
+                                    [(value)]="generate.selectedTheme"
                                     (selectionChange)="generate.generateSVG(tA.value);">
                                     <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
                                         {{theme}}
@@ -62,364 +81,318 @@
                     </mat-expansion-panel>
                     <!--Styling-->
                     <mat-expansion-panel [disabled]="generate.isThemed">
-                        <mat-expansion-panel-header id="stylingAccordionclose">
-                            <mat-panel-title id="stylingAccordion">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title id="fontsAccordion">
                                 Styling
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <mat-accordion>
-                            <!--Options-->
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title id="fontsAccordion">
-                                        Options
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
-                                    <mat-label>Shape</mat-label>
-                                    <mat-select [(value)]="generate.selectedShape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                        <mat-option (click)="img.click();generate.generateSVG(tA.value);"
-                                            [value]="'Images'">
-                                            Images
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field *ngIf="generate.selectedType != 'Sequence'">
-                                    <mat-label>Shape</mat-label>
-                                    <mat-select [(value)]="generate.selectedShape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option [value]="'Rectangle'">
-                                            Rectangle
-                                        </mat-option>
-                                        <mat-option [value]="'Rounded'">
-                                            Rounded
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                &nbsp;
-                                <mat-slide-toggle *ngIf="generate.selectedShape=='Images' && generate.textImages"
-                                    color="primary" class="example-margin" [(ngModel)]="generate.textImages"
-                                    (change)="generate.generateSVG(tA.value)">With text
-                                </mat-slide-toggle>
-                                <mat-slide-toggle *ngIf="generate.selectedShape=='Images' && !generate.textImages"
-                                    color="primary" class="example-margin" [(ngModel)]="generate.textImages"
-                                    (change)="generate.generateSVG(tA.value)">No text
-                                </mat-slide-toggle>
-                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
-                                    <mat-label>Numbers</mat-label>
-                                    <mat-select id="NumberSelect" [(value)]="generate.selectedNumber"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option id="{{number}}" *ngFor="let number of generate.autonumber"
-                                            [value]="number">
-                                            {{number}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <mat-label>Actors</mat-label>
-                                    <mat-select [(value)]="generate.selectedActor"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let actor of generate.actors" [value]="actor">
-                                            {{actor}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
-                                    <mat-label>Breaks</mat-label>
-                                    <mat-select id="BreakSelect" [(value)]="generate.selectedBreak"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option id="{{break}}" *ngFor="let break of generate.breaks"
-                                            [value]="break">
-                                            {{break}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
-                                    <mat-label>Participant padding</mat-label>
-                                    <input matInput type="number" placeholder="0"
-                                        [(ngModel)]="generate.participantpadding"
-                                        (change)="generate.generateSVG(tA.value)">
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <mat-label>Border width</mat-label>
-                                    <input matInput type="number" placeholder="0" step="0.5"
-                                        [(ngModel)]="generate.participantstroke" (change)="generate.generateSVG(tA.value)">
-                                </mat-form-field>
-                                <input hidden #img id="img" type="file" accept="image/*"
-                                    (change)="setImage(img, tA.value)" value="Image">
-                            </mat-expansion-panel>
-                            <!--Colors-->
-                            <mat-expansion-panel [disabled]="generate.isThemed">
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title id="colorsAccordion">
-                                        Colors
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <table>
-                                    <tr>
-                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Sequence'">
-                                            Borders
-                                        </td>
-                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Usecase'">
-                                            Borders and lines
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color1input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color1" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="primary" [style.background]="generate.color1"
-                                                [(colorPicker)]="generate.color1"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 50%;">
-                                            Backgrounds
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color2input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color2" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="secondary" [style.background]="generate.color2"
-                                                [(colorPicker)]="generate.color2"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 50%;">
-                                            Note backgrounds
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color3input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color3" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="tertiary" [style.background]="generate.color3"
-                                                [(colorPicker)]="generate.color3"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 50%;">
-                                            Note borders
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color4input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color4" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="quaternary"
-                                                [style.background]="generate.color4" [(colorPicker)]="generate.color4"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 50%;">
-                                            Text color
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color5input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color5" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="generate.color5"
-                                                [(colorPicker)]="generate.color5"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Sequence'">
-                                            Lines
-                                        </td>
-                                        <td style="width: 50%;" *ngIf="generate.selectedType == 'Usecase'">
-                                            Arrows
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color6input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color6" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="generate.color6"
-                                                [(colorPicker)]="generate.color6"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr *ngIf="generate.selectedType == 'Sequence'">
-                                        <td style="width: 50%;">
-                                            Number border
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color7input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color7" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="generate.color7"
-                                                [(colorPicker)]="generate.color7"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr *ngIf="generate.selectedType == 'Sequence'">
-                                        <td style="width: 50%;">
-                                            Number background
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color8input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color8" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="generate.color8"
-                                                [(colorPicker)]="generate.color8"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                    <tr *ngIf="generate.selectedType == 'Sequence'">
-                                        <td style="width: 50%;">
-                                            Number text
-                                        </td>
-                                        <td style="width: 25%;">
-                                            <input matInput id="color9input" class="inputHover"
-                                                (change)="generate.setColors(null)" type="text"
-                                                [(ngModel)]="generate.color9" />
-                                        </td>
-                                        <td></td>
-                                        <td style="width: 35%;">
-                                            <input [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                                style="width: 100%;" id="text" [style.background]="generate.color9"
-                                                [(colorPicker)]="generate.color9"
-                                                (colorPickerChange)="generate.setColors(null)" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </mat-expansion-panel>
-                            <!--Fonts-->
-                            <mat-expansion-panel [disabled]="generate.isThemed">
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title id="fontsAccordion">
-                                        Fonts
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <mat-form-field>
-                                    <mat-label>Font</mat-label>
-                                    <mat-select [(value)]="generate.selectedFont"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option [value]="'Tahoma'">
-                                            Tahoma
-                                        </mat-option>
-                                        <mat-option *ngFor="let font of generate.fonts" [value]="font.family">
-                                            {{font.family}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field>
-                                    <mat-label *ngIf="generate.selectedType == 'Sequence'">Participant font size
-                                    </mat-label>
-                                    <mat-label *ngIf="generate.selectedType == 'Usecase'">Actor font size</mat-label>
-                                    <input matInput type="number" placeholder="0"
-                                        [(ngModel)]="generate.participantfontsize"
-                                        (change)="generate.generateSVG(tA.value)">
-                                </mat-form-field>
-                                <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
-                                    <mat-label>Diagram font size</mat-label>
-                                    <input matInput type="number" placeholder="0"
-                                        [(ngModel)]="generate.sequencetextsize"
-                                        (change)="generate.generateSVG(tA.value)">
-                                </mat-form-field>
-                            </mat-expansion-panel>
-                            <!--Toggles-->
-                            <mat-expansion-panel>
-                                <mat-expansion-panel-header>
-                                    <mat-panel-title id="fontsAccordion">
-                                        Toggles
-                                    </mat-panel-title>
-                                </mat-expansion-panel-header>
-                                <section class="example-section">
-                                    <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
-                                        class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                        (change)="generate.generateSVG(tA.value)">
-                                        Notes
-                                    </mat-slide-toggle>
-                                    <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
-                                        class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                        (change)="generate.generateSVG(tA.value)">
-                                        Notes and arrows
-                                    </mat-slide-toggle>
-                                    <br *ngIf="generate.selectedType == 'Sequence'">
-                                    <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
-                                        class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
-                                        (change)="generate.generateSVG(tA.value)">Footnotes
-                                    </mat-slide-toggle>
-                                    <br>
-                                    <mat-slide-toggle color="primary" class="example-margin"
-                                        [(ngModel)]="generate.hiddenShadows"
-                                        (change)="generate.generateSVG(tA.value)">
-                                        Backdrop
-                                        shadows
-                                    </mat-slide-toggle>
-                                </section>
-                            </mat-expansion-panel>
-                        </mat-accordion>
+                        <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-label>Shape</mat-label>
+                            <mat-select [(value)]="generate.selectedShape"
+                                (selectionChange)="generate.generateSVG(tA.value)">
+                                <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
+                                    {{shape}}
+                                </mat-option>
+                                <mat-option (click)="img.click();generate.generateSVG(tA.value);" [value]="'Images'">
+                                    Images
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="generate.selectedType != 'Sequence'">
+                            <mat-label>Shape</mat-label>
+                            <mat-select [(value)]="generate.selectedShape"
+                                (selectionChange)="generate.generateSVG(tA.value)">
+                                <mat-option [value]="'Rectangle'">
+                                    Rectangle
+                                </mat-option>
+                                <mat-option [value]="'Rounded'">
+                                    Rounded
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        &nbsp;
+                        <mat-slide-toggle *ngIf="generate.selectedShape=='Images' && generate.textImages"
+                            color="primary" class="example-margin" [(ngModel)]="generate.textImages"
+                            (change)="generate.generateSVG(tA.value)">With text
+                        </mat-slide-toggle>
+                        <mat-slide-toggle *ngIf="generate.selectedShape=='Images' && !generate.textImages"
+                            color="primary" class="example-margin" [(ngModel)]="generate.textImages"
+                            (change)="generate.generateSVG(tA.value)">No text
+                        </mat-slide-toggle>
+                        <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-label>Numbers</mat-label>
+                            <mat-select id="NumberSelect" [(value)]="generate.selectedNumber"
+                                (selectionChange)="generate.generateSVG(tA.value)">
+                                <mat-option id="{{number}}" *ngFor="let number of generate.autonumber" [value]="number">
+                                    {{number}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Actors</mat-label>
+                            <mat-select [(value)]="generate.selectedActor"
+                                (selectionChange)="generate.generateSVG(tA.value)">
+                                <mat-option *ngFor="let actor of generate.actors" [value]="actor">
+                                    {{actor}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-label>Breaks</mat-label>
+                            <mat-select id="BreakSelect" [(value)]="generate.selectedBreak"
+                                (selectionChange)="generate.generateSVG(tA.value)">
+                                <mat-option id="{{break}}" *ngFor="let break of generate.breaks" [value]="break">
+                                    {{break}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-label>Participant padding</mat-label>
+                            <input matInput type="number" min="0" max="500" placeholder="0" [(ngModel)]="generate.participantpadding"
+                                (change)="generate.generateSVG(tA.value)">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>Border width</mat-label>
+                            <input matInput type="number" min="0" max="15" placeholder="0" step="0.5"
+                                [(ngModel)]="generate.participantstroke" (change)="generate.generateSVG(tA.value)">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>line width</mat-label>
+                            <input matInput type="number" min="0" max="4" placeholder="0" step="0.5"
+                                [(ngModel)]="generate.lineThickness" (change)="generate.generateSVG(tA.value)">
+                        </mat-form-field>
+                        <input hidden #img id="img" type="file" accept="image/*" (change)="setImage(img, tA.value)"
+                            value="Image">
                     </mat-expansion-panel>
-                    <!--Help-->
-                    <mat-expansion-panel>
+                    <!--Colors-->
+                    <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
-                            <mat-panel-title id="actionsAccordion">
-                                Help
+                            <mat-panel-title id="colorsAccordion">
+                                Colors
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <p>Syntax</p>
-                        <a target="_blank"
-                            href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html">
-                            <button mat-mini-fab color="primary">
-                                <i class="material-icons">
-                                    help_outline
-                                </i>
-                            </button>
-                        </a>
+                        <table>
+                            <tr>
+                                <td style="width: 50%;" *ngIf="generate.selectedType == 'Sequence'">
+                                    Borders
+                                </td>
+                                <td style="width: 50%;" *ngIf="generate.selectedType == 'Usecase'">
+                                    Borders and lines
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color1input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color1" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="primary" class="inputHoverColor"
+                                        [style.background]="generate.color1" [(colorPicker)]="generate.color1"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;">
+                                    Backgrounds
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color2input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color2" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="secondary" class="inputHoverColor"
+                                        [style.background]="generate.color2" [(colorPicker)]="generate.color2"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;">
+                                    Note backgrounds
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color3input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color3" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="tertiary" class="inputHoverColor"
+                                        [style.background]="generate.color3" [(colorPicker)]="generate.color3"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;">
+                                    Note borders
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color4input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color4" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="quaternary" [style.background]="generate.color4"
+                                        class="inputHoverColor" [(colorPicker)]="generate.color4"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;">
+                                    Text color
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color5input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color5" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.color5" [(colorPicker)]="generate.color5"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 50%;" *ngIf="generate.selectedType == 'Sequence'">
+                                    Lines
+                                </td>
+                                <td style="width: 50%;" *ngIf="generate.selectedType == 'Usecase'">
+                                    Arrows
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color6input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color6" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.color6" [(colorPicker)]="generate.color6"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr *ngIf="generate.selectedType == 'Sequence'">
+                                <td style="width: 50%;">
+                                    Number border
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color7input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color7" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.color7" [(colorPicker)]="generate.color7"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr *ngIf="generate.selectedType == 'Sequence'">
+                                <td style="width: 50%;">
+                                    Number background
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color8input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color8" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.color8" [(colorPicker)]="generate.color8"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr *ngIf="generate.selectedType == 'Sequence'">
+                                <td style="width: 50%;">
+                                    Number text
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color9input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.color9" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.color9" [(colorPicker)]="generate.color9"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                        </table>
                     </mat-expansion-panel>
-                    <!--Export-->
-                    <mat-expansion-panel>
+                    <!--Fonts-->
+                    <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
-                            <mat-panel-title id="actionsAccordion">
-                                Export
+                            <mat-panel-title id="fontsAccordion">
+                                Fonts
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <button mat-mini-fab color="primary" (click)="download()">
-                            <i class="material-icons">
-                                get_app
-                            </i>
-                        </button>
+                        <mat-form-field>
+                            <mat-label>Font</mat-label>
+                            <mat-select [(value)]="generate.selectedFont"
+                                (selectionChange)="generate.generateSVG(tA.value)">
+                                <mat-option [value]="'Tahoma'">
+                                    Tahoma
+                                </mat-option>
+                                <mat-option *ngFor="let font of generate.fonts" [value]="font.family">
+                                    {{font.family}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label *ngIf="generate.selectedType == 'Sequence'">Participant font size
+                            </mat-label>
+                            <mat-label *ngIf="generate.selectedType == 'Usecase'">Actor font size</mat-label>
+                            <input matInput type="number" min="1" max="40" placeholder="0" [(ngModel)]="generate.participantfontsize"
+                                (change)="generate.generateSVG(tA.value)">
+                        </mat-form-field>
+                        <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-label>Diagram font size</mat-label>
+                            <input matInput type="number"  min="1" max="40" placeholder="0" [(ngModel)]="generate.sequencetextsize"
+                                (change)="generate.generateSVG(tA.value)">
+                        </mat-form-field>
+                    </mat-expansion-panel>
+                    <!--Toggles-->
+                    <mat-expansion-panel [disabled]="generate.isThemed">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title id="fontsAccordion">
+                                Toggles
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <section class="example-section">
+                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
+                                (change)="generate.hideNotes(null);generate.generateSVG(tA.value);">
+                                Notes
+                            </mat-slide-toggle>
+                            <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
+                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
+                                (change)="generate.generateSVG(tA.value)">
+                                Notes and arrows
+                            </mat-slide-toggle>
+                            <br *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                                class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
+                                (change)="generate.generateSVG(tA.value)">Footnotes
+                            </mat-slide-toggle>
+                            <br>
+                            <mat-slide-toggle color="primary" class="example-margin"
+                                [(ngModel)]="generate.hiddenShadows" (change)="generate.generateSVG(tA.value)">
+                                Backdrop
+                                shadows
+                            </mat-slide-toggle>
+                        </section>
                     </mat-expansion-panel>
                 </mat-accordion>
+                <br>
+                <button mat-raised-button class="mat-expansion-panel-header accordionbtn"
+                    (click)="download()"><span style="margin-left: 9px;">Export</span><i
+                        style="float: right; margin-top: 6px; color: rgb(129, 126, 126);"
+                        class="material-icons">get_app</i></button>
             </mat-card-content>
             <mat-card-actions>
             </mat-card-actions>

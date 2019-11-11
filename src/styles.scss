@@ -29,6 +29,7 @@ $text-color: #000000;
   --text-color: #000000;
   --line-color: #a80036;
   --participant-stroke-width: 1.5;
+  --border-thickness: 1;
   --label-border-color: #a80036;
   --label-background-color: #fefece;
   --label-text-color: #000000;
@@ -61,7 +62,7 @@ svg g polygon {
 svg g line,
 svg g polyline {
   stroke: var(--line-color);
-  stroke-width: 1px;
+  stroke-width: var(--border-thickness);
   stroke-dasharray: 3000;
   animation: draw 3s linear;
 }
@@ -108,6 +109,7 @@ svg g path.note {
   stroke: var(--quaternary-color);
   fill: var(--tertiary-color);
   stroke-width: 1;
+  font-size: 12;
 }
 
 svg g .transparent {

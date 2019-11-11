@@ -19,41 +19,35 @@ div.right {
   }
 }
 
-#scrollbar1::-webkit-scrollbar-track
-{
+#scrollbar1::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 
-#scrollbar1::-webkit-scrollbar
-{
+#scrollbar1::-webkit-scrollbar {
   width: 5px;
   height: 5px;
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 
-#scrollbar1::-webkit-scrollbar-thumb
-{
-	background-color: #009edc;
+#scrollbar1::-webkit-scrollbar-thumb {
+  background-color: #009edc;
 }
-#scrollbar2::-webkit-scrollbar-track
-{
+#scrollbar2::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
   box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 
-#scrollbar2::-webkit-scrollbar
-{
+#scrollbar2::-webkit-scrollbar {
   width: 5px;
   height: 5px;
-	background-color: #ffffff;
+  background-color: #ffffff;
 }
 
-#scrollbar2::-webkit-scrollbar-thumb
-{
-	background-color: #009edc;
+#scrollbar2::-webkit-scrollbar-thumb {
+  background-color: #009edc;
 }
 
 .card {
@@ -68,8 +62,11 @@ div.right {
   margin: 8px;
 }
 
-.inputHover:hover{
+.inputHover:hover {
   border: 1px solid lightblue;
+}
+.inputHoverColor:hover {
+  border: 2px solid lightblue;
 }
 
 html,
@@ -84,6 +81,17 @@ body {
 .mat-mini-fab {
   background-color: #009ddc;
   color: #ffffff;
+}
+
+.accordionbtn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.accordionbtn {
+  text-align: left;
+  font-style: normal;
+  font-family: Tahoma, "Helvetica Neue", sans-serif;
+  width: 100%;
+  height: 48px;
 }
 
 .example-header-image {

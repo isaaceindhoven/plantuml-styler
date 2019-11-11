@@ -46,6 +46,8 @@ export class ImportExportService {
       participantfontsize: this.gen.participantfontsize,
       participantstroke: this.gen.participantstroke,
       sequencetextsize: this.gen.sequencetextsize,
+      lineThickness: this.gen.lineThickness,
+      themedLineThickness: this.gen.themedLineThickness,
     });
     if (returning) {
       return json;
@@ -84,7 +86,7 @@ export class ImportExportService {
       } else {
         this.gen.halfwayDoneProcessing = true;
       }
-    }, 100);
+    }, 200);
 
   }
   onConfigReaderLoad(event) {
@@ -125,6 +127,8 @@ export class ImportExportService {
     this.gen.themedParticipantfontsize = json.themedParticipantfontsize
     this.gen.themedSequencetextsize = json.themedSequencetextsize
     this.gen.themedParticipantstroke = json.themedParticipantstroke
+    this.gen.lineThickness = json.lineThickness;
+    this.gen.themedLineThickness = json.themedLineThickness;
     if (this.gen.halfwayDoneProcessing) {
       this.gen.isDoneProcessing = true;
       this.gen.generateSVG(this.gen.text)

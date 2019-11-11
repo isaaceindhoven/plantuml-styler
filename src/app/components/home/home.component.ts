@@ -176,12 +176,15 @@ export class HomeComponent implements OnInit {
         });
       })
     } else if (file.type == 'application/json') {
+      this.generate.halfwayDoneProcessing = true;
       this.impoexpo.loadConfig(file);
     }
     else if (file.name.endsWith('.puml')) {
+      this.generate.halfwayDoneProcessing = true;
       this.impoexpo.loadCode(file)
     }
     else if (file.type == 'text/plain') {
+      this.generate.halfwayDoneProcessing = true;
       this.impoexpo.loadCode(file)
     }
     // var entries = this.zipservice.getEntries(file);

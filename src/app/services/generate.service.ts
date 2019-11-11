@@ -10,6 +10,7 @@ import { UtilityService } from './utility.service';
 })
 export class GenerateService {
 
+
   constructor(private utility: UtilityService, private styling: StylingService, private http: HttpClient, private autonumbering: AutoNumberService) { }
 
   /* #region variables   */
@@ -33,6 +34,8 @@ export class GenerateService {
   participantpadding = 0;
   participantfontsize = 13;
   participantstroke = 1.5;
+  lineThickness = 1;
+  themedLineThickness = 1;
   sequencetextsize = 13;
   themedParticipantpadding = 0;
   themedParticipantfontsize = 13;
@@ -100,10 +103,10 @@ export class GenerateService {
     this.styling.findNamesInText(oDOM);
     this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
     this.isThemed ?
-      (this.themedHiddenNotes ? this.hideNotes() : this.showNotes()) :
-      (this.hiddenNotes ? this.hideNotes() : this.showNotes());
+      (this.themedHiddenNotes ? this.HideNotes(oDOM) : this.ShowNotes(oDOM)) :
+      (this.hiddenNotes ? this.HideNotes(oDOM) : this.ShowNotes(oDOM));
     this.setColors(oDOM);
-    this.addListners();
+    this.addListeners(oDOM);
     this.setAutoNumberLabel(oDOM);
     this.isThemed ?
       (this.themedActor == 'Modern' ? this.styling.setNewActor(oDOM) : null) :
@@ -113,6 +116,7 @@ export class GenerateService {
       (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
     this.setFont(oDOM);
     this.setStroke(oDOM);
+    this.setLineBorders(oDOM);
     this.triggerResize(oDOM);
     var s = new XMLSerializer();
     var str = s.serializeToString((oDOM as XMLDocument).firstChild);
@@ -133,8 +137,6 @@ export class GenerateService {
       text = `skinparam   ParticipantFontSize ${this.themedParticipantfontsize} \n` + text
       text = `skinparam   ActorFontSize ${this.themedParticipantfontsize} \n` + text
       text = `skinparam   ArrowFontSize  ${this.themedSequencetextsize} \n` + text
-
-      text = 'skinparam SequenceDividerFontSize 14 \n' + text
       text = 'skinparam SequenceDividerFontSize 14 \n' + text
       switch (this.themedNumber) {
         case 'None':
@@ -177,6 +179,26 @@ export class GenerateService {
         text = 'hide footbox \n' + text
       if (!this.hiddenShadows)
         text = 'skinparam Shadowing false \n' + text
+      text = `skinparam notefontsize 12 \n ` + text;
+
+      if (this.participantfontsize < 1) {
+        this.participantfontsize = 1;
+      }
+      if (this.participantfontsize > 40) {
+        this.participantfontsize = 40;
+      }
+      if (this.sequencetextsize < 1) {
+        this.sequencetextsize = 1;
+      }
+      if (this.sequencetextsize > 40) {
+        this.sequencetextsize = 40;
+      }
+      if (this.participantpadding < 0) {
+        this.participantpadding = 0;
+      }
+      if (this.participantpadding > 500) {
+        this.participantpadding = 500;
+      }
 
       text = `skinparam   ParticipantPadding  ${this.participantpadding} \n` + text
       text = `skinparam   ParticipantFontSize ${this.participantfontsize} \n` + text
@@ -237,49 +259,59 @@ export class GenerateService {
         });
     });
   }
-  hideNotes() {
-    this.utility.getTagList('path').forEach((element: SVGRectElement) => {
+  hideNotes(oDOM) {
+    if (oDOM == null) {
+      oDOM = document;
+    }
+    this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
       if (element.getAttribute('class') == null) {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
     });
-    this.utility.getTagList('polygon').forEach((element: SVGRectElement) => {
+    this.styling.getTagList(oDOM, 'polygon').forEach((element: SVGRectElement) => {
       if (element.getAttribute('points').split(',').length >= 9) {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
     });
-    this.utility.getTagList('text').forEach((element: SVGRectElement) => {
+    this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.getAttribute('font-size') == '12') {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
     });
   }
-  showNotes() {
-    var notes: any = document.getElementsByName('note')
+  showNotes(oDOM) {
+    console.log("oDOM", oDOM);
+    // if (oDOM == null) {
+    oDOM = document;
+    // }
+    console.log("oDOM", oDOM);
+    var notes: any = oDOM.getElementsByName('note')
+    console.log("notes", notes);
     var list = Array.from(notes);
     list.forEach((element: SVGRectElement) => {
+      console.log("element", element);
       element.setAttribute('display', '');
     });
   }
-  ShowNotes() {
-    this.showNotes();
+  ShowNotes(oDOM) {
+    this.showNotes(oDOM);
   }
-  HideNotes() {
+  HideNotes(oDOM) {
     if (this.isThemed) {
       if (!this.themedHiddenNotes) {
-        this.hideNotes();
+        this.hideNotes(oDOM);
       } else {
-        this.showNotes();
+        this.showNotes(oDOM);
       }
     }
     else {
       if (!this.hiddenNotes) {
-        this.hideNotes();
+        this.hideNotes(oDOM);
       } else {
-        this.showNotes();
+        this.showNotes(oDOM);
       }
     }
   }
@@ -300,15 +332,15 @@ export class GenerateService {
       }
       else if (this.selectedTheme == 'ISAAC') {
         this.styling.addColorToStyle(
-          '#009ddc',
+          '#cbc7c7',
           '#ffffff',
-          '#f3f3f3',
+          '#f0eded',
+          '#cbc7c7',
+          '#737070',
           '#009ddc',
-          '#000000',
-          '#009ddc',
-          '#009ddc',
+          '#cbc7c7',
           '#ffffff',
-          '#000000',
+          '#009ddc',
           oDOM)
       }
       else if (this.selectedTheme == 'Johan') {
@@ -352,35 +384,37 @@ export class GenerateService {
 
     }
   }
-  addListners() {
-    this.utility.getTagList('rect').forEach((element: SVGRectElement) => {
+  addListeners(oDOM) {
+    this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
+        console.log("rect", element);
+
         this.addListenersTo(element)
         this.addListenersTo(element.nextElementSibling)
       }
     })
-    this.utility.getTagList('image').forEach((element: SVGRectElement) => {
+    this.styling.getTagList(oDOM, 'image').forEach((element: SVGRectElement) => {
       this.addListenersTo(element)
       this.addListenersTo(element.nextElementSibling)
     })
-    this.utility.getTagList('ellipse').forEach((element: SVGRectElement) => {
+    this.styling.getTagList(oDOM, 'ellipse').forEach((element: SVGRectElement) => {
       this.addListenersTo(element)
       this.addListenersTo(element.nextElementSibling)
     })
-    this.utility.getTagList('circle').forEach((element: SVGRectElement) => {
+    this.styling.getTagList(oDOM, 'circle').forEach((element: SVGRectElement) => {
       this.addListenersTo(element)
       this.addListenersTo(element.nextElementSibling)
     })
   }
   addListenersTo(element) {
     element.addEventListener('mouseover', () => {
-      this.showNotes();
+      this.showNotes(null);
     });
     element.addEventListener('mouseenter', () => {
-      this.showNotes();
+      this.showNotes(null);
     });
     element.addEventListener('mouseleave', () => {
-      this.hideNotes();
+      this.hideNotes(null);
     })
   }
   setAutoNumberLabel(oDOM) {
@@ -428,25 +462,60 @@ export class GenerateService {
     }
   }
   setFont(oDOM) {
-    if (document.getElementById('googlelink')) {
-      document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.selectedFont);
+    if (this.isThemed) {
+      if (document.getElementById('googlelink')) {
+        document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.themedFont);
+      } else {
+        var headID = document.getElementsByTagName('head')[0];
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.id = 'googlelink'
+        headID.appendChild(link);
+        link.href = 'https://fonts.googleapis.com/css?family=' + this.themedFont;
+      }
+      oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.themedFont)
     } else {
-      var headID = document.getElementsByTagName('head')[0];
-      var link = document.createElement('link');
-      link.type = 'text/css';
-      link.rel = 'stylesheet';
-      link.id = 'googlelink'
-      headID.appendChild(link);
-      link.href = 'https://fonts.googleapis.com/css?family=' + this.selectedFont;
+      if (document.getElementById('googlelink')) {
+        document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.selectedFont);
+      } else {
+        var headID = document.getElementsByTagName('head')[0];
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        link.id = 'googlelink'
+        headID.appendChild(link);
+        link.href = 'https://fonts.googleapis.com/css?family=' + this.selectedFont;
+      }
+      oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont)
     }
-    oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont)
   }
   setStroke(oDOM) {
+    if (this.participantstroke < 0) {
+      this.participantstroke = 0;
+    }
+    if (this.participantstroke > 15) {
+      this.participantstroke = 15;
+    }
     if (this.isThemed) {
       oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.themedParticipantstroke.toString())
     }
     else {
       oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.participantstroke.toString())
+    }
+  }
+  setLineBorders(oDOM) {
+    if (this.isThemed) {
+      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.themedLineThickness.toString())
+    }
+    else {
+      if (this.lineThickness > 4) {
+        this.lineThickness = 4;
+      }
+      if (this.lineThickness < 0) {
+        this.lineThickness = 0;
+      }
+      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.lineThickness.toString())
     }
   }
   triggerResize(oDOM) {
@@ -455,13 +524,14 @@ export class GenerateService {
   isaacStyle() {
     this.themedBreak = 'Squiggly';
     this.themedNumber = 'Circular';
-    this.themedShape = 'Rounded';
+    this.themedShape = 'Rectangle';
     this.themedActor = 'Modern';
-    this.themedFont = 'Tahoma'
+    this.themedFont = 'Open Sans'
     this.themedHiddenFootnotes = false;
-    this.themedHiddenShadows = true;
-    this.themedParticipantfontsize = 13;
+    this.themedHiddenShadows = false;
+    this.themedParticipantfontsize = 16;
     this.themedSequencetextsize = 13;
+    this.themedParticipantstroke = 2.5;
   }
   JohanStyle() {
     this.themedBreak = 'Squiggly';
@@ -473,6 +543,7 @@ export class GenerateService {
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
+    this.themedParticipantstroke = 1.5;
   }
   GrayToneStyle() {
     this.themedBreak = 'Squiggly';
@@ -497,6 +568,7 @@ export class GenerateService {
     this.themedHiddenShadows = true;
     this.themedParticipantfontsize = 13;
     this.themedSequencetextsize = 13;
+    this.themedParticipantstroke = 1.5;
   }
   setTheme() {
     if (this.isThemed) {
