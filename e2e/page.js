@@ -7,7 +7,9 @@ export default class Page {
         this.themes = Selector('#themesAccordion');
         this.colors = Selector('#colorsAccordion');
         this.actions = Selector('#actionsAccordion');
+        this.toggle = Selector('#toggleAccordion');
         this.styling = Selector('#stylingAccordion');
+        this.text = Selector('#textAccordion');
 
         this.notheme = Selector('#notheme');
         this.usetheme = Selector('#usetheme');

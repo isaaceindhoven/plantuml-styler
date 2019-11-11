@@ -122,7 +122,6 @@ export class GenerateService {
     var str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
   }
-
   changeText(oDOM, text: string) {
     this.text = text;
     this.styling.getActors(text);
@@ -283,16 +282,12 @@ export class GenerateService {
     });
   }
   showNotes(oDOM) {
-    console.log("oDOM", oDOM);
     // if (oDOM == null) {
     oDOM = document;
     // }
-    console.log("oDOM", oDOM);
     var notes: any = oDOM.getElementsByName('note')
-    console.log("notes", notes);
     var list = Array.from(notes);
     list.forEach((element: SVGRectElement) => {
-      console.log("element", element);
       element.setAttribute('display', '');
     });
   }
@@ -387,8 +382,6 @@ export class GenerateService {
   addListeners(oDOM) {
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
-        console.log("rect", element);
-
         this.addListenersTo(element)
         this.addListenersTo(element.nextElementSibling)
       }

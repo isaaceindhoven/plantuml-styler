@@ -28,8 +28,11 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
-      if (!this.isOpen) {
-        this.isOpen = true;
+      var dt = e.dataTransfer;
+      if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.includes('Files'))) {
+        if (!this.isOpen) {
+          this.isOpen = true;
+        }
       }
     }, false);
     window.addEventListener("drop", e => {
@@ -51,7 +54,6 @@ export class HomeComponent implements OnInit {
     this.generate.color9 = '#000000'
   }
   dropped(files: NgxFileDropEntry[]) {
-    console.log('dropped');
 
     this.files = files;
     const droppedFile = files[0];
@@ -59,7 +61,6 @@ export class HomeComponent implements OnInit {
     if (droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
       fileEntry.file((file: File) => {
-        console.log(file);
         this.loadFile(file)
       });
     } else {
@@ -70,38 +71,6 @@ export class HomeComponent implements OnInit {
     }
 
   }
-  // async loadFile(fileEntry) {
-
-  //   console.log(file);
-  //   if (file.type == 'application/zip') {
-  //     var entries = this.zipservice.getEntries(file);
-  //     entries.subscribe(data => {
-  //       data.forEach(entry => {
-  //         if (entry.filename == 'code.puml') {
-  //           var newdata = this.zipservice.getData(entry);
-  //           newdata.data.subscribe(blob => {
-  //             this.generate.loadCode(blob)
-  //           })
-  //         }
-  //         if (entry.filename == 'style.json') {
-  //           var newdata = this.zipservice.getData(entry);
-  //           newdata.data.subscribe(blob => {
-  //             this.generate.loadConfig(blob);
-  //           })
-  //         }
-  //       });
-  //     })
-  //   } else if (file.type == 'application/json') {
-  //     this.generate.loadConfig(file);
-  //   }
-  //   else if (file.name.endsWith('.puml')) {
-  //     this.generate.loadCode(file)
-  //   }
-  //   else if (file.type == 'text/plain') {
-  //     this.generate.loadCode(file)
-  //   }
-  //   );
-  // }
   download() {
     var zip = new JSZip();
     var doc = new jsPDF('landscape', 'px');
@@ -136,7 +105,6 @@ export class HomeComponent implements OnInit {
       this.generate.generateSVG(text);
     }, 100);
   }
-
   loadFile(file) {
     if (file.type == 'application/zip') {
       var entries = this.zipservice.getEntries(file);
@@ -207,7 +175,6 @@ export class HomeComponent implements OnInit {
     //   });
     // })
   }
-
   fileChanged(event) {
     const file = event.target.files[0];
     console.log('filechanged', file);

@@ -12,7 +12,7 @@
                     <!--Text-->
                     <mat-expansion-panel>
                         <mat-expansion-panel-header>
-                            <mat-panel-title id="importAccordion">
+                            <mat-panel-title id="textAccordion">
                                 Text
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -82,7 +82,7 @@
                     <!--Styling-->
                     <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
-                            <mat-panel-title id="fontsAccordion">
+                            <mat-panel-title id="stylingAccordion">
                                 Styling
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -130,7 +130,7 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Actors</mat-label>
-                            <mat-select [(value)]="generate.selectedActor"
+                            <mat-select [disabled]="!generate.text.includes('actor ')" [(value)]="generate.selectedActor"
                                 (selectionChange)="generate.generateSVG(tA.value)">
                                 <mat-option *ngFor="let actor of generate.actors" [value]="actor">
                                     {{actor}}
@@ -139,8 +139,8 @@
                         </mat-form-field>
                         <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                             <mat-label>Breaks</mat-label>
-                            <mat-select id="BreakSelect" [(value)]="generate.selectedBreak"
-                                (selectionChange)="generate.generateSVG(tA.value)">
+                            <mat-select id="BreakSelect" [disabled]="!generate.text.includes('...')"
+                                [(value)]="generate.selectedBreak" (selectionChange)="generate.generateSVG(tA.value)">
                                 <mat-option id="{{break}}" *ngFor="let break of generate.breaks" [value]="break">
                                     {{break}}
                                 </mat-option>
@@ -148,8 +148,8 @@
                         </mat-form-field>
                         <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                             <mat-label>Participant padding</mat-label>
-                            <input matInput type="number" min="0" max="500" placeholder="0" [(ngModel)]="generate.participantpadding"
-                                (change)="generate.generateSVG(tA.value)">
+                            <input matInput type="number" min="0" max="500" placeholder="0"
+                                [(ngModel)]="generate.participantpadding" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Border width</mat-label>
@@ -347,19 +347,19 @@
                             <mat-label *ngIf="generate.selectedType == 'Sequence'">Participant font size
                             </mat-label>
                             <mat-label *ngIf="generate.selectedType == 'Usecase'">Actor font size</mat-label>
-                            <input matInput type="number" min="1" max="40" placeholder="0" [(ngModel)]="generate.participantfontsize"
-                                (change)="generate.generateSVG(tA.value)">
+                            <input matInput type="number" min="1" max="40" placeholder="0"
+                                [(ngModel)]="generate.participantfontsize" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
                         <mat-form-field *ngIf="generate.selectedType == 'Sequence'">
                             <mat-label>Diagram font size</mat-label>
-                            <input matInput type="number"  min="1" max="40" placeholder="0" [(ngModel)]="generate.sequencetextsize"
-                                (change)="generate.generateSVG(tA.value)">
+                            <input matInput type="number" min="1" max="40" placeholder="0"
+                                [(ngModel)]="generate.sequencetextsize" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
                     </mat-expansion-panel>
                     <!--Toggles-->
                     <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
-                            <mat-panel-title id="fontsAccordion">
+                            <mat-panel-title id="toggleAccordion">
                                 Toggles
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -389,8 +389,8 @@
                     </mat-expansion-panel>
                 </mat-accordion>
                 <br>
-                <button mat-raised-button class="mat-expansion-panel-header accordionbtn"
-                    (click)="download()"><span style="margin-left: 9px;">Export</span><i
+                <button mat-raised-button class="mat-expansion-panel-header accordionbtn" (click)="download()"><span
+                        style="margin-left: 9px;">Export</span><i
                         style="float: right; margin-top: 6px; color: rgb(129, 126, 126);"
                         class="material-icons">get_app</i></button>
             </mat-card-content>
