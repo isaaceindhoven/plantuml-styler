@@ -1,5 +1,15 @@
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
 
+.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
+  background-color: #009edc75;
+}
+.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
+  color: #009ddc;
+}
+.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
+  background-color: #009ddc;
+}
+
 /* You can add global styles to this file, and also import other style files */
 $font-stack: Tahoma;
 $primary-color: #009ddc;
