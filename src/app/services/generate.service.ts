@@ -357,7 +357,7 @@ export class GenerateService {
           '#ffffff',
           '#bfbcbc',
           '#3a3a3a',
-          '#000000',
+          '#484848',
           '#bfbcbc',
           '#bfbcbc',
           '#ffffff',

@@ -10,11 +10,16 @@ import { MaterialModule } from 'material-module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { NgxFileDropModule } from 'ngx-file-drop';
+import { TextAreaComponent } from './components/text-area/text-area.component';
+import { DownloadComponent } from './components/download/download.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TrustHtmlPipe
+    TrustHtmlPipe,
+    TextAreaComponent,
+    DownloadComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +31,11 @@ import { NgxFileDropModule } from 'ngx-file-drop';
     ColorPickerModule,
     NgxFileDropModule
   ],
-  providers: [],
+  entryComponents: [
+    TextAreaComponent,
+    DownloadComponent
+  ],
+  providers: [{ provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -17,19 +17,26 @@
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <mat-form-field style="width: 100%">
-                            <textarea class="coding" id="tA" #tA matInput style="width: 100%" rows="10"
-                                (keyup)="generate.generateSVG(tA.value)"
+                            <textarea [(ngModel)]="generate.text" class="coding" id="tA" #tA matInput
+                                style="width: 100%" rows="10" (keyup)="generate.generateSVG(tA.value)"
                                 placeholder="Plant UML Code">Bob->Alice : hello</textarea>
                         </mat-form-field>
 
                         <a target="_blank"
                             href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html">
-                            <button mat-icon-button color="primary">
+                            <button matTooltip="Go to the PlantUML syntax explanation page" mat-icon-button
+                                color="primary">
                                 Syntax <i class="material-icons">
                                     launch
                                 </i>
                             </button>
                         </a>
+                        <button style="float: right;" (click)="openTextDialog()" matTooltip="Enlarge textarea for easier coding"
+                            mat-icon-button color="primary">
+                            <i class="material-icons">
+                                    zoom_out_map
+                            </i>
+                        </button>
                     </mat-expansion-panel>
                     <!--Import-->
                     <mat-expansion-panel [(expanded)]="isOpen">
@@ -38,8 +45,8 @@
                                 Import
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <ngx-file-drop style="border-color: #009ddc ;" dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
-                            (click)="jsons.click()">
+                        <ngx-file-drop style="border-color: #009ddc ;" dropZoneLabel="Drop files here"
+                            (onFileDrop)="dropped($event)" (click)="jsons.click()">
                             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
                                 <span style="text-align: center;">Upload file<br>
                                     Accepts: .zip, .json, .txt, .puml</span>
@@ -130,8 +137,8 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Actors</mat-label>
-                            <mat-select [disabled]="!generate.text.includes('actor ')" [(value)]="generate.selectedActor"
-                                (selectionChange)="generate.generateSVG(tA.value)">
+                            <mat-select [disabled]="!generate.text.includes('actor ')"
+                                [(value)]="generate.selectedActor" (selectionChange)="generate.generateSVG(tA.value)">
                                 <mat-option *ngFor="let actor of generate.actors" [value]="actor">
                                     {{actor}}
                                 </mat-option>
@@ -161,6 +168,29 @@
                             <input matInput type="number" min="0" max="4" placeholder="0" step="0.5"
                                 [(ngModel)]="generate.lineThickness" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
+                        <section class="example-section">
+                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
+                                (change)="generate.hideNotes(null);generate.generateSVG(tA.value);">
+                                Notes
+                            </mat-slide-toggle>
+                            <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
+                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
+                                (change)="generate.generateSVG(tA.value)">
+                                Notes and arrows
+                            </mat-slide-toggle>
+                            <br *ngIf="generate.selectedType == 'Sequence'">
+                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                                class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
+                                (change)="generate.generateSVG(tA.value)">Footnotes
+                            </mat-slide-toggle>
+                            <br>
+                            <mat-slide-toggle color="primary" class="example-margin"
+                                [(ngModel)]="generate.hiddenShadows" (change)="generate.generateSVG(tA.value)">
+                                Backdrop
+                                shadows
+                            </mat-slide-toggle>
+                        </section>
                         <input hidden #img id="img" type="file" accept="image/*" (change)="setImage(img, tA.value)"
                             value="Image">
                     </mat-expansion-panel>
@@ -355,37 +385,6 @@
                             <input matInput type="number" min="1" max="40" placeholder="0"
                                 [(ngModel)]="generate.sequencetextsize" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
-                    </mat-expansion-panel>
-                    <!--Toggles-->
-                    <mat-expansion-panel [disabled]="generate.isThemed">
-                        <mat-expansion-panel-header>
-                            <mat-panel-title id="toggleAccordion">
-                                Toggles
-                            </mat-panel-title>
-                        </mat-expansion-panel-header>
-                        <section class="example-section">
-                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
-                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                (change)="generate.hideNotes(null);generate.generateSVG(tA.value);">
-                                Notes
-                            </mat-slide-toggle>
-                            <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
-                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                (change)="generate.generateSVG(tA.value)">
-                                Notes and arrows
-                            </mat-slide-toggle>
-                            <br *ngIf="generate.selectedType == 'Sequence'">
-                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
-                                class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
-                                (change)="generate.generateSVG(tA.value)">Footnotes
-                            </mat-slide-toggle>
-                            <br>
-                            <mat-slide-toggle color="primary" class="example-margin"
-                                [(ngModel)]="generate.hiddenShadows" (change)="generate.generateSVG(tA.value)">
-                                Backdrop
-                                shadows
-                            </mat-slide-toggle>
-                        </section>
                     </mat-expansion-panel>
                 </mat-accordion>
                 <br>

@@ -11,9 +11,10 @@ import Swal from 'sweetalert2'
 import jsPDF from 'jspdf';
 import { ZipService } from 'src/app/services/zip.service'
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import { MatExpansionPanel } from '@angular/material'
+import { MatExpansionPanel, MatDialog } from '@angular/material'
 import { GenerateService } from 'src/app/services/generate.service'
 import { ImportExportService } from 'src/app/services/importexport.service'
+import { TextAreaComponent } from '../text-area/text-area.component'
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomeComponent implements OnInit {
 
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
-  constructor(public generate: GenerateService, private autonumberservice: AutoNumberService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService) { }
+  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog) { }
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
@@ -52,6 +53,15 @@ export class HomeComponent implements OnInit {
     this.generate.color7 = '#a80036'
     this.generate.color8 = '#fefece'
     this.generate.color9 = '#000000'
+  }
+  openTextDialog() {
+    this.dialog.open(TextAreaComponent, {
+      height: '90%',
+      width: '90%',
+      data: {
+        text: this.generate.text
+      }
+    });
   }
   dropped(files: NgxFileDropEntry[]) {
 

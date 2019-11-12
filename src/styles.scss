@@ -24,7 +24,7 @@ $text-color: #000000;
 }
 @keyframes draw {
   from {
-    stroke-dashoffset: 3000;
+    stroke-dashoffset: 7500;
   }
   to {
     stroke-dashoffset: 0;
@@ -51,30 +51,30 @@ svg g rect {
   stroke-width: var(--participant-stroke-width);
   /* fill: url(#image); */
   fill: var(--secondary-color);
-  stroke-dasharray: 3000;
-  animation: draw 3s linear;
+  stroke-dasharray: 7500;
+  animation: draw 5s linear;
 }
 
 svg g path {
   fill: var(--tertiary-color);
   stroke: var(--quaternary-color);
   stroke-width: 1.5;
-  stroke-dasharray: 3000;
-  animation: draw 3s linear;
+  stroke-dasharray: 7500;
+  animation: draw 5s linear;
 }
 
 svg g polygon {
   fill: var(--line-color);
-  stroke-dasharray: 3000;
-  animation: draw 3s linear;
+  stroke-dasharray: 7500;
+  animation: draw 5s linear;
 }
 
 svg g line,
 svg g polyline {
   stroke: var(--line-color);
   stroke-width: var(--border-thickness);
-  stroke-dasharray: 3000;
-  animation: draw 3s linear;
+  stroke-dasharray: 7500;
+  animation: draw 5s linear;
 }
 
 svg g text {
