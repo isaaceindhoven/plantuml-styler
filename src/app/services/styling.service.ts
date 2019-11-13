@@ -127,8 +127,9 @@ export class StylingService {
   removeStyleFrom(oDOM, type) {
     this.getTagList(oDOM, type).forEach(element => {
       if (element.getAttribute('fill') == 'none') {
-        if (type == 'path' && element.previousSibling)
-          element.setAttribute('class', 'actor')
+        if (type == 'path')
+          if ((element as SVGPathElement).getTotalLength().toPrecision(6) == '92.6989')
+            element.setAttribute('class', 'actor')
         element.setAttribute('class', element.getAttribute('class') + ' transparent')
       }
       element.removeAttribute('fill');

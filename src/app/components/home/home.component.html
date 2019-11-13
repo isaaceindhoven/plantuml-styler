@@ -21,7 +21,6 @@
                                 style="width: 100%" rows="10" (keyup)="generate.generateSVG(tA.value)"
                                 placeholder="Plant UML Code">Bob->Alice : hello</textarea>
                         </mat-form-field>
-
                         <a target="_blank"
                             href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html">
                             <button matTooltip="Go to the PlantUML syntax explanation page" mat-icon-button
@@ -31,10 +30,10 @@
                                 </i>
                             </button>
                         </a>
-                        <button style="float: right;" (click)="openTextDialog()" matTooltip="Enlarge textarea for easier coding"
-                            mat-icon-button color="primary">
+                        <button style="float: right;" (click)="openTextDialog()"
+                            matTooltip="Enlarge textarea for easier coding" mat-icon-button color="primary">
                             <i class="material-icons">
-                                    zoom_out_map
+                                zoom_out_map
                             </i>
                         </button>
                     </mat-expansion-panel>
@@ -45,7 +44,7 @@
                                 Import
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <ngx-file-drop style="border-color: #009ddc ;" dropZoneLabel="Drop files here"
+                        <ngx-file-drop style="border-color: #009ddc;" dropZoneLabel="Drop files here"
                             (onFileDrop)="dropped($event)" (click)="jsons.click()">
                             <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
                                 <span style="text-align: center;">Upload file<br>
@@ -392,6 +391,9 @@
                         style="margin-left: 9px;">Export</span><i
                         style="float: right; margin-top: 6px; color: rgb(129, 126, 126);"
                         class="material-icons">get_app</i></button>
+                <br>
+                <br>
+                <mat-spinner *ngIf="isLoading" style="position: relative; left: 40%;"></mat-spinner>
             </mat-card-content>
             <mat-card-actions>
             </mat-card-actions>

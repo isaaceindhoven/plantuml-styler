@@ -12,8 +12,8 @@ export class AutoNumberService {
   setAutonumberCircular(oDOM) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
-        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
-          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
+          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
           var ns = 'http://www.w3.org/2000/svg'
           var circle = document.createElementNS(ns, 'circle');
@@ -39,8 +39,8 @@ export class AutoNumberService {
   setAutonumberRectangular(oDOM) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
-        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
-          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
+        element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
           var ns = 'http://www.w3.org/2000/svg'
           var rect = document.createElementNS(ns, 'rect');
@@ -59,8 +59,8 @@ export class AutoNumberService {
   setAutonumberRectangularFramed(oDOM) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
-        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
-          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
+          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
           var count = null;
           if (element.nextElementSibling as SVGTextElement) {
@@ -141,10 +141,10 @@ export class AutoNumberService {
     })
   }
   setAutonumberCircularFramed(oDOM) {
-    this.getTagList(oDOM,'text').forEach((element: SVGRectElement) => {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
-        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
-          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
+        element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
           var count = null;
           if (element.nextElementSibling as SVGTextElement) {
@@ -228,10 +228,10 @@ export class AutoNumberService {
     })
   }
   setAutonumberRoundedFramed(oDOM) {
-    this.getTagList(oDOM,'text').forEach((element: SVGRectElement) => {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
-        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
-          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
+        element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
           var count = null;
           if (element.nextElementSibling as SVGTextElement) {
@@ -313,10 +313,10 @@ export class AutoNumberService {
     })
   }
   setAutonumberRounded(oDOM) {
-    this.getTagList(oDOM,'text').forEach((element: SVGRectElement) => {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
-        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' ||
-          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon') {
+        if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
+          element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
           var ns = 'http://www.w3.org/2000/svg'
           var rect = document.createElementNS(ns, 'rect');

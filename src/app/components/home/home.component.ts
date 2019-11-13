@@ -15,6 +15,7 @@ import { MatExpansionPanel, MatDialog } from '@angular/material'
 import { GenerateService } from 'src/app/services/generate.service'
 import { ImportExportService } from 'src/app/services/importexport.service'
 import { TextAreaComponent } from '../text-area/text-area.component'
+import { UtilityService } from 'src/app/services/utility.service'
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,8 @@ export class HomeComponent implements OnInit {
 
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
-  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog) { }
+  isLoading = false;
+  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
@@ -64,7 +66,6 @@ export class HomeComponent implements OnInit {
     });
   }
   dropped(files: NgxFileDropEntry[]) {
-
     this.files = files;
     const droppedFile = files[0];
     // Is it a file?
@@ -79,14 +80,14 @@ export class HomeComponent implements OnInit {
       console.log(droppedFile.relativePath, fileEntry);
       console.log("error");
     }
-
   }
   download() {
+    this.isLoading = true;
     var zip = new JSZip();
     var doc = new jsPDF('landscape', 'px');
     zip.file("code.puml", this.generate.text);
     var svgstring = document.getElementById('svgTag').outerHTML;
-    svgstring = svgstring.replace("<defs>", `<defs>${this.getSVGStyle()}`)
+    svgstring = svgstring.replace("<defs>", `<defs>${this.util.getSVGStyle()}`)
     zip.file("diagram.svg", svgstring);
     zip.file("style.json", this.impoexpo.saveConfig(true));
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3, backgroundColor: '#fefefe' }, (data) => {
@@ -106,6 +107,7 @@ export class HomeComponent implements OnInit {
         .then(function (blob) {
           saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
         });
+      this.isLoading = false;
     }, 500);
 
   }
@@ -165,117 +167,9 @@ export class HomeComponent implements OnInit {
       this.generate.halfwayDoneProcessing = true;
       this.impoexpo.loadCode(file)
     }
-    // var entries = this.zipservice.getEntries(file);
-    // entries.subscribe(data => {
-    //   console.log("data", data);
-    //   data.forEach(entry => {
-    //     console.log("entry", entry);
-    //     if (entry.filename == 'code.puml') {
-    //       var newdata = this.zipservice.getData(entry);
-    //       newdata.data.subscribe(blob => {
-    //         this.generate.loadCode(blob)
-    //       })
-    //     }
-    //     if (entry.filename == 'style.json') {
-    //       var newdata = this.zipservice.getData(entry);
-    //       newdata.data.subscribe(blob => {
-    //         this.generate.loadConfig(blob);
-    //       })
-    //     }
-    //   });
-    // })
   }
   fileChanged(event) {
     const file = event.target.files[0];
-    console.log('filechanged', file);
     this.loadFile(file);
-  }
-  getSVGStyle() {
-    return `<style>svg g ellipse,
-    svg g circle,
-    svg g rect {
-      stroke: var(--primary-color);
-      stroke-width: var(--participant-stroke-width);
-      /* fill: url(#image); */
-      fill: var(--secondary-color);
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
-    }
-    
-    svg g path {
-      fill: var(--tertiary-color);
-      stroke: var(--quaternary-color);
-      stroke-width: 1.5;
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
-    }
-    
-    svg g polygon {
-      fill: var(--line-color);
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
-    }
-    
-    svg g line,
-    svg g polyline {
-      stroke: var(--line-color);
-      stroke-width: 1px;
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
-    }
-    
-    svg g text {
-      fill: var(--text-color);
-      font-family: var(--font-stack), "Tahoma";
-      font-size: 14;
-    }
-    
-    svg g line.dashed {
-      stroke-dasharray: 5, 5;
-      animation: dash 1s infinite;
-    }
-    
-    svg g line.dotted {
-      stroke-dasharray: 2, 2;
-      animation: dash 1s infinite;
-    }
-    
-    svg g line.skipped {
-      stroke-dasharray: 1, 4;
-      animation: dash 1s infinite;
-    }
-    
-    svg g line.labelDivider {
-      stroke-width: 2px;
-    }
-    
-    svg g .label {
-      stroke: var(--label-border-color);
-      fill: var(--label-background-color);
-    }
-    svg g .labelText {
-      fill: var(--label-text-color);
-    }
-    
-    svg g path.actor {
-      stroke: var(--primary-color);
-      stroke-width: 2;
-    }
-    
-    svg g path.note {
-      stroke: var(--quaternary-color);
-      fill: var(--tertiary-color);
-      stroke-width: 1;
-    }
-    
-    svg g .transparent {
-      fill: none;
-    }
-    
-    svg g path.database {
-      fill: var(--secondary-color);
-      stroke: var(--primary-color);
-      stroke-width: 1.5px;
-    }</style>`;
   }
 }

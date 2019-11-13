@@ -19,7 +19,7 @@ import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
     HomeComponent,
     TrustHtmlPipe,
     TextAreaComponent,
-    DownloadComponent
+    DownloadComponent,
   ],
   imports: [
     BrowserModule,

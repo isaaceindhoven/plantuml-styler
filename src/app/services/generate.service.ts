@@ -340,7 +340,7 @@ export class GenerateService {
       }
       else if (this.selectedTheme == 'Johan') {
         this.styling.addColorToStyle(
-          '#a6dee1',
+          '#90c9cc',
           '#a6dee1',
           '#32bdb8',
           '#32bdb8',
