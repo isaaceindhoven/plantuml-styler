@@ -90,7 +90,6 @@ export class ImportExportService {
 
   }
   onConfigReaderLoad(event) {
-    console.log("event", event);
     var json = JSON.parse(event.target.result);
     this.gen.color1 = json.color1;
     this.gen.color2 = json.color2;

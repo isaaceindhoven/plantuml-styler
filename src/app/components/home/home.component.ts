@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { HttpClient } from '@angular/common/http'
-declare var deflate: any
 import * as svg from 'save-svg-as-png'
-import { AutoNumberService } from 'src/app/services/autonumber.service'
 import { StylingService } from 'src/app/services/styling.service'
 import * as JSZip from 'jszip'
 import { saveAs } from 'file-saver';
-import { environment } from 'src/environments/environment.prod'
 import Swal from 'sweetalert2'
-import jsPDF from 'jspdf';
 import { ZipService } from 'src/app/services/zip.service'
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
 import { MatExpansionPanel, MatDialog } from '@angular/material'
@@ -76,7 +71,6 @@ export class HomeComponent implements OnInit {
       });
     } else {
       // It was a directory (empty directories are added, otherwise only files)
-      const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
