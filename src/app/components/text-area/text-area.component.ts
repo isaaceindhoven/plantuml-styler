@@ -12,6 +12,7 @@ export class TextAreaComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data: string, public generate: GenerateService) {}
 
   ngOnInit() {
+    document.getElementById('tA').innerText = this.generate.text
   }
 
 }

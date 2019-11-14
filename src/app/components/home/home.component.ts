@@ -77,14 +77,18 @@ export class HomeComponent implements OnInit {
     } else {
       // It was a directory (empty directories are added, otherwise only files)
       const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-      console.log(droppedFile.relativePath, fileEntry);
-      console.log("error");
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You uploaded a empty directory!',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
   }
   download() {
     this.isLoading = true;
     var zip = new JSZip();
-    var doc = new jsPDF('landscape', 'px');
     zip.file("code.puml", this.generate.text);
     var svgstring = document.getElementById('svgTag').outerHTML;
     svgstring = svgstring.replace("<defs>", `<defs>${this.util.getSVGStyle()}`)
@@ -94,6 +98,7 @@ export class HomeComponent implements OnInit {
       data = data.replace('data:image/png;base64,', '')
       zip.file("diagram.png", data, { base64: true });
     });
+    // var doc = new jsPDF('landscape', 'px');
     // svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 0.5, scale: 3 }, (data) => {
     //   doc.addImage(data, 'PNG', 0, 0, Number.parseFloat(document.getElementById('svgTag').getAttribute('width')) / 2, Number.parseFloat(document.getElementById('svgTag').getAttribute('height')) / 2);
     //   doc.save('diagram.pdf');
@@ -121,39 +126,63 @@ export class HomeComponent implements OnInit {
     if (file.type == 'application/zip') {
       var entries = this.zipservice.getEntries(file);
       entries.subscribe(data => {
+        var correctFile = false;
         data.forEach(entry => {
           if (entry.filename == 'code.puml') {
+            correctFile = true;
             var newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadCode(blob)
             })
           }
           if (entry.filename == 'style.json') {
+            correctFile = true;
             var newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadConfig(blob);
             })
           }
         });
+        if (!correctFile) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'This zip contains no correct file types.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
       })
     }
     else if (file.type == 'application/x-zip-compressed') {
       var entries = this.zipservice.getEntries(file);
       entries.subscribe(data => {
+        var correctFile = false;
         data.forEach(entry => {
           if (entry.filename == 'code.puml') {
+            correctFile = true;
             var newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadCode(blob)
             })
           }
           if (entry.filename == 'style.json') {
+            correctFile = true;
             var newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadConfig(blob);
             })
           }
         });
+        if (!correctFile) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'This zip contains no correct file types.',
+            showConfirmButton: false,
+            timer: 1500
+          })
+        }
       })
     } else if (file.type == 'application/json') {
       this.generate.halfwayDoneProcessing = true;
@@ -166,6 +195,15 @@ export class HomeComponent implements OnInit {
     else if (file.type == 'text/plain') {
       this.generate.halfwayDoneProcessing = true;
       this.impoexpo.loadCode(file)
+    }
+    else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'This file type is not supported.',
+        showConfirmButton: false,
+        timer: 1500
+      })
     }
   }
   fileChanged(event) {

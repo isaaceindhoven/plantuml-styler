@@ -103,8 +103,8 @@ export class GenerateService {
     this.styling.findNamesInText(oDOM);
     this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
     this.isThemed ?
-      (this.themedHiddenNotes ? this.HideNotes(oDOM) : this.ShowNotes(oDOM)) :
-      (this.hiddenNotes ? this.HideNotes(oDOM) : this.ShowNotes(oDOM));
+      (this.themedHiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM)) :
+      (this.hiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM));
     this.setColors(oDOM);
     this.addListeners(oDOM);
     this.setAutoNumberLabel(oDOM);
@@ -123,7 +123,6 @@ export class GenerateService {
     this.svg = str;
   }
   changeText(oDOM, text: string) {
-    this.text = text;
     this.styling.getActors(text);
     if (this.isThemed) {
       text = this.utility.replaceAll(text, 'Actor', 'actor');
@@ -259,9 +258,6 @@ export class GenerateService {
     });
   }
   hideNotes(oDOM) {
-    if (oDOM == null) {
-      oDOM = document;
-    }
     this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
       if (element.getAttribute('class') == null) {
         element.setAttribute('display', 'none');
@@ -281,32 +277,29 @@ export class GenerateService {
       }
     });
   }
-  showNotes(oDOM) {
-    // if (oDOM == null) {
-    oDOM = document;
-    // }
-    var notes: any = oDOM.getElementsByName('note')
+  showNotes() {
+    var notes: any = document.getElementsByName('note')
     var list = Array.from(notes);
     list.forEach((element: SVGRectElement) => {
       element.setAttribute('display', '');
     });
   }
-  ShowNotes(oDOM) {
-    this.showNotes(oDOM);
+  ShowNotes() {
+    this.showNotes();
   }
   HideNotes(oDOM) {
     if (this.isThemed) {
       if (!this.themedHiddenNotes) {
         this.hideNotes(oDOM);
       } else {
-        this.showNotes(oDOM);
+        this.showNotes();
       }
     }
     else {
       if (!this.hiddenNotes) {
         this.hideNotes(oDOM);
       } else {
-        this.showNotes(oDOM);
+        this.showNotes();
       }
     }
   }
@@ -343,8 +336,8 @@ export class GenerateService {
           '#90c9cc',
           '#a6dee1',
           '#32bdb8',
-          '#32bdb8',
-          '#737373',
+          '#208f8b',
+          '#242424',
           '#737373',
           '#32bdb8',
           '#32bdb8',
@@ -401,13 +394,13 @@ export class GenerateService {
   }
   addListenersTo(element) {
     element.addEventListener('mouseover', () => {
-      this.showNotes(null);
+      this.showNotes();
     });
     element.addEventListener('mouseenter', () => {
-      this.showNotes(null);
+      this.showNotes();
     });
     element.addEventListener('mouseleave', () => {
-      this.hideNotes(null);
+      this.hideNotes(document);
     })
   }
   setAutoNumberLabel(oDOM) {

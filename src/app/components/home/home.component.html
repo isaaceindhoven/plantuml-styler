@@ -168,9 +168,9 @@
                                 [(ngModel)]="generate.lineThickness" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
                         <section class="example-section">
-                            <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
+                            <mat-slide-toggle [disabled]="!generate.text.includes('note ')" *ngIf="generate.selectedType == 'Sequence'" color="primary"
                                 class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                (change)="generate.hideNotes(null);generate.generateSVG(tA.value);">
+                                (change)="generate.generateSVG(tA.value);">
                                 Notes
                             </mat-slide-toggle>
                             <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
@@ -181,7 +181,7 @@
                             <br *ngIf="generate.selectedType == 'Sequence'">
                             <mat-slide-toggle *ngIf="generate.selectedType == 'Sequence'" color="primary"
                                 class="example-margin" [(ngModel)]="generate.hiddenFootnotes"
-                                (change)="generate.generateSVG(tA.value)">Footnotes
+                                (change)="generate.generateSVG(tA.value)">Footboxes
                             </mat-slide-toggle>
                             <br>
                             <mat-slide-toggle color="primary" class="example-margin"
