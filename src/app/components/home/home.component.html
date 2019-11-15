@@ -1,7 +1,7 @@
 <div fxLayout="row " fxLayout.xs="column" fxLayoutWrap fxLayoutGap="0.5%" fxLayoutAlign="left stretch"
     fxLayoutAlign.xs="center" class="locationMiddle">
     <ng-container>
-        <mat-card class="card">
+        <mat-card id="appCard" class="card">
             <mat-card-header>
                 <div mat-card-avatar class="example-header-image"></div>
                 <mat-card-title>Style UML</mat-card-title>
@@ -16,9 +16,9 @@
                                 Text
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <mat-form-field style="width: 100%">
-                            <textarea [(ngModel)]="generate.text" class="coding" id="tA" #tA matInput
-                                style="width: 100%" rows="10" (keyup)="generate.generateSVG(tA.value)"
+                        <mat-form-field>
+                            <textarea [(ngModel)]="generate.text" class="coding" id="tA" #tA matInput rows="10"
+                                (keyup)="generate.generateSVG(tA.value)"
                                 placeholder="Plant UML Code">Bob->Alice : hello</textarea>
                         </mat-form-field>
                         <a target="_blank"
@@ -30,15 +30,21 @@
                                 </i>
                             </button>
                         </a>
-                        <button style="float: right;" (click)="openTextDialog()"
+                        <button *ngIf="!isLarge" style="float: right;" (click)="openTextDialog()"
                             matTooltip="Enlarge textarea for easier coding" mat-icon-button color="primary">
                             <i class="material-icons">
                                 zoom_out_map
                             </i>
                         </button>
+                        <button *ngIf="isLarge" style="float: right;" (click)="openTextDialog()"
+                            matTooltip="Reduce textarea for easier styling" mat-icon-button color="primary">
+                            <i *ngIf="isLarge" class="material-icons">
+                                arrow_back
+                            </i>
+                        </button>
                     </mat-expansion-panel>
                     <!--Import-->
-                    <mat-expansion-panel [(expanded)]="isOpen">
+                    <mat-expansion-panel (click)="reduceTextarea()" [(expanded)]="isOpen">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="importAccordion">
                                 Import
@@ -55,7 +61,7 @@
                             (change)="fileChanged($event)" value="Json">
                     </mat-expansion-panel>
                     <!--Themes-->
-                    <mat-expansion-panel>
+                    <mat-expansion-panel (click)="reduceTextarea()">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="themesAccordion">
                                 Themes
@@ -72,7 +78,7 @@
                                 (change)="generate.generateSVG(tA.value);">No theme
                             </mat-slide-toggle>
                             <br><br>
-                            <mat-form-field>
+                            <mat-form-field style="width:70%;">
                                 <mat-label>Theme</mat-label>
                                 <mat-select #selecttheme [disabled]="!generate.isThemed" id="selecttheme"
                                     [(value)]="generate.selectedTheme"
@@ -88,7 +94,7 @@
                         </span>
                     </mat-expansion-panel>
                     <!--Styling-->
-                    <mat-expansion-panel [disabled]="generate.isThemed">
+                    <mat-expansion-panel (click)="reduceTextarea()" [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="stylingAccordion">
                                 Styling
@@ -196,7 +202,7 @@
                             value="Image">
                     </mat-expansion-panel>
                     <!--Colors-->
-                    <mat-expansion-panel [disabled]="generate.isThemed">
+                    <mat-expansion-panel (click)="reduceTextarea()" [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="colorsAccordion">
                                 Colors
@@ -356,7 +362,7 @@
                         </table>
                     </mat-expansion-panel>
                     <!--Fonts-->
-                    <mat-expansion-panel [disabled]="generate.isThemed">
+                    <mat-expansion-panel (click)="reduceTextarea()" [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="fontsAccordion">
                                 Fonts

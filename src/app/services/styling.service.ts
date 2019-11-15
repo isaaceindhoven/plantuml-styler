@@ -92,8 +92,9 @@ export class StylingService {
       image.setAttributeNS(null, 'y', (element.previousSibling as SVGCircleElement).getAttribute('cy'));
       image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'assets/customer.png');
       this.oldActorElements.push(element.previousSibling, element);
+      (element.parentNode).insertBefore(image, element.previousSibling.previousSibling);
       (element.previousSibling as SVGCircleElement).replaceWith();
-      element.replaceWith(image)
+      (element).replaceWith();
     })
   }
   toImageNode(oDOM) {

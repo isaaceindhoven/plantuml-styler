@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
   isLoading = false;
+  isLarge = false;
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
   ngOnInit() {
     window.addEventListener("dragover", e => {
@@ -51,14 +52,28 @@ export class HomeComponent implements OnInit {
     this.generate.color8 = '#fefece'
     this.generate.color9 = '#000000'
   }
+  reduceTextarea() {
+    document.getElementById('tA').style.height = '150px';
+    document.getElementById('appCard').style.width = '360px';
+    this.isLarge = false;
+  }
   openTextDialog() {
-    this.dialog.open(TextAreaComponent, {
-      height: '90%',
-      width: '90%',
-      data: {
-        text: this.generate.text
-      }
-    });
+    if (document.getElementById('appCard').style.width != '1000px') {
+      document.getElementById('appCard').style.width = '1000px';
+      document.getElementById('tA').style.height = '450px';
+      this.isLarge = true;
+    }
+    else {
+      this.reduceTextarea();
+    }
+
+    // this.dialog.open(TextAreaComponent, {
+    //   height: '90%',
+    //   width: '90%',
+    //   data: {
+    //     text: this.generate.text
+    //   }
+    // });
   }
   editTheme() {
     this.generate.isThemed = false;

@@ -423,6 +423,9 @@ export class GenerateService {
       } else if (this.themedNumber == 'Rounded') {
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberRounded(oDOM);
+      } else if (this.themedNumber == 'Default') {
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberDefault(oDOM);
       }
     }
     else {
@@ -444,6 +447,9 @@ export class GenerateService {
       } else if (this.selectedNumber == 'Rounded') {
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberRounded(oDOM);
+      } else if (this.selectedNumber == 'Default') {
+        this.styling.clearLabels(oDOM);
+        this.autonumbering.setAutonumberDefault(oDOM);
       }
     }
   }
