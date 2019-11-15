@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GenerateService } from './generate.service';
 
-
 @Injectable({
   providedIn: 'root'
 })

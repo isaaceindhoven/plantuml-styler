@@ -82,6 +82,8 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <button style="float: right;" (click)="editTheme()" mat-mini-fab color="primary"><i
+                                    class="material-icons">edit</i></button>
                             <br>
                         </span>
                     </mat-expansion-panel>
@@ -168,9 +170,9 @@
                                 [(ngModel)]="generate.lineThickness" (change)="generate.generateSVG(tA.value)">
                         </mat-form-field>
                         <section class="example-section">
-                            <mat-slide-toggle [disabled]="!generate.text.includes('note ')" *ngIf="generate.selectedType == 'Sequence'" color="primary"
-                                class="example-margin" [(ngModel)]="generate.hiddenNotes"
-                                (change)="generate.generateSVG(tA.value);">
+                            <mat-slide-toggle [disabled]="!generate.text.includes('note ')"
+                                *ngIf="generate.selectedType == 'Sequence'" color="primary" class="example-margin"
+                                [(ngModel)]="generate.hiddenNotes" (change)="generate.generateSVG(tA.value);">
                                 Notes
                             </mat-slide-toggle>
                             <mat-slide-toggle *ngIf="generate.selectedType == 'Usecase'" color="primary"
@@ -391,6 +393,10 @@
                         style="margin-left: 9px;">Export</span><i
                         style="float: right; margin-top: 6px; color: rgb(129, 126, 126);"
                         class="material-icons">get_app</i></button>
+                <!-- <button mat-raised-button class="mat-expansion-panel-header accordionbtn" (click)="clipboard()"><span
+                        style="margin-left: 9px;">Copy to clipboard</span><i
+                        style="float: right; margin-top: 6px; color: rgb(129, 126, 126);"
+                        class="material-icons">file_copy</i></button> -->
                 <br>
                 <br>
                 <mat-spinner *ngIf="isLoading" style="position: relative; left: 40%;"></mat-spinner>

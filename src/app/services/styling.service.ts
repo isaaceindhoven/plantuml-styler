@@ -9,6 +9,46 @@ export class StylingService {
   actorlist: string[] = [];
   oldActorElements: any[] = [];
   image;
+  PlantUMLStyle = [
+    '#a80036',
+    '#fefece',
+    '#fbfb77',
+    '#3a3a3a',
+    '#000000',
+    '#a80036',
+    '#a80036',
+    '#fefece',
+    '#000000',]
+  IsaacStyle = [
+    '#cbc7c7',
+    '#ffffff',
+    '#f0eded',
+    '#cbc7c7',
+    '#737070',
+    '#009ddc',
+    '#cbc7c7',
+    '#ffffff',
+    '#009ddc',]
+  JohanStyle = [
+    '#90c9cc',
+    '#a6dee1',
+    '#32bdb8',
+    '#208f8b',
+    '#242424',
+    '#737373',
+    '#32bdb8',
+    '#32bdb8',
+    '#ffffff',]
+  GraytoneStyle = [
+    '#bfbcbc',
+    '#ffffff',
+    '#bfbcbc',
+    '#3a3a3a',
+    '#484848',
+    '#bfbcbc',
+    '#bfbcbc',
+    '#ffffff',
+    '#707070',]
   getTagList(oDOM, type): Element[] {
     return Array.from(oDOM.getElementsByTagName(type));
   }

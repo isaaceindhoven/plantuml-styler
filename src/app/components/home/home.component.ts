@@ -60,6 +60,68 @@ export class HomeComponent implements OnInit {
       }
     });
   }
+  editTheme() {
+    this.generate.isThemed = false;
+    this.generate.selectedBreak = this.generate.themedBreak
+    this.generate.selectedNumber = this.generate.themedNumber
+    this.generate.selectedShape = this.generate.themedShape
+    this.generate.selectedActor = this.generate.themedActor
+    this.generate.selectedFont = this.generate.themedFont
+    this.generate.hiddenFootnotes = this.generate.themedHiddenFootnotes
+    this.generate.hiddenShadows = this.generate.themedHiddenShadows
+    this.generate.participantfontsize = this.generate.themedParticipantfontsize
+    this.generate.sequencetextsize = this.generate.themedSequencetextsize
+    this.generate.participantstroke = this.generate.themedParticipantstroke
+    switch (this.generate.selectedTheme) {
+      case 'PlantUML':
+        this.generate.color1 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.color2 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.color3 = this.stylingservice.PlantUMLStyle[2];
+        this.generate.color4 = this.stylingservice.PlantUMLStyle[3];
+        this.generate.color5 = this.stylingservice.PlantUMLStyle[4];
+        this.generate.color6 = this.stylingservice.PlantUMLStyle[5];
+        this.generate.color7 = this.stylingservice.PlantUMLStyle[6];
+        this.generate.color8 = this.stylingservice.PlantUMLStyle[7];
+        this.generate.color9 = this.stylingservice.PlantUMLStyle[8];
+        break;
+      case 'ISAAC':
+        this.generate.color1 = this.stylingservice.IsaacStyle[0];
+        this.generate.color2 = this.stylingservice.IsaacStyle[1];
+        this.generate.color3 = this.stylingservice.IsaacStyle[2];
+        this.generate.color4 = this.stylingservice.IsaacStyle[3];
+        this.generate.color5 = this.stylingservice.IsaacStyle[4];
+        this.generate.color6 = this.stylingservice.IsaacStyle[5];
+        this.generate.color7 = this.stylingservice.IsaacStyle[6];
+        this.generate.color8 = this.stylingservice.IsaacStyle[7];
+        this.generate.color9 = this.stylingservice.IsaacStyle[8];
+        break;
+      case 'Johan':
+        this.generate.color1 = this.stylingservice.JohanStyle[0];
+        this.generate.color2 = this.stylingservice.JohanStyle[1];
+        this.generate.color3 = this.stylingservice.JohanStyle[2];
+        this.generate.color4 = this.stylingservice.JohanStyle[3];
+        this.generate.color5 = this.stylingservice.JohanStyle[4];
+        this.generate.color6 = this.stylingservice.JohanStyle[5];
+        this.generate.color7 = this.stylingservice.JohanStyle[6];
+        this.generate.color8 = this.stylingservice.JohanStyle[7];
+        this.generate.color9 = this.stylingservice.JohanStyle[8];
+        break;
+      case 'Graytone':
+        this.generate.color1 = this.stylingservice.GraytoneStyle[0];
+        this.generate.color2 = this.stylingservice.GraytoneStyle[1];
+        this.generate.color3 = this.stylingservice.GraytoneStyle[2];
+        this.generate.color4 = this.stylingservice.GraytoneStyle[3];
+        this.generate.color5 = this.stylingservice.GraytoneStyle[4];
+        this.generate.color6 = this.stylingservice.GraytoneStyle[5];
+        this.generate.color7 = this.stylingservice.GraytoneStyle[6];
+        this.generate.color8 = this.stylingservice.GraytoneStyle[7];
+        this.generate.color9 = this.stylingservice.GraytoneStyle[8];
+        break;
+      default:
+        break;
+    }
+
+  }
   dropped(files: NgxFileDropEntry[]) {
     this.files = files;
     const droppedFile = files[0];

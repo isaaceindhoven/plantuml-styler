@@ -307,54 +307,54 @@ export class GenerateService {
     if (this.isThemed) {
       if (this.selectedTheme == 'PlantUML') {
         this.styling.addColorToStyle(
-          '#a80036',
-          '#fefece',
-          '#fbfb77',
-          '#3a3a3a',
-          '#000000',
-          '#a80036',
-          '#a80036',
-          '#fefece',
-          '#000000',
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[2],
+          this.styling.PlantUMLStyle[3],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[5],
+          this.styling.PlantUMLStyle[6],
+          this.styling.PlantUMLStyle[7],
+          this.styling.PlantUMLStyle[8],
           oDOM)
       }
       else if (this.selectedTheme == 'ISAAC') {
         this.styling.addColorToStyle(
-          '#cbc7c7',
-          '#ffffff',
-          '#f0eded',
-          '#cbc7c7',
-          '#737070',
-          '#009ddc',
-          '#cbc7c7',
-          '#ffffff',
-          '#009ddc',
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[2],
+          this.styling.IsaacStyle[3],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[5],
+          this.styling.IsaacStyle[6],
+          this.styling.IsaacStyle[7],
+          this.styling.IsaacStyle[8],
           oDOM)
       }
       else if (this.selectedTheme == 'Johan') {
         this.styling.addColorToStyle(
-          '#90c9cc',
-          '#a6dee1',
-          '#32bdb8',
-          '#208f8b',
-          '#242424',
-          '#737373',
-          '#32bdb8',
-          '#32bdb8',
-          '#ffffff',
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[2],
+          this.styling.JohanStyle[3],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[5],
+          this.styling.JohanStyle[6],
+          this.styling.JohanStyle[7],
+          this.styling.JohanStyle[8],
           oDOM)
       }
       else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
-          '#bfbcbc',
-          '#ffffff',
-          '#bfbcbc',
-          '#3a3a3a',
-          '#484848',
-          '#bfbcbc',
-          '#bfbcbc',
-          '#ffffff',
-          '#707070',
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[2],
+          this.styling.GraytoneStyle[3],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[5],
+          this.styling.GraytoneStyle[6],
+          this.styling.GraytoneStyle[7],
+          this.styling.GraytoneStyle[8],
           oDOM)
       }
     } else {
