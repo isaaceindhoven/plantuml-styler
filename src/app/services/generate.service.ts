@@ -10,24 +10,23 @@ import { UtilityService } from './utility.service';
 })
 export class GenerateService {
 
-
   constructor(private utility: UtilityService, private styling: StylingService, private http: HttpClient, private autonumbering: AutoNumberService) { }
-
   /* #region variables   */
   timeoutId;
   isDoneProcessing: boolean = false;
   halfwayDoneProcessing: boolean = false;
   refresh: boolean = false;
   canRefresh: boolean = true;
+  isLarge = false;
   svg: any
   rectangled: any;
   png: any
   text: any = "Bob->Alice : hello"
   hiddenNotes: boolean = true;
-  hiddenFootnotes: boolean = true;
+  footnotes: boolean = true;
   hiddenShadows: boolean = true;
   themedHiddenNotes: boolean = true;
-  themedHiddenFootnotes: boolean = true;
+  themedFootnotes: boolean = true;
   themedHiddenShadows: boolean = true;
   isThemed: boolean = false;
   textImages: boolean = false;
@@ -47,7 +46,7 @@ export class GenerateService {
   actors = ['Default', 'Modern'];
   breaks = ['Default', 'Squiggly'];
   fonts = ['Tahoma'];
-  themes = ['PlantUML', 'ISAAC', 'Johan', 'Graytone'];
+  themes = ['PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
   color1 = '';
   color2 = '';
   color3 = '';
@@ -57,6 +56,24 @@ export class GenerateService {
   color7 = '';
   color8 = '';
   color9 = '';
+  colorParticipantBorder1 = '';
+  colorParticipantBorder2 = '';
+  colorParticipantBorder3 = '';
+  colorParticipantBorder4 = '';
+  colorParticipantBorder5 = '';
+  colorParticipantBorder6 = '';
+  colorParticipantBorder7 = '';
+  colorParticipantBorder8 = '';
+  colorParticipantBorder9 = '';
+  colorParticipantBackground1 = '';
+  colorParticipantBackground2 = '';
+  colorParticipantBackground3 = '';
+  colorParticipantBackground4 = '';
+  colorParticipantBackground5 = '';
+  colorParticipantBackground6 = '';
+  colorParticipantBackground7 = '';
+  colorParticipantBackground8 = '';
+  colorParticipantBackground9 = '';
   selectedSize = '14'
   selectedTheme = 'PlantUML';
   selectedType = 'Sequence';
@@ -72,6 +89,8 @@ export class GenerateService {
   themedShape = 'Rectangle';
   themedNumber = 'None';
   img;
+  multi = false;
+  multicount = 1;
   /* #endregion */
 
   async generateSVG(text: string) {
@@ -100,7 +119,6 @@ export class GenerateService {
   styleSVG(oDOM) {
     //removing all the styling PlantUML puts on it
     this.styling.removeStyling(oDOM);
-    this.styling.findNamesInText(oDOM);
     this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
     this.isThemed ?
       (this.themedHiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM)) :
@@ -114,19 +132,27 @@ export class GenerateService {
     this.isThemed ?
       (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null) :
       (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
+    this.findNamesInText(oDOM);
     this.setFont(oDOM);
     this.setStroke(oDOM);
     this.setLineBorders(oDOM);
     this.triggerResize(oDOM);
+    if (this.multi) {
+      this.multicount = this.setMultiParticipants(oDOM);
+    }
     var s = new XMLSerializer();
     var str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
+    setTimeout(() => {
+      if (this.isLarge)
+        this.styling.setDiagramCardsize();
+    });
   }
   changeText(oDOM, text: string) {
     this.styling.getActors(text);
     if (this.isThemed) {
       text = this.utility.replaceAll(text, 'Actor', 'actor');
-      if (!this.themedHiddenFootnotes)
+      if (!this.themedFootnotes)
         text = 'hide footbox \n' + text
       if (!this.themedHiddenShadows)
         text = 'skinparam Shadowing false \n' + text
@@ -173,7 +199,7 @@ export class GenerateService {
     }
     else {
       text = this.utility.replaceAll(text, 'Actor', 'actor')
-      if (!this.hiddenFootnotes)
+      if (!this.footnotes)
         text = 'hide footbox \n' + text
       if (!this.hiddenShadows)
         text = 'skinparam Shadowing false \n' + text
@@ -316,7 +342,25 @@ export class GenerateService {
           this.styling.PlantUMLStyle[6],
           this.styling.PlantUMLStyle[7],
           this.styling.PlantUMLStyle[8],
-          oDOM)
+          oDOM,
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[0],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[1])
       }
       else if (this.selectedTheme == 'ISAAC') {
         this.styling.addColorToStyle(
@@ -329,7 +373,25 @@ export class GenerateService {
           this.styling.IsaacStyle[6],
           this.styling.IsaacStyle[7],
           this.styling.IsaacStyle[8],
-          oDOM)
+          oDOM,
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[0],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[1])
       }
       else if (this.selectedTheme == 'Johan') {
         this.styling.addColorToStyle(
@@ -342,7 +404,25 @@ export class GenerateService {
           this.styling.JohanStyle[6],
           this.styling.JohanStyle[7],
           this.styling.JohanStyle[8],
-          oDOM)
+          oDOM,
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[0],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[1])
       }
       else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
@@ -355,7 +435,56 @@ export class GenerateService {
           this.styling.GraytoneStyle[6],
           this.styling.GraytoneStyle[7],
           this.styling.GraytoneStyle[8],
-          oDOM)
+          oDOM,
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[0],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[1])
+      }
+      else if (this.selectedTheme == 'Blackwhite') {
+        this.styling.addColorToStyle(
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[2],
+          this.styling.BlackWhiteStyle[3],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[5],
+          this.styling.BlackWhiteStyle[6],
+          this.styling.BlackWhiteStyle[7],
+          this.styling.BlackWhiteStyle[8],
+          oDOM,
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[0],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[1])
       }
     } else {
       this.styling.addColorToStyle(
@@ -368,7 +497,25 @@ export class GenerateService {
         this.color7,
         this.color8,
         this.color9,
-        oDOM)
+        oDOM,
+        this.colorParticipantBorder1,
+        this.colorParticipantBorder2,
+        this.colorParticipantBorder3,
+        this.colorParticipantBorder4,
+        this.colorParticipantBorder5,
+        this.colorParticipantBorder6,
+        this.colorParticipantBorder7,
+        this.colorParticipantBorder8,
+        this.colorParticipantBorder9,
+        this.colorParticipantBackground1,
+        this.colorParticipantBackground2,
+        this.colorParticipantBackground3,
+        this.colorParticipantBackground4,
+        this.colorParticipantBackground5,
+        this.colorParticipantBackground6,
+        this.colorParticipantBackground7,
+        this.colorParticipantBackground8,
+        this.colorParticipantBackground9)
 
     }
   }
@@ -519,7 +666,7 @@ export class GenerateService {
     this.themedShape = 'Rectangle';
     this.themedActor = 'Modern';
     this.themedFont = 'Open Sans'
-    this.themedHiddenFootnotes = false;
+    this.themedFootnotes = false;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 16;
     this.themedSequencetextsize = 13;
@@ -531,7 +678,7 @@ export class GenerateService {
     this.themedShape = 'Rectangle';
     this.themedActor = 'Modern';
     this.themedFont = 'Muli'
-    this.themedHiddenFootnotes = false;
+    this.themedFootnotes = false;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
@@ -543,12 +690,24 @@ export class GenerateService {
     this.themedShape = 'Rectangle';
     this.themedActor = 'Modern';
     this.themedFont = 'Open Sans'
-    this.themedHiddenFootnotes = false;
+    this.themedFootnotes = false;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 2;
 
+  }
+  BlackWhiteStyle() {
+    this.themedBreak = 'Squiggly';
+    this.themedNumber = 'Default';
+    this.themedShape = 'Rounded';
+    this.themedActor = 'Modern';
+    this.themedFont = 'Open Sans'
+    this.themedFootnotes = true;
+    this.themedHiddenShadows = false;
+    this.themedParticipantfontsize = 18;
+    this.themedSequencetextsize = 13;
+    this.themedParticipantstroke = 1.5;
   }
   plantumlStyle() {
     this.themedBreak = 'Default';
@@ -556,7 +715,7 @@ export class GenerateService {
     this.themedShape = 'Rectangle';
     this.themedActor = 'Default';
     this.themedFont = 'Roboto'
-    this.themedHiddenFootnotes = true;
+    this.themedFootnotes = true;
     this.themedHiddenShadows = true;
     this.themedParticipantfontsize = 13;
     this.themedSequencetextsize = 13;
@@ -576,6 +735,133 @@ export class GenerateService {
       else if (this.selectedTheme == 'Graytone') {
         this.GrayToneStyle();
       }
+      else if (this.selectedTheme == 'Blackwhite') {
+        this.BlackWhiteStyle();
+      }
     }
+  }
+  findNamesInText(oDOM) {
+    var last;
+    this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
+      if (element.previousSibling) {
+        if (element.previousSibling.nodeName == 'rect') {
+          if ((element.previousSibling as SVGRectElement).getAttribute('rx')) {
+            if (!(element.previousSibling as SVGRectElement).getAttribute('class')) {
+              if (this.isThemed) {
+                if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
+                  (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
+                }
+              } else {
+                if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+                  (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
+                }
+              }
+            }
+          }
+        } else if (element.previousSibling.nodeName == 'image') {
+          if (this.isThemed) {
+            if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
+              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
+            }
+          } else {
+            if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
+            }
+          }
+        } else if (element.previousSibling.nodeName == 'ellipse') {
+          if (this.isThemed) {
+            if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
+              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
+            }
+          } else {
+            if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
+            }
+          }
+        } else if (element.previousSibling.nodeName == 'circle') {
+          if (this.isThemed) {
+            if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
+              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
+            }
+          } else {
+            if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
+            }
+          }
+        } else if (element.nextSibling.nodeName == 'ellipse') {
+          if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class')) {
+            if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class').includes('actor')) {
+              if (this.isThemed) {
+                if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
+                  (element.nextSibling as SVGImageElement).setAttribute('name', 'participantshape');
+                  (element.nextSibling as SVGImageElement).setAttribute('class', (element.nextSibling as SVGImageElement).getAttribute('class') + ' actorshape');
+                }
+              } else {
+                if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+                  (element.nextSibling as SVGImageElement).setAttribute('name', 'participantshape');
+                  (element.nextSibling as SVGImageElement).setAttribute('class', (element.nextSibling as SVGImageElement).getAttribute('class') + ' actorshape');
+                }
+              }
+            }
+          }
+        }
+      }
+      if (last) {
+        if (element.textContent == last.textContent) {
+          element.setAttribute('name', 'participant');
+          last.setAttribute('name', 'participant');
+        }
+        else {
+          last = element;
+        }
+      } else {
+        last = element;
+      }
+    });
+  }
+  setMultiParticipants(oDOM) {
+    var count = 1;
+    var half = false;
+    Array.from(oDOM.getElementsByName('participantshape')).forEach((element: SVGRectElement) => {
+      if (this.footnotes) {
+        if (element.getAttribute('class')) {
+          if (element.getAttribute('class').includes('actorshape')) {
+            if (half) {
+              (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+              (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+              half = false;
+              count++;
+            } else {
+              half = true;
+              (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+              (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+            }
+          }
+        } else {
+          if (half) {
+            (element as SVGRectElement).setAttribute('class', `participant${count}`)
+            half = false;
+            count++;
+          } else {
+            half = true;
+            (element as SVGRectElement).setAttribute('class', `participant${count}`)
+          }
+        }
+      } else {
+        if (element.getAttribute('class')) {
+          if (element.getAttribute('class').includes('actorshape')) {
+            (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+            (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+            count++;
+          }
+        }
+        else {
+          (element as SVGRectElement).setAttribute('class', `participant${count}`);
+          count++;
+        }
+      }
+    }
+    );
+    return count - 1;
   }
 }

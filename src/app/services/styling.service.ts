@@ -18,7 +18,7 @@ export class StylingService {
     '#a80036',
     '#a80036',
     '#fefece',
-    '#000000',]
+    '#000000',];
   IsaacStyle = [
     '#cbc7c7',
     '#ffffff',
@@ -28,7 +28,7 @@ export class StylingService {
     '#009ddc',
     '#cbc7c7',
     '#ffffff',
-    '#009ddc',]
+    '#009ddc',];
   JohanStyle = [
     '#90c9cc',
     '#a6dee1',
@@ -38,7 +38,7 @@ export class StylingService {
     '#737373',
     '#32bdb8',
     '#32bdb8',
-    '#ffffff',]
+    '#ffffff',];
   GraytoneStyle = [
     '#bfbcbc',
     '#ffffff',
@@ -48,7 +48,17 @@ export class StylingService {
     '#bfbcbc',
     '#bfbcbc',
     '#ffffff',
-    '#707070',]
+    '#707070',];
+  BlackWhiteStyle = [
+    '#121212',
+    '#ffffff',
+    '#ffffff',
+    '#121212',
+    '#121212',
+    '#121212',
+    '#121212',
+    '#ffffff',
+    '#121212',];
   getTagList(oDOM, type): Element[] {
     return Array.from(oDOM.getElementsByTagName(type));
   }
@@ -189,21 +199,11 @@ export class StylingService {
       }
     });
   }
-  findNamesInText(oDOM) {
-    var last;
-    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
-      if (last) {
-        if (element.textContent == last.textContent) {
-          element.setAttribute('name', 'participant');
-          last.setAttribute('name', 'participant');
-        }
-        else {
-          last = element;
-        }
-      } else {
-        last = element;
-      }
-    });
+  setDiagramCardsize() {
+    var width = Number.parseFloat((document.getElementById('svgTag') as HTMLElement).style.width.replace('px', ''));
+    if (width > 800) {
+      document.getElementById('scrollbar2').style.width = '800px';
+    }
   }
   removeTextFromParticipants(oDOM) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
@@ -253,7 +253,26 @@ export class StylingService {
       }
     }
   }
-  addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM) {
+  addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM,
+    colorParticipantBorder1?,
+    colorParticipantBorder2?,
+    colorParticipantBorder3?,
+    colorParticipantBorder4?,
+    colorParticipantBorder5?,
+    colorParticipantBorder6?,
+    colorParticipantBorder7?,
+    colorParticipantBorder8?,
+    colorParticipantBorder9?,
+    colorParticipantBackground1?,
+    colorParticipantBackground2?,
+    colorParticipantBackground3?,
+    colorParticipantBackground4?,
+    colorParticipantBackground5?,
+    colorParticipantBackground6?,
+    colorParticipantBackground7?,
+    colorParticipantBackground8?,
+    colorParticipantBackground9?,
+  ) {
     if (!oDOM) {
       oDOM = document;
     }
@@ -267,6 +286,26 @@ export class StylingService {
       oDOM.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
       oDOM.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
       oDOM.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+
+      oDOM.getElementById('svgTag').style.setProperty(`--participant1-border-color`, colorParticipantBorder1);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant2-border-color`, colorParticipantBorder2);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant3-border-color`, colorParticipantBorder3);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant4-border-color`, colorParticipantBorder4);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant5-border-color`, colorParticipantBorder5);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant6-border-color`, colorParticipantBorder6);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant7-border-color`, colorParticipantBorder7);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant8-border-color`, colorParticipantBorder8);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant9-border-color`, colorParticipantBorder9);
+
+      oDOM.getElementById('svgTag').style.setProperty(`--participant1-background-color`, colorParticipantBackground1);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant2-background-color`, colorParticipantBackground2);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant3-background-color`, colorParticipantBackground3);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant4-background-color`, colorParticipantBackground4);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant5-background-color`, colorParticipantBackground5);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant6-background-color`, colorParticipantBackground6);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant7-background-color`, colorParticipantBackground7);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant8-background-color`, colorParticipantBackground8);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant9-background-color`, colorParticipantBackground9);
     }
     if (document.getElementById('svgTag')) {
       document.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
@@ -278,6 +317,26 @@ export class StylingService {
       document.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
       document.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
       document.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+
+      document.getElementById('svgTag').style.setProperty(`--participant1-border-color`, colorParticipantBorder1);
+      document.getElementById('svgTag').style.setProperty(`--participant2-border-color`, colorParticipantBorder2);
+      document.getElementById('svgTag').style.setProperty(`--participant3-border-color`, colorParticipantBorder3);
+      document.getElementById('svgTag').style.setProperty(`--participant4-border-color`, colorParticipantBorder4);
+      document.getElementById('svgTag').style.setProperty(`--participant5-border-color`, colorParticipantBorder5);
+      document.getElementById('svgTag').style.setProperty(`--participant6-border-color`, colorParticipantBorder6);
+      document.getElementById('svgTag').style.setProperty(`--participant7-border-color`, colorParticipantBorder7);
+      document.getElementById('svgTag').style.setProperty(`--participant8-border-color`, colorParticipantBorder8);
+      document.getElementById('svgTag').style.setProperty(`--participant9-border-color`, colorParticipantBorder9);
+
+      document.getElementById('svgTag').style.setProperty(`--participant1-background-color`, colorParticipantBackground1);
+      document.getElementById('svgTag').style.setProperty(`--participant2-background-color`, colorParticipantBackground2);
+      document.getElementById('svgTag').style.setProperty(`--participant3-background-color`, colorParticipantBackground3);
+      document.getElementById('svgTag').style.setProperty(`--participant4-background-color`, colorParticipantBackground4);
+      document.getElementById('svgTag').style.setProperty(`--participant5-background-color`, colorParticipantBackground5);
+      document.getElementById('svgTag').style.setProperty(`--participant6-background-color`, colorParticipantBackground6);
+      document.getElementById('svgTag').style.setProperty(`--participant7-background-color`, colorParticipantBackground7);
+      document.getElementById('svgTag').style.setProperty(`--participant8-background-color`, colorParticipantBackground8);
+      document.getElementById('svgTag').style.setProperty(`--participant9-background-color`, colorParticipantBackground9);
     }
   }
   setNode(oDOM, type, textImages) {

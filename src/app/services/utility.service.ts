@@ -147,6 +147,44 @@ export class UtilityService {
       fill: var(--secondary-color);
       stroke: var(--primary-color);
       stroke-width: 1.5px;
-    }</style>`;
+    }</style>
+    
+    svg g .participant1 {
+      stroke: var(--participant1-border-color)!important;
+      fill: var(--participant1-background-color)!important;
+    }
+    svg g .participant2 {
+      stroke: var(--participant2-border-color)!important;
+      fill: var(--participant2-background-color)!important;
+    }
+    svg g .participant3 {
+      stroke: var(--participant3-border-color)!important;
+      fill: var(--participant3-background-color)!important;
+    }
+    svg g .participant4 {
+      stroke: var(--participant4-border-color)!important;
+      fill: var(--participant4-background-color)!important;
+    }
+    svg g .participant5 {
+      stroke: var(--participant5-border-color)!important;
+      fill: var(--participant5-background-color)!important;
+    }
+    svg g .participant6 {
+      stroke: var(--participant6-border-color)!important;
+      fill: var(--participant6-background-color)!important;
+    }
+    svg g .participant7 {
+      stroke: var(--participant7-border-color)!important;
+      fill: var(--participant7-background-color)!important;
+    }
+    svg g .participant8 {
+      stroke: var(--participant8-border-color)!important;
+      fill: var(--participant8-background-color)!important;
+    }
+    svg g .participant9 {
+      stroke: var(--participant9-border-color)!important;
+      fill: var(--participant9-background-color)!important;
+    }
+    `;
   }
 }

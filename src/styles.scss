@@ -3,7 +3,9 @@
 .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
   background-color: #009edc75;
 }
-.mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary{
+.mat-button.mat-primary,
+.mat-icon-button.mat-primary,
+.mat-stroked-button.mat-primary {
   color: #009ddc;
 }
 .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
@@ -43,6 +45,26 @@ $text-color: #000000;
   --label-border-color: #a80036;
   --label-background-color: #fefece;
   --label-text-color: #000000;
+  //////////////////////////////////////////////////////////////////////////////////////////////////
+  --participant1-border-color: #a80036;
+  --participant1-background-color: #fefece;
+  --participant2-border-color: #a80036;
+  --participant2-background-color: #fefece;
+  --participant3-border-color: #a80036;
+  --participant3-background-color: #fefece;
+  --participant4-border-color: #a80036;
+  --participant4-background-color: #fefece;
+  --participant5-border-color: #a80036;
+  --participant5-background-color: #fefece;
+  --participant6-border-color: #a80036;
+  --participant6-background-color: #fefece;
+  --participant7-border-color: #a80036;
+  --participant7-background-color: #fefece;
+  --participant8-border-color: #a80036;
+  --participant8-background-color: #fefece;
+  --participant9-border-color: #a80036;
+  --participant9-background-color: #fefece;
+  //////////////////////////////////////////////////////////////////////////////////////////////////
 }
 svg g ellipse,
 svg g circle,
@@ -130,4 +152,41 @@ svg g path.database {
   fill: var(--secondary-color);
   stroke: var(--primary-color);
   stroke-width: 1.5px;
+}
+
+svg g .participant1 {
+  stroke: var(--participant1-border-color)!important;
+  fill: var(--participant1-background-color)!important;
+}
+svg g .participant2 {
+  stroke: var(--participant2-border-color)!important;
+  fill: var(--participant2-background-color)!important;
+}
+svg g .participant3 {
+  stroke: var(--participant3-border-color)!important;
+  fill: var(--participant3-background-color)!important;
+}
+svg g .participant4 {
+  stroke: var(--participant4-border-color)!important;
+  fill: var(--participant4-background-color)!important;
+}
+svg g .participant5 {
+  stroke: var(--participant5-border-color)!important;
+  fill: var(--participant5-background-color)!important;
+}
+svg g .participant6 {
+  stroke: var(--participant6-border-color)!important;
+  fill: var(--participant6-background-color)!important;
+}
+svg g .participant7 {
+  stroke: var(--participant7-border-color)!important;
+  fill: var(--participant7-background-color)!important;
+}
+svg g .participant8 {
+  stroke: var(--participant8-border-color)!important;
+  fill: var(--participant8-background-color)!important;
+}
+svg g .participant9 {
+  stroke: var(--participant9-border-color)!important;
+  fill: var(--participant9-background-color)!important;
 }

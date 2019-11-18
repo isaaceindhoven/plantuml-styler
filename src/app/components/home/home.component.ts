@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
   isLoading = false;
-  isLarge = false;
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
   ngOnInit() {
     window.addEventListener("dragover", e => {
@@ -51,22 +50,43 @@ export class HomeComponent implements OnInit {
     this.generate.color7 = '#a80036'
     this.generate.color8 = '#fefece'
     this.generate.color9 = '#000000'
+
+    this.generate.colorParticipantBorder1 = '#a80036'
+    this.generate.colorParticipantBorder2 = '#a80036'
+    this.generate.colorParticipantBorder3 = '#a80036'
+    this.generate.colorParticipantBorder4 = '#a80036'
+    this.generate.colorParticipantBorder5 = '#a80036'
+    this.generate.colorParticipantBorder6 = '#a80036'
+    this.generate.colorParticipantBorder7 = '#a80036'
+    this.generate.colorParticipantBorder8 = '#a80036'
+    this.generate.colorParticipantBorder9 = '#a80036'
+
+    this.generate.colorParticipantBackground1 = '#fefece'
+    this.generate.colorParticipantBackground2 = '#fefece'
+    this.generate.colorParticipantBackground3 = '#fefece'
+    this.generate.colorParticipantBackground4 = '#fefece'
+    this.generate.colorParticipantBackground5 = '#fefece'
+    this.generate.colorParticipantBackground6 = '#fefece'
+    this.generate.colorParticipantBackground7 = '#fefece'
+    this.generate.colorParticipantBackground8 = '#fefece'
+    this.generate.colorParticipantBackground9 = '#fefece'
   }
   reduceTextarea() {
     document.getElementById('tA').style.height = '150px';
     document.getElementById('appCard').style.width = '360px';
-    this.isLarge = false;
+    document.getElementById('scrollbar2').style.width = null;
+    this.generate.isLarge = false;
   }
   openTextDialog() {
     if (document.getElementById('appCard').style.width != '1000px') {
       document.getElementById('appCard').style.width = '1000px';
       document.getElementById('tA').style.height = '450px';
-      this.isLarge = true;
+      this.stylingservice.setDiagramCardsize();
+      this.generate.isLarge = true;
     }
     else {
       this.reduceTextarea();
     }
-
     // this.dialog.open(TextAreaComponent, {
     //   height: '90%',
     //   width: '90%',
@@ -82,7 +102,7 @@ export class HomeComponent implements OnInit {
     this.generate.selectedShape = this.generate.themedShape
     this.generate.selectedActor = this.generate.themedActor
     this.generate.selectedFont = this.generate.themedFont
-    this.generate.hiddenFootnotes = this.generate.themedHiddenFootnotes
+    this.generate.footnotes = this.generate.themedFootnotes
     this.generate.hiddenShadows = this.generate.themedHiddenShadows
     this.generate.participantfontsize = this.generate.themedParticipantfontsize
     this.generate.sequencetextsize = this.generate.themedSequencetextsize
@@ -98,6 +118,24 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.PlantUMLStyle[6];
         this.generate.color8 = this.stylingservice.PlantUMLStyle[7];
         this.generate.color9 = this.stylingservice.PlantUMLStyle[8];
+        this.generate.colorParticipantBorder1 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder2 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder3 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder4 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder5 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder6 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder7 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder8 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBorder9 = this.stylingservice.PlantUMLStyle[0];
+        this.generate.colorParticipantBackground1 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground2 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground3 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground4 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground5 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground6 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground7 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground8 = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorParticipantBackground9 = this.stylingservice.PlantUMLStyle[1];
         break;
       case 'ISAAC':
         this.generate.color1 = this.stylingservice.IsaacStyle[0];
@@ -109,6 +147,24 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.IsaacStyle[6];
         this.generate.color8 = this.stylingservice.IsaacStyle[7];
         this.generate.color9 = this.stylingservice.IsaacStyle[8];
+        this.generate.colorParticipantBorder1 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder2 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder3 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder4 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder5 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder6 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder7 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder8 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBorder9 = this.stylingservice.IsaacStyle[0];
+        this.generate.colorParticipantBackground1 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground2 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground3 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground4 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground5 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground6 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground7 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground8 = this.stylingservice.IsaacStyle[1];
+        this.generate.colorParticipantBackground9 = this.stylingservice.IsaacStyle[1];
         break;
       case 'Johan':
         this.generate.color1 = this.stylingservice.JohanStyle[0];
@@ -120,6 +176,24 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.JohanStyle[6];
         this.generate.color8 = this.stylingservice.JohanStyle[7];
         this.generate.color9 = this.stylingservice.JohanStyle[8];
+        this.generate.colorParticipantBorder1 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder2 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder3 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder4 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder5 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder6 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder7 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder8 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBorder9 = this.stylingservice.JohanStyle[0];
+        this.generate.colorParticipantBackground1 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground2 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground3 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground4 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground5 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground6 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground7 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground8 = this.stylingservice.JohanStyle[1];
+        this.generate.colorParticipantBackground9 = this.stylingservice.JohanStyle[1];
         break;
       case 'Graytone':
         this.generate.color1 = this.stylingservice.GraytoneStyle[0];
@@ -131,6 +205,55 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.GraytoneStyle[6];
         this.generate.color8 = this.stylingservice.GraytoneStyle[7];
         this.generate.color9 = this.stylingservice.GraytoneStyle[8];
+        this.generate.colorParticipantBorder1 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder2 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder3 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder4 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder5 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder6 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder7 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder8 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBorder9 = this.stylingservice.GraytoneStyle[0];
+        this.generate.colorParticipantBackground1 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground2 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground3 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground4 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground5 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground6 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground7 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground8 = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorParticipantBackground9 = this.stylingservice.GraytoneStyle[1];
+        break;
+      case 'Blackwhite':
+        this.generate.color1 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.color2 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.color3 = this.stylingservice.BlackWhiteStyle[2];
+        this.generate.color4 = this.stylingservice.BlackWhiteStyle[3];
+        this.generate.color5 = this.stylingservice.BlackWhiteStyle[4];
+        this.generate.color6 = this.stylingservice.BlackWhiteStyle[5];
+        this.generate.color7 = this.stylingservice.BlackWhiteStyle[6];
+        this.generate.color8 = this.stylingservice.BlackWhiteStyle[7];
+        this.generate.color9 = this.stylingservice.BlackWhiteStyle[8];
+
+        this.generate.colorParticipantBorder1 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder2 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder3 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder4 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder5 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder6 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder7 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder8 = this.stylingservice.BlackWhiteStyle[0];
+        this.generate.colorParticipantBorder9 = this.stylingservice.BlackWhiteStyle[0];
+
+        this.generate.colorParticipantBackground1 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground2 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground3 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground4 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground5 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground6 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground7 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground8 = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorParticipantBackground9 = this.stylingservice.BlackWhiteStyle[1];
         break;
       default:
         break;
