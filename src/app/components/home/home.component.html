@@ -16,6 +16,8 @@
                                 Text
                             </mat-panel-title>
                         </mat-expansion-panel-header>
+                        
+                        <!-- <ace aria-rowcount="14" [config]="config" (keyup)="generate.generateSVG(tA.value)" id="tA" #tA class="coding" [(value)]="generate.text"></ace> -->
                         <mat-form-field>
                             <textarea [(ngModel)]="generate.text" class="coding" id="tA" #tA matInput rows="10"
                                 (keyup)="generate.generateSVG(tA.value)"
@@ -143,7 +145,7 @@
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>Actors</mat-label>
-                            <mat-select [disabled]="!generate.text.includes('actor ')"
+                            <mat-select [disabled]="!generate.text.toLowerCase().includes('actor ')"
                                 [(value)]="generate.selectedActor" (selectionChange)="generate.generateSVG(tA.value)">
                                 <mat-option *ngFor="let actor of generate.actors" [value]="actor">
                                     {{actor}}
@@ -362,7 +364,7 @@
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
                             </tr>
-                        </table>    
+                        </table>
                     </mat-expansion-panel>
                     <!--Multi participant colors-->
                     <mat-expansion-panel *ngIf="generate.multi" (click)="reduceTextarea()"
@@ -746,8 +748,16 @@
                 <mat-spinner *ngIf="isLoading" style="position: relative; left: 40%;"></mat-spinner>
             </mat-card-content>
             <mat-card-actions>
+                <button style="float: right;" (click)="closeApp()" matTooltip="Collapse app" mat-icon-button
+                    color="primary">
+                    <i class="material-icons">
+                        arrow_back
+                    </i>
+                </button>
             </mat-card-actions>
         </mat-card>
+        <button class="resetBtn" matTooltip="Open app" *ngIf="generate.isSmall" mat-mini-fab (click)="reduceTextarea()"
+            color="primary"><i class="material-icons">arrow_forward</i></button>
         <mat-card id="scrollbar2" class="diagram">
             <mat-card-header>
                 <mat-card-title>Diagram</mat-card-title>

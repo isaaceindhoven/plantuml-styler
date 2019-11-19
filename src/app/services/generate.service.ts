@@ -18,6 +18,7 @@ export class GenerateService {
   refresh: boolean = false;
   canRefresh: boolean = true;
   isLarge = false;
+  isSmall = false;
   svg: any
   rectangled: any;
   png: any
@@ -278,6 +279,8 @@ export class GenerateService {
           data = (data as string).replace("<svg", `<svg id="svgTag"`);
           var oParser = new DOMParser();
           var oDOM = oParser.parseFromString(data, "image/svg+xml");
+          console.log(oDOM);
+
           // generate.svg = data;
           resolve(oDOM);
         });
@@ -743,7 +746,7 @@ export class GenerateService {
   findNamesInText(oDOM) {
     var last;
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
-      if (element.previousSibling) {
+      if (element.previousSibling && element.nextSibling) {
         if (element.previousSibling.nodeName == 'rect') {
           if ((element.previousSibling as SVGRectElement).getAttribute('rx')) {
             if (!(element.previousSibling as SVGRectElement).getAttribute('class')) {
@@ -819,10 +822,11 @@ export class GenerateService {
       }
     });
   }
-  setMultiParticipants(oDOM) {
+  setMultiParticipants(oDOM: Document) {
     var count = 1;
     var half = false;
-    Array.from(oDOM.getElementsByName('participantshape')).forEach((element: SVGRectElement) => {
+    Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+      console.log(this.footnotes);
       if (this.footnotes) {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {

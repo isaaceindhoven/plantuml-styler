@@ -11,6 +11,10 @@ import { GenerateService } from 'src/app/services/generate.service'
 import { ImportExportService } from 'src/app/services/importexport.service'
 import { TextAreaComponent } from '../text-area/text-area.component'
 import { UtilityService } from 'src/app/services/utility.service'
+import 'brace';
+import 'brace/mode/javascript';
+import 'brace/theme/dawn';
+import { AceConfigInterface } from 'ngx-ace-wrapper/dist/lib/ace.interfaces';
 
 @Component({
   selector: 'app-home',
@@ -22,8 +26,14 @@ export class HomeComponent implements OnInit {
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
   isLoading = false;
+  public config: AceConfigInterface = {
+    mode: 'javascript',
+    theme: 'dawn',
+    readOnly : false
+  };
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
   ngOnInit() {
+    this.reduceTextarea();
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
       var dt = e.dataTransfer;
@@ -74,9 +84,24 @@ export class HomeComponent implements OnInit {
   reduceTextarea() {
     document.getElementById('tA').style.height = '150px';
     document.getElementById('appCard').style.width = '360px';
+    document.getElementById('appCard').style.display = '';
     document.getElementById('scrollbar2').style.width = null;
+    document.getElementById('scrollbar2').style.maxWidth = '1500px';
+    document.getElementById('scrollbar2').style.marginLeft = null;
     this.generate.isLarge = false;
+    this.generate.isSmall = false;
   }
+  closeApp() {
+    document.getElementById('tA').style.height = '150px';
+    document.getElementById('appCard').style.width = '0px';
+    document.getElementById('appCard').style.display = 'none';
+    document.getElementById('scrollbar2').style.width = '95%';
+    document.getElementById('scrollbar2').style.maxWidth = '95%';
+    document.getElementById('scrollbar2').style.marginLeft = '5%';
+    this.generate.isLarge = false;
+    this.generate.isSmall = true;
+  }
+
   openTextDialog() {
     if (document.getElementById('appCard').style.width != '1000px') {
       document.getElementById('appCard').style.width = '1000px';

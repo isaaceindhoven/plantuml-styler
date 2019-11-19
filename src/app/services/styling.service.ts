@@ -64,30 +64,24 @@ export class StylingService {
   }
   setSquiggly(oDOM) {
     Array.from(oDOM.getElementsByClassName('null skipped')).forEach((element: SVGLineElement) => {
-      var distance = ((+(element.getAttribute('y2') as unknown as number) - (element.getAttribute('y1') as unknown as number)) / 3);
+      var distance = ((parseFloat(element.getAttribute('y2')) - parseFloat(element.getAttribute('y1'))) / 3);
       var width = 20;
       var ns = 'http://www.w3.org/2000/svg'
-      var line1 = oDOM.createElementNS(ns, 'line');
-      line1.setAttributeNS(null, 'x1', element.getAttribute('x2'));
-      line1.setAttributeNS(null, 'x2', (+(element.getAttribute('x2') as unknown as number) - width).toString());
-      line1.setAttributeNS(null, 'y1', element.previousElementSibling.getAttribute('y2'));
-      line1.setAttributeNS(null, 'y2', (+(element.previousElementSibling.getAttribute('y2') as unknown as number) + distance).toString());
+      var path = oDOM.createElementNS(ns, 'path');
+  
+      var m1 = element.getAttribute('x2');
+      var m2 = element.previousElementSibling.getAttribute('y2')
+      var l1 = (parseFloat(element.getAttribute('x2')) - width).toString();
+      var l2 = (parseFloat(element.previousElementSibling.getAttribute('y2')) + distance).toString();
+      var l3 = (parseFloat(element.getAttribute('x2')) + width).toString();
+      var l4 = ((parseFloat(l2) + distance)).toString();
+      var l5 = element.getAttribute('x2');
+      var l6 = ((parseFloat(l4) + distance)).toString();
 
-      var line2 = oDOM.createElementNS(ns, 'line');
-      line2.setAttributeNS(null, 'x1', (+(element.getAttribute('x2') as unknown as number) - width).toString());
-      line2.setAttributeNS(null, 'x2', (+(element.getAttribute('x2') as unknown as number) + width).toString());
-      line2.setAttributeNS(null, 'y1', line1.getAttribute('y2'));
-      line2.setAttributeNS(null, 'y2', (+(line1.getAttribute('y2') as unknown as number) + distance).toString());
+      path.setAttributeNS(null, 'd', `M${m1} ${m2} L${l1} ${l2} L${l3} ${l4} L${l5} ${l6}`);
+      path.setAttributeNS(null, 'class', 'squiggly');
 
-      var line3 = oDOM.createElementNS(ns, 'line');
-      line3.setAttributeNS(null, 'x1', (+(element.getAttribute('x2') as unknown as number) + width).toString());
-      line3.setAttributeNS(null, 'x2', element.getAttribute('x2'));
-      line3.setAttributeNS(null, 'y1', line2.getAttribute('y2'));
-      line3.setAttributeNS(null, 'y2', (+(line2.getAttribute('y2') as unknown as number) + distance).toString());
-
-      element.parentNode.insertBefore(line1, element);
-      element.parentNode.insertBefore(line2, element);
-      element.replaceWith(line3);
+      element.replaceWith(path);
     })
   }
   setNewActor(oDOM) {
@@ -127,10 +121,10 @@ export class StylingService {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var ellipse = oDOM.createElementNS(ns, 'ellipse');
-        var rx = ((element.getAttribute('width') as unknown as number) / 2);
-        var ry = ((element.getAttribute('height') as unknown as number) / 2);
-        var cx = (+(element.getAttribute('x') as unknown as number) + rx);
-        var cy = (+(element.getAttribute('y') as unknown as number) + ry);
+        var rx = (parseFloat(element.getAttribute('width')) / 2);
+        var ry = (parseFloat(element.getAttribute('height')) / 2);
+        var cx = (parseFloat(element.getAttribute('x')) + rx);
+        var cy = (parseFloat(element.getAttribute('y')) + ry);
         ellipse.setAttributeNS(null, 'filter', element.getAttribute('filter'))
         ellipse.setAttributeNS(null, 'rx', rx.toString())
         ellipse.setAttributeNS(null, 'ry', ry.toString())
@@ -145,17 +139,17 @@ export class StylingService {
       if (element.getAttribute('rx') != null) {
         var ns = 'http://www.w3.org/2000/svg'
         var circle = oDOM.createElementNS(ns, 'circle');
-        var r = (((element.getAttribute('width') as unknown as number) / 2) * 0.9);
-        var cx = (+(element.getAttribute('x') as unknown as number) + (r * 1.12));
+        var r = ((parseFloat(element.getAttribute('width')) / 2) * 0.9);
+        var cx = (parseFloat(element.getAttribute('x')) + (r * 1.12));
         var cy;
-        if ((element.getAttribute('width') as unknown as number) >= 50) {
-          cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.5));
-        } else if ((element.getAttribute('width') as unknown as number) >= 100) {
-          cy = (+(element.getAttribute('y') as unknown as number) - (r * 1.5));
-        } else if ((element.getAttribute('width') as unknown as number) >= 130) {
-          cy = (+(element.getAttribute('y') as unknown as number) - (r * 4));
+        if (parseFloat(element.getAttribute('width')) >= 50) {
+          cy = (parseFloat(element.getAttribute('y')) + (r * 0.5));
+        } else if (parseFloat(element.getAttribute('width')) >= 100) {
+          cy = (parseFloat(element.getAttribute('y')) - (r * 1.5));
+        } else if (parseFloat(element.getAttribute('width')) >= 130) {
+          cy = (parseFloat(element.getAttribute('y')) - (r * 4));
         } else {
-          cy = (+(element.getAttribute('y') as unknown as number) + (r * 0.8));
+          cy = (parseFloat(element.getAttribute('y')) + (r * 0.8));
         }
         circle.setAttributeNS(null, 'filter', element.getAttribute('filter'))
         circle.setAttributeNS(null, 'r', r.toString())

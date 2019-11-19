@@ -97,7 +97,7 @@ export class ImportExportService {
     this.gen.isDoneProcessing = false;
     var puml = event.target.result;
     this.gen.text = puml;
-    document.getElementById('tA').textContent = puml;
+    // document.getElementById('tA').textContent = puml;
     setTimeout(() => {
       if (this.gen.halfwayDoneProcessing) {
         this.gen.isDoneProcessing = true;
