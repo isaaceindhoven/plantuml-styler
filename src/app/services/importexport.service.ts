@@ -19,6 +19,8 @@ export class ImportExportService {
       color7: this.gen.color7,
       color8: this.gen.color8,
       color9: this.gen.color9,
+      colorBoxBack: this.gen.colorBoxBack,
+      colorBoxStroke: this.gen.colorBoxStroke,
       colorParticipantBorder1: this.gen.colorParticipantBorder1,
       colorParticipantBorder2: this.gen.colorParticipantBorder2,
       colorParticipantBorder3: this.gen.colorParticipantBorder3,
@@ -119,6 +121,8 @@ export class ImportExportService {
     this.gen.color7 = json.color7;
     this.gen.color8 = json.color8;
     this.gen.color9 = json.color9;
+    this.gen.colorBoxBack = json.colorBoxBack;
+    this.gen.colorBoxStroke = json.colorBoxStroke;
     this.gen.colorParticipantBorder1 = json.colorParticipantBorder1;
     this.gen.colorParticipantBorder2 = json.colorParticipantBorder2;
     this.gen.colorParticipantBorder3 = json.colorParticipantBorder3;

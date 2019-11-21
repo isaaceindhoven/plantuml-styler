@@ -60,6 +60,8 @@ export class HomeComponent implements OnInit {
     this.generate.color7 = '#a80036'
     this.generate.color8 = '#fefece'
     this.generate.color9 = '#000000'
+    this.generate.colorBoxBack = '#fefece'
+    this.generate.colorBoxStroke = '#a80036'
 
     this.generate.colorParticipantBorder1 = '#a80036'
     this.generate.colorParticipantBorder2 = '#a80036'
@@ -143,6 +145,8 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.PlantUMLStyle[6];
         this.generate.color8 = this.stylingservice.PlantUMLStyle[7];
         this.generate.color9 = this.stylingservice.PlantUMLStyle[8];
+        this.generate.colorBoxBack = this.stylingservice.PlantUMLStyle[1];
+        this.generate.colorBoxStroke = this.stylingservice.PlantUMLStyle[0];
         this.generate.colorParticipantBorder1 = this.stylingservice.PlantUMLStyle[0];
         this.generate.colorParticipantBorder2 = this.stylingservice.PlantUMLStyle[0];
         this.generate.colorParticipantBorder3 = this.stylingservice.PlantUMLStyle[0];
@@ -172,6 +176,8 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.IsaacStyle[6];
         this.generate.color8 = this.stylingservice.IsaacStyle[7];
         this.generate.color9 = this.stylingservice.IsaacStyle[8];
+        this.generate.colorBoxBack = this.stylingservice.IsaacStyle[9];
+        this.generate.colorBoxStroke = this.stylingservice.IsaacStyle[10];
         this.generate.colorParticipantBorder1 = this.stylingservice.IsaacStyle[0];
         this.generate.colorParticipantBorder2 = this.stylingservice.IsaacStyle[0];
         this.generate.colorParticipantBorder3 = this.stylingservice.IsaacStyle[0];
@@ -201,6 +207,8 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.JohanStyle[6];
         this.generate.color8 = this.stylingservice.JohanStyle[7];
         this.generate.color9 = this.stylingservice.JohanStyle[8];
+        this.generate.colorBoxBack = this.stylingservice.JohanStyle[1];
+        this.generate.colorBoxStroke = this.stylingservice.JohanStyle[0];
         this.generate.colorParticipantBorder1 = this.stylingservice.JohanStyle[0];
         this.generate.colorParticipantBorder2 = this.stylingservice.JohanStyle[0];
         this.generate.colorParticipantBorder3 = this.stylingservice.JohanStyle[0];
@@ -230,6 +238,8 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.GraytoneStyle[6];
         this.generate.color8 = this.stylingservice.GraytoneStyle[7];
         this.generate.color9 = this.stylingservice.GraytoneStyle[8];
+        this.generate.colorBoxBack = this.stylingservice.GraytoneStyle[1];
+        this.generate.colorBoxStroke = this.stylingservice.GraytoneStyle[0];
         this.generate.colorParticipantBorder1 = this.stylingservice.GraytoneStyle[0];
         this.generate.colorParticipantBorder2 = this.stylingservice.GraytoneStyle[0];
         this.generate.colorParticipantBorder3 = this.stylingservice.GraytoneStyle[0];
@@ -259,6 +269,8 @@ export class HomeComponent implements OnInit {
         this.generate.color7 = this.stylingservice.BlackWhiteStyle[6];
         this.generate.color8 = this.stylingservice.BlackWhiteStyle[7];
         this.generate.color9 = this.stylingservice.BlackWhiteStyle[8];
+        this.generate.colorBoxBack = this.stylingservice.BlackWhiteStyle[1];
+        this.generate.colorBoxStroke = this.stylingservice.BlackWhiteStyle[0];
 
         this.generate.colorParticipantBorder1 = this.stylingservice.BlackWhiteStyle[0];
         this.generate.colorParticipantBorder2 = this.stylingservice.BlackWhiteStyle[0];

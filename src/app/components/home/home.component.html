@@ -16,7 +16,7 @@
                                 Text
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        
+
                         <!-- <ace aria-rowcount="14" [config]="config" (keyup)="generate.generateSVG(tA.value)" id="tA" #tA class="coding" [(value)]="generate.text"></ace> -->
                         <mat-form-field>
                             <textarea [(ngModel)]="generate.text" class="coding" id="tA" #tA matInput rows="10"
@@ -361,6 +361,38 @@
                                     <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                         style="width: 100%;" id="text" class="inputHoverColor"
                                         [style.background]="generate.color9" [(colorPicker)]="generate.color9"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr *ngIf="generate.selectedType == 'Sequence'">
+                                <td style="width: 50%;">
+                                    box background
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color9input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.colorBoxBack" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.colorBoxBack" [(colorPicker)]="generate.colorBoxBack"
+                                        (colorPickerChange)="generate.setColors(null)" />
+                                </td>
+                            </tr>
+                            <tr *ngIf="generate.selectedType == 'Sequence'">
+                                <td style="width: 50%;">
+                                    box border
+                                </td>
+                                <td style="width: 25%;">
+                                    <input matInput id="color9input" class="inputHover"
+                                        (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.colorBoxStroke" />
+                                </td>
+                                <td></td>
+                                <td style="width: 35%;">
+                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                        style="width: 100%;" id="text" class="inputHoverColor"
+                                        [style.background]="generate.colorBoxStroke" [(colorPicker)]="generate.colorBoxStroke"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
                             </tr>

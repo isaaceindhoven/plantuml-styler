@@ -28,7 +28,9 @@ export class StylingService {
     '#009ddc',
     '#cbc7c7',
     '#ffffff',
-    '#009ddc',];
+    '#009ddc',
+    '#f5f5f5',
+    '#cbc7c7',];
   JohanStyle = [
     '#90c9cc',
     '#a6dee1',
@@ -248,6 +250,8 @@ export class StylingService {
     }
   }
   addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM,
+    colorBoxBack,
+    colorBoxStroke,
     colorParticipantBorder1?,
     colorParticipantBorder2?,
     colorParticipantBorder3?,
@@ -280,6 +284,8 @@ export class StylingService {
       oDOM.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
       oDOM.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
       oDOM.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+      oDOM.getElementById('svgTag').style.setProperty(`--box-back-color`, colorBoxBack);
+      oDOM.getElementById('svgTag').style.setProperty(`--box-stroke-color`, colorBoxStroke);
 
       oDOM.getElementById('svgTag').style.setProperty(`--participant1-border-color`, colorParticipantBorder1);
       oDOM.getElementById('svgTag').style.setProperty(`--participant2-border-color`, colorParticipantBorder2);
@@ -311,6 +317,8 @@ export class StylingService {
       document.getElementById('svgTag').style.setProperty(`--label-border-color`, color7);
       document.getElementById('svgTag').style.setProperty(`--label-background-color`, color8);
       document.getElementById('svgTag').style.setProperty(`--label-text-color`, color9);
+      document.getElementById('svgTag').style.setProperty(`--box-back-color`, colorBoxBack);
+      document.getElementById('svgTag').style.setProperty(`--box-stroke-color`, colorBoxStroke);
 
       document.getElementById('svgTag').style.setProperty(`--participant1-border-color`, colorParticipantBorder1);
       document.getElementById('svgTag').style.setProperty(`--participant2-border-color`, colorParticipantBorder2);

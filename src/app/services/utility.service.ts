@@ -147,8 +147,13 @@ export class UtilityService {
       fill: var(--secondary-color);
       stroke: var(--primary-color);
       stroke-width: 1.5px;
-    }</style>
-    
+    }
+
+    svg g rect.box {
+      fill: var(--box-back-color);
+      stroke: var(--box-stroke-color);
+    }
+
     svg g .participant1 {
       stroke: var(--participant1-border-color)!important;
       fill: var(--participant1-background-color)!important;
@@ -184,7 +189,7 @@ export class UtilityService {
     svg g .participant9 {
       stroke: var(--participant9-border-color)!important;
       fill: var(--participant9-background-color)!important;
-    }
+    }</style>
     `;
   }
 }

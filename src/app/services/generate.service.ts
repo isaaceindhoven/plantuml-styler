@@ -75,6 +75,8 @@ export class GenerateService {
   colorParticipantBackground7 = '';
   colorParticipantBackground8 = '';
   colorParticipantBackground9 = '';
+  colorBoxBack = '';
+  colorBoxStroke = '';
   selectedSize = '14'
   selectedTheme = 'PlantUML';
   selectedType = 'Sequence';
@@ -134,6 +136,7 @@ export class GenerateService {
       (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null) :
       (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
     this.findNamesInText(oDOM);
+    this.findBoxes(oDOM);
     this.setFont(oDOM);
     this.setStroke(oDOM);
     this.setLineBorders(oDOM);
@@ -346,6 +349,8 @@ export class GenerateService {
           this.styling.PlantUMLStyle[7],
           this.styling.PlantUMLStyle[8],
           oDOM,
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[0],
           this.styling.PlantUMLStyle[0],
           this.styling.PlantUMLStyle[0],
           this.styling.PlantUMLStyle[0],
@@ -377,6 +382,8 @@ export class GenerateService {
           this.styling.IsaacStyle[7],
           this.styling.IsaacStyle[8],
           oDOM,
+          this.styling.IsaacStyle[9],
+          this.styling.IsaacStyle[10],
           this.styling.IsaacStyle[0],
           this.styling.IsaacStyle[0],
           this.styling.IsaacStyle[0],
@@ -408,6 +415,8 @@ export class GenerateService {
           this.styling.JohanStyle[7],
           this.styling.JohanStyle[8],
           oDOM,
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[0],
           this.styling.JohanStyle[0],
           this.styling.JohanStyle[0],
           this.styling.JohanStyle[0],
@@ -439,6 +448,8 @@ export class GenerateService {
           this.styling.GraytoneStyle[7],
           this.styling.GraytoneStyle[8],
           oDOM,
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[0],
           this.styling.GraytoneStyle[0],
           this.styling.GraytoneStyle[0],
           this.styling.GraytoneStyle[0],
@@ -470,6 +481,8 @@ export class GenerateService {
           this.styling.BlackWhiteStyle[7],
           this.styling.BlackWhiteStyle[8],
           oDOM,
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[0],
           this.styling.BlackWhiteStyle[0],
           this.styling.BlackWhiteStyle[0],
           this.styling.BlackWhiteStyle[0],
@@ -501,6 +514,8 @@ export class GenerateService {
         this.color8,
         this.color9,
         oDOM,
+        this.colorBoxBack,
+        this.colorBoxStroke,
         this.colorParticipantBorder1,
         this.colorParticipantBorder2,
         this.colorParticipantBorder3,
@@ -819,6 +834,18 @@ export class GenerateService {
         }
       } else {
         last = element;
+      }
+    });
+  }
+  findBoxes(oDOM) {
+    var height = parseFloat(oDOM.getElementById('svgTag').style.height) - 65;
+    this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
+      if (parseFloat(element.getAttribute('height')) >= height) {
+        if (element.getAttribute('class')) {
+          element.setAttribute('class', element.getAttribute('class') + ' box');
+        } else {
+          element.setAttribute('class', 'box');
+        }
       }
     });
   }
