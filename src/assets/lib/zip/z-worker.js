@@ -7,8 +7,8 @@
 	global.zWorkerInitialized = true;
 
 	addEventListener("message", function(event) {
-		var message = event.data, type = message.type, sn = message.sn;
-		var handler = handlers[type];
+		let message = event.data, type = message.type, sn = message.sn;
+		let handler = handlers[type];
 		if (handler) {
 			try {
 				handler(message);
@@ -20,7 +20,7 @@
 		//postMessage({type: 'echo', originalType: type, sn: sn});
 	});
 
-	var handlers = {
+	let handlers = {
 		importScripts: doImportScripts,
 		newTask: newTask,
 		append: processData,
@@ -28,7 +28,7 @@
 	};
 
 	// deflater/inflater tasks indexed by serial numbers
-	var tasks = {};
+	let tasks = {};
 
 	function doImportScripts(msg) {
 		if (msg.scripts && msg.scripts.length > 0)
@@ -37,8 +37,8 @@
 	}
 
 	function newTask(msg) {
-		var CodecClass = global[msg.codecClass];
-		var sn = msg.sn;
+		let CodecClass = global[msg.codecClass];
+		let sn = msg.sn;
 		if (tasks[sn])
 			throw Error('duplicated sn');
 		tasks[sn] =  {
@@ -51,19 +51,19 @@
 	}
 
 	// performance may not be supported
-	var now = global.performance ? global.performance.now.bind(global.performance) : Date.now;
+	let now = global.performance ? global.performance.now.bind(global.performance) : Date.now;
 
 	function processData(msg) {
-		var sn = msg.sn, type = msg.type, input = msg.data;
-		var task = tasks[sn];
+		let sn = msg.sn, type = msg.type, input = msg.data;
+		let task = tasks[sn];
 		// allow creating codec on first append
 		if (!task && msg.codecClass) {
 			newTask(msg);
 			task = tasks[sn];
 		}
-		var isAppend = type === 'append';
-		var start = now();
-		var output;
+		let isAppend = type === 'append';
+		let start = now();
+		let output;
 		if (isAppend) {
 			try {
 				output = task.codec.append(input, function onprogress(loaded) {
@@ -77,17 +77,17 @@
 			delete tasks[sn];
 			output = task.codec.flush();
 		}
-		var codecTime = now() - start;
+		let codecTime = now() - start;
 
 		start = now();
 		if (input && task.crcInput)
 			task.crc.append(input);
 		if (output && task.crcOutput)
 			task.crc.append(output);
-		var crcTime = now() - start;
+		let crcTime = now() - start;
 
-		var rmsg = {type: type, sn: sn, codecTime: codecTime, crcTime: crcTime};
-		var transferables = [];
+		let rmsg = {type: type, sn: sn, codecTime: codecTime, crcTime: crcTime};
+		let transferables = [];
 		if (output) {
 			rmsg.data = output;
 			transferables.push(output.buffer);
@@ -104,7 +104,7 @@
 	}
 
 	function onError(type, sn, e) {
-		var msg = {
+		let msg = {
 			type: type,
 			sn: sn,
 			error: formatError(e)
@@ -121,8 +121,8 @@
 		this.crc = -1;
 	}
 	Crc32.prototype.append = function append(data) {
-		var crc = this.crc | 0, table = this.table;
-		for (var offset = 0, len = data.length | 0; offset < len; offset++)
+		let crc = this.crc | 0, table = this.table;
+		for (let offset = 0, len = data.length | 0; offset < len; offset++)
 			crc = (crc >>> 8) ^ table[(crc ^ data[offset]) & 0xFF];
 		this.crc = crc;
 	};
@@ -130,7 +130,7 @@
 		return ~this.crc;
 	};
 	Crc32.prototype.table = (function() {
-		var i, j, t, table = []; // Uint32Array is actually slower than []
+		let i, j, t, table = []; // Uint32Array is actually slower than []
 		for (i = 0; i < 256; i++) {
 			t = i;
 			for (j = 0; j < 8; j++)

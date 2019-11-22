@@ -604,8 +604,8 @@ svg g path.database {
 }
 
 svg g path.squiggly {
-  fill: none;
-  stroke: var(--line-color);
+  fill: none !important;
+  stroke: var(--line-color) !important;
 }
 
 svg g rect.box {
@@ -613,6 +613,21 @@ svg g rect.box {
   stroke: var(--box-stroke-color);
 }
 
+svg g line.divider {
+  stroke: var(--primary-color);
+  stroke-width: 4;
+}
+
+svg g path.alt {
+  fill: var(--primary-color);
+  stroke: var(--primary-color);
+}
+
+svg g path.actorClass {
+  fill: var(--primary-color);
+  stroke: var(--primary-color);
+
+}
 svg g .participant1 {
   stroke: var(--participant1-border-color) !important;
   fill: var(--participant1-background-color) !important;

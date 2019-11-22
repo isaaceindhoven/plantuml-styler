@@ -9,7 +9,7 @@ export class ImportExportService {
   constructor(private gen: GenerateService) { }
 
   saveConfig(returning) {
-    var json = JSON.stringify({
+    let json = JSON.stringify({
       color1: this.gen.color1,
       color2: this.gen.color2,
       color3: this.gen.color3,
@@ -73,15 +73,15 @@ export class ImportExportService {
     if (returning) {
       return json;
     }
-    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
-    var a = document.createElement('a');
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
+    let a = document.createElement('a');
     a.download = "style.json";
     a.href = dataStr;
     document.body.appendChild(a);
     a.click();
   }
   loadConfig(json) {
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = (event) => {
       this.onConfigReaderLoad(event);
     }
@@ -89,7 +89,7 @@ export class ImportExportService {
   }
   loadCode(puml) {
     this.gen.isDoneProcessing = false;
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = (event) => {
       this.onCodeReaderLoad(event);
     }
@@ -97,7 +97,7 @@ export class ImportExportService {
   }
   onCodeReaderLoad(event) {
     this.gen.isDoneProcessing = false;
-    var puml = event.target.result;
+    let puml = event.target.result;
     this.gen.text = puml;
     // document.getElementById('tA').textContent = puml;
     setTimeout(() => {
@@ -111,7 +111,7 @@ export class ImportExportService {
 
   }
   onConfigReaderLoad(event) {
-    var json = JSON.parse(event.target.result);
+    let json = JSON.parse(event.target.result);
     this.gen.color1 = json.color1;
     this.gen.color2 = json.color2;
     this.gen.color3 = json.color3;

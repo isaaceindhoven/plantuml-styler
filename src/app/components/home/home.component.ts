@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import * as svg from 'save-svg-as-png'
 import { StylingService } from 'src/app/services/styling.service'
 import * as JSZip from 'jszip'
@@ -12,9 +12,10 @@ import { ImportExportService } from 'src/app/services/importexport.service'
 import { TextAreaComponent } from '../text-area/text-area.component'
 import { UtilityService } from 'src/app/services/utility.service'
 import 'brace';
-import 'brace/mode/javascript';
+import 'brace/mode/text';
 import 'brace/theme/dawn';
 import { AceConfigInterface } from 'ngx-ace-wrapper/dist/lib/ace.interfaces';
+import { AceComponent } from 'ngx-ace-wrapper';
 
 @Component({
   selector: 'app-home',
@@ -23,20 +24,22 @@ import { AceConfigInterface } from 'ngx-ace-wrapper/dist/lib/ace.interfaces';
 })
 export class HomeComponent implements OnInit {
 
+  @ViewChild('aceComp', { static: true }) aceElement: AceComponent;
   files: NgxFileDropEntry[] = [];
   isOpen: boolean;
   isLoading = false;
   public config: AceConfigInterface = {
-    mode: 'javascript',
+    mode: 'text',
     theme: 'dawn',
-    readOnly : false
+    readOnly: false
   };
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
+
+
   ngOnInit() {
-    this.reduceTextarea();
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
-      var dt = e.dataTransfer;
+      let dt = e.dataTransfer;
       if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.includes('Files'))) {
         if (!this.isOpen) {
           this.isOpen = true;
@@ -50,7 +53,6 @@ export class HomeComponent implements OnInit {
     this.stylingservice.getFonts().subscribe(data => {
       this.generate.fonts = Array.from((data as any).items);
     })
-
     this.generate.color1 = '#a80036'
     this.generate.color2 = '#fefece'
     this.generate.color3 = '#fbfb77'
@@ -62,7 +64,7 @@ export class HomeComponent implements OnInit {
     this.generate.color9 = '#000000'
     this.generate.colorBoxBack = '#fefece'
     this.generate.colorBoxStroke = '#a80036'
-
+    
     this.generate.colorParticipantBorder1 = '#a80036'
     this.generate.colorParticipantBorder2 = '#a80036'
     this.generate.colorParticipantBorder3 = '#a80036'
@@ -72,7 +74,7 @@ export class HomeComponent implements OnInit {
     this.generate.colorParticipantBorder7 = '#a80036'
     this.generate.colorParticipantBorder8 = '#a80036'
     this.generate.colorParticipantBorder9 = '#a80036'
-
+    
     this.generate.colorParticipantBackground1 = '#fefece'
     this.generate.colorParticipantBackground2 = '#fefece'
     this.generate.colorParticipantBackground3 = '#fefece'
@@ -92,6 +94,7 @@ export class HomeComponent implements OnInit {
     document.getElementById('scrollbar2').style.marginLeft = null;
     this.generate.isLarge = false;
     this.generate.isSmall = false;
+    this.aceElement.directiveRef.ace().resize();
   }
   closeApp() {
     document.getElementById('tA').style.height = '150px';
@@ -110,6 +113,7 @@ export class HomeComponent implements OnInit {
       document.getElementById('tA').style.height = '450px';
       this.stylingservice.setDiagramCardsize();
       this.generate.isLarge = true;
+      this.aceElement.directiveRef.ace().resize();
     }
     else {
       this.reduceTextarea();
@@ -319,9 +323,9 @@ export class HomeComponent implements OnInit {
   }
   download() {
     this.isLoading = true;
-    var zip = new JSZip();
+    let zip = new JSZip();
     zip.file("code.puml", this.generate.text);
-    var svgstring = document.getElementById('svgTag').outerHTML;
+    let svgstring = document.getElementById('svgTag').outerHTML;
     svgstring = svgstring.replace("<defs>", `<defs>${this.util.getSVGStyle()}`)
     zip.file("diagram.svg", svgstring);
     zip.file("style.json", this.impoexpo.saveConfig(true));
@@ -329,7 +333,7 @@ export class HomeComponent implements OnInit {
       data = data.replace('data:image/png;base64,', '')
       zip.file("diagram.png", data, { base64: true });
     });
-    // var doc = new jsPDF('landscape', 'px');
+    // let doc = new jsPDF('landscape', 'px');
     // svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 0.5, scale: 3 }, (data) => {
     //   doc.addImage(data, 'PNG', 0, 0, Number.parseFloat(document.getElementById('svgTag').getAttribute('width')) / 2, Number.parseFloat(document.getElementById('svgTag').getAttribute('height')) / 2);
     //   doc.save('diagram.pdf');
@@ -355,20 +359,20 @@ export class HomeComponent implements OnInit {
   }
   loadFile(file) {
     if (file.type == 'application/zip') {
-      var entries = this.zipservice.getEntries(file);
+      let entries = this.zipservice.getEntries(file);
       entries.subscribe(data => {
-        var correctFile = false;
+        let correctFile = false;
         data.forEach(entry => {
           if (entry.filename == 'code.puml') {
             correctFile = true;
-            var newdata = this.zipservice.getData(entry);
+            let newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadCode(blob)
             })
           }
           if (entry.filename == 'style.json') {
             correctFile = true;
-            var newdata = this.zipservice.getData(entry);
+            let newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadConfig(blob);
             })
@@ -386,20 +390,20 @@ export class HomeComponent implements OnInit {
       })
     }
     else if (file.type == 'application/x-zip-compressed') {
-      var entries = this.zipservice.getEntries(file);
+      let entries = this.zipservice.getEntries(file);
       entries.subscribe(data => {
-        var correctFile = false;
+        let correctFile = false;
         data.forEach(entry => {
           if (entry.filename == 'code.puml') {
             correctFile = true;
-            var newdata = this.zipservice.getData(entry);
+            let newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadCode(blob)
             })
           }
           if (entry.filename == 'style.json') {
             correctFile = true;
-            var newdata = this.zipservice.getData(entry);
+            let newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadConfig(blob);
             })

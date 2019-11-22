@@ -1,1 +1,1 @@
-declare var deflate: any;
+declare let deflate: any;

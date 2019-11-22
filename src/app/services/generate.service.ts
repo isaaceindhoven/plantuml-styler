@@ -44,7 +44,7 @@ export class GenerateService {
   types = ['Sequence', 'Usecase', 'Class'];
   shapes = ['Rectangle', 'Rounded', 'Ellipse', 'Circle'];
   autonumber = ['None', 'Default', 'Circular', 'Rectangular', 'Rounded', 'Rectangular-Framed', 'Circular-Framed', 'Rounded-Framed'];
-  actors = ['Default', 'Modern'];
+  actors = ['Default', 'Modern', 'Male', 'Female'];
   breaks = ['Default', 'Squiggly'];
   fonts = ['Tahoma'];
   themes = ['PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
@@ -105,7 +105,7 @@ export class GenerateService {
       //make the text ready for generation
       text = this.changeText(document, text);
       //generate the svg and set it to the svg variable while checking if its rounded 
-      var oDOM;
+      let oDOM;
       this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this)
       this.styleSVG(oDOM);
     }, 300);
@@ -113,7 +113,7 @@ export class GenerateService {
   resetRectangle(text) {
     text = "skinparam roundcorner 1  \n " + text;
     text = "skinparam notefontsize 12 \n " + text;
-    var t = unescape(encodeURIComponent(text))
+    let t = unescape(encodeURIComponent(text))
     this.http.get(environment.api.base + this.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
       data => {
         this.svg = data;
@@ -129,14 +129,14 @@ export class GenerateService {
     this.setColors(oDOM);
     this.addListeners(oDOM);
     this.setAutoNumberLabel(oDOM);
-    this.isThemed ?
-      (this.themedActor == 'Modern' ? this.styling.setNewActor(oDOM) : null) :
-      (this.selectedActor == 'Modern' ? this.styling.setNewActor(oDOM) : null);
+    this.isThemed ? this.styling.setActor(oDOM, this.themedActor) : this.styling.setActor(oDOM, this.selectedActor);
     this.isThemed ?
       (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null) :
       (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
     this.findNamesInText(oDOM);
     this.findBoxes(oDOM);
+    this.findDividers(oDOM);
+    this.findAlts(oDOM);
     this.setFont(oDOM);
     this.setStroke(oDOM);
     this.setLineBorders(oDOM);
@@ -144,8 +144,8 @@ export class GenerateService {
     if (this.multi) {
       this.multicount = this.setMultiParticipants(oDOM);
     }
-    var s = new XMLSerializer();
-    var str = s.serializeToString((oDOM as XMLDocument).firstChild);
+    let s = new XMLSerializer();
+    let str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
     setTimeout(() => {
       if (this.isLarge)
@@ -276,14 +276,12 @@ export class GenerateService {
     return new Promise(function (resolve, reject) {
       text = `skinparam roundcorner ${roundcorner}  \n ${text}`;
       generate.styling.getActors(text);
-      var t = unescape(encodeURIComponent(text))
+      let t = unescape(encodeURIComponent(text))
       generate.http.get(environment.api.base + generate.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
         data => {
           data = (data as string).replace("<svg", `<svg id="svgTag"`);
-          var oParser = new DOMParser();
-          var oDOM = oParser.parseFromString(data, "image/svg+xml");
-          console.log(oDOM);
-
+          let oParser = new DOMParser();
+          let oDOM = oParser.parseFromString(data, "image/svg+xml");
           // generate.svg = data;
           resolve(oDOM);
         });
@@ -310,8 +308,8 @@ export class GenerateService {
     });
   }
   showNotes() {
-    var notes: any = document.getElementsByName('note')
-    var list = Array.from(notes);
+    let notes: any = document.getElementsByName('note')
+    let list = Array.from(notes);
     list.forEach((element: SVGRectElement) => {
       element.setAttribute('display', '');
     });
@@ -623,8 +621,8 @@ export class GenerateService {
       if (document.getElementById('googlelink')) {
         document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.themedFont);
       } else {
-        var headID = document.getElementsByTagName('head')[0];
-        var link = document.createElement('link');
+        let headID = document.getElementsByTagName('head')[0];
+        let link = document.createElement('link');
         link.type = 'text/css';
         link.rel = 'stylesheet';
         link.id = 'googlelink'
@@ -636,8 +634,8 @@ export class GenerateService {
       if (document.getElementById('googlelink')) {
         document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.selectedFont);
       } else {
-        var headID = document.getElementsByTagName('head')[0];
-        var link = document.createElement('link');
+        let headID = document.getElementsByTagName('head')[0];
+        let link = document.createElement('link');
         link.type = 'text/css';
         link.rel = 'stylesheet';
         link.id = 'googlelink'
@@ -688,7 +686,7 @@ export class GenerateService {
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 16;
     this.themedSequencetextsize = 13;
-    this.themedParticipantstroke = 2.5;
+    this.themedParticipantstroke = 2;
   }
   JohanStyle() {
     this.themedBreak = 'Squiggly';
@@ -759,7 +757,7 @@ export class GenerateService {
     }
   }
   findNamesInText(oDOM) {
-    var last;
+    let last;
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousSibling && element.nextSibling) {
         if (element.previousSibling.nodeName == 'rect') {
@@ -838,7 +836,9 @@ export class GenerateService {
     });
   }
   findBoxes(oDOM) {
-    var height = parseFloat(oDOM.getElementById('svgTag').style.height) - 65;
+    let height = parseFloat(oDOM.getElementById('svgTag').style.height);
+    let minus = height * 0.05;
+    height = height - minus;
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (parseFloat(element.getAttribute('height')) >= height) {
         if (element.getAttribute('class')) {
@@ -849,9 +849,42 @@ export class GenerateService {
       }
     });
   }
+  findDividers(oDOM) {
+    this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
+      if (element.previousSibling) {
+        if (element.previousSibling.nodeName == 'rect') {
+          if (element.previousSibling.previousSibling) {
+            if (element.previousSibling.previousSibling.nodeName == 'line') {
+              if (element.previousSibling.previousSibling.previousSibling) {
+                if (element.previousSibling.previousSibling.previousSibling.nodeName == 'line') {
+                  if (element.previousSibling.previousSibling.previousSibling.previousSibling) {
+                    if (element.previousSibling.previousSibling.previousSibling.previousSibling.nodeName == 'rect') {
+                      element.setAttribute('class', 'divider');
+                      element.previousElementSibling.setAttribute('class', 'divider');
+                      element.previousElementSibling.previousElementSibling.setAttribute('class', 'divider');
+                      element.previousElementSibling.previousElementSibling.previousElementSibling.setAttribute('class', 'divider');
+                      element.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.setAttribute('class', 'divider');
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+  findAlts(oDOM) {
+    this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
+      console.log(element, element.getTotalLength());
+      if (element.getTotalLength() == 168.1421356201172 || element.getTotalLength() == 187.1421356201172) {
+        element.setAttribute('class', 'alt');
+      }
+    });
+  }
   setMultiParticipants(oDOM: Document) {
-    var count = 1;
-    var half = false;
+    let count = 1;
+    let half = false;
     Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
       console.log(this.footnotes);
       if (this.footnotes) {
