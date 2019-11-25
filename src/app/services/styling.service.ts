@@ -92,10 +92,10 @@ export class StylingService {
       let ns = 'http://www.w3.org/2000/svg'
       let actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString())
-      actor.setAttributeNS(null, 'y', (element.previousSibling as SVGCircleElement).getAttribute('cy'));
+      actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
       actor.setAttributeNS(null, 'width', '45px');
       actor.setAttributeNS(null, 'height', '45px');
-      actor.setAttributeNS(null, 'viewBox', '0 0 45 45');
+      actor.setAttributeNS(null, 'viewBox', '0 -1 45 45');
       actor.setAttributeNS(null, 'version', '1.1');
       let g = oDOM.createElementNS(ns, 'g');
       g.setAttributeNS(null, 'id', 'surface1');
@@ -117,10 +117,10 @@ export class StylingService {
       let ns = 'http://www.w3.org/2000/svg'
       let actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString())
-      actor.setAttributeNS(null, 'y', (element.previousSibling as SVGCircleElement).getAttribute('cy'));
+      actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
       actor.setAttributeNS(null, 'width', '45px');
       actor.setAttributeNS(null, 'height', '45px');
-      actor.setAttributeNS(null, 'viewBox', '0 0 45 45');
+      actor.setAttributeNS(null, 'viewBox', '0 -1 45 45');
       actor.setAttributeNS(null, 'version', '1.1');
       let g = oDOM.createElementNS(ns, 'g');
       g.setAttributeNS(null, 'id', 'surface1');
@@ -142,10 +142,10 @@ export class StylingService {
       let ns = 'http://www.w3.org/2000/svg'
       let actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString())
-      actor.setAttributeNS(null, 'y', (element.previousSibling as SVGCircleElement).getAttribute('cy'));
+      actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
       actor.setAttributeNS(null, 'width', '45px');
       actor.setAttributeNS(null, 'height', '45px');
-      actor.setAttributeNS(null, 'viewBox', '0 0 45 45');
+      actor.setAttributeNS(null, 'viewBox', '0 -1 45 45');
       actor.setAttributeNS(null, 'version', '1.1');
       let g = oDOM.createElementNS(ns, 'g');
       g.setAttributeNS(null, 'id', 'surface1');

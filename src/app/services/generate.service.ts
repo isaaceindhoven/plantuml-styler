@@ -134,10 +134,14 @@ export class GenerateService {
       (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null) :
       (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
     this.findNamesInText(oDOM);
+    this.findTitle(oDOM);
     this.findBoxes(oDOM);
     this.findDividers(oDOM);
     this.findAlts(oDOM);
+    this.findDbs(oDOM);
     this.setFont(oDOM);
+    this.setAlts(oDOM);
+    this.setAltBoxes(oDOM);
     this.setStroke(oDOM);
     this.setLineBorders(oDOM);
     this.triggerResize(oDOM);
@@ -166,6 +170,10 @@ export class GenerateService {
       text = `skinparam   ActorFontSize ${this.themedParticipantfontsize} \n` + text
       text = `skinparam   ArrowFontSize  ${this.themedSequencetextsize} \n` + text
       text = 'skinparam SequenceDividerFontSize 14 \n' + text
+      text = 'skinparam BoxPadding 15 \n' + text
+      text = `skinparam SequenceTitleFontSize ${this.themedParticipantfontsize + 1} \n` + text
+      text = ` skinparam titleBorderThickness 2 \n` + text
+
       switch (this.themedNumber) {
         case 'None':
           break;
@@ -234,7 +242,10 @@ export class GenerateService {
       text = `skinparam   ArrowFontSize  ${this.sequencetextsize} \n` + text
 
       text = 'skinparam SequenceDividerFontSize 14 \n' + text
-      text = 'skinparam SequenceDividerFontSize 14 \n' + text
+      text = 'skinparam BoxPadding 15 \n' + text
+      text = `skinparam SequenceTitleFontSize ${this.participantfontsize + 1} \n` + text
+      text = ` skinparam titleBorderThickness 2 \n` + text
+
       switch (this.selectedNumber) {
         case 'None':
           break;
@@ -679,7 +690,7 @@ export class GenerateService {
   isaacStyle() {
     this.themedBreak = 'Squiggly';
     this.themedNumber = 'Circular';
-    this.themedShape = 'Rectangle';
+    this.themedShape = 'Rounded';
     this.themedActor = 'Modern';
     this.themedFont = 'Open Sans'
     this.themedFootnotes = false;
@@ -835,10 +846,25 @@ export class GenerateService {
       }
     });
   }
+  findTitle(oDOM) {
+    let once = true;
+    this.styling.getTagList(oDOM, 'text').forEach((element: SVGTextElement) => {
+      if (this.isThemed) {
+        if (parseFloat(element.getAttribute('font-size')) === this.themedParticipantfontsize + 1 && once) {
+          once = false;
+          (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
+        }
+      }
+      else {
+        if (parseFloat(element.getAttribute('font-size')) === this.participantfontsize + 1 && once) {
+          once = false;
+          (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
+        }
+      }
+    });
+  }
   findBoxes(oDOM) {
-    let height = parseFloat(oDOM.getElementById('svgTag').style.height);
-    let minus = height * 0.05;
-    height = height - minus;
+    let height = parseFloat(oDOM.getElementById('svgTag').style.height) * 0.9;
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (parseFloat(element.getAttribute('height')) >= height) {
         if (element.getAttribute('class')) {
@@ -846,6 +872,10 @@ export class GenerateService {
         } else {
           element.setAttribute('class', 'box');
         }
+        element.setAttribute('height', (parseFloat(element.getAttribute('height')) + 5).toString())
+        element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 5).toString())
+        element.setAttribute('x', (parseFloat(element.getAttribute('x')) - 5).toString())
+        element.setAttribute('width', (parseFloat(element.getAttribute('width')) + 10).toString())
       }
     });
   }
@@ -876,9 +906,71 @@ export class GenerateService {
   }
   findAlts(oDOM) {
     this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
-      console.log(element, element.getTotalLength());
-      if (element.getTotalLength() == 168.1421356201172 || element.getTotalLength() == 187.1421356201172) {
+      if (element.getTotalLength().toPrecision(7) == '168.1421'
+        || element.getTotalLength().toPrecision(7) == '187.1421'
+        || element.getTotalLength().toPrecision(7) == '213.1421'
+        || element.getTotalLength().toPrecision(7) == '194.1421') {
         element.setAttribute('class', 'alt');
+      }
+    });
+  }
+  findDbs(oDOM) {
+    this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
+      if (element.getTotalLength().toPrecision(6) == '142.712') {
+        element.setAttribute('class', 'database');
+      }
+    });
+  }
+  setAlts(oDOM) {
+    this.styling.getTagList(oDOM, 'path').forEach((element: SVGPathElement) => {
+      if (element.className.baseVal === 'alt') {
+        if (this.isThemed) {
+          if (this.themedShape === 'Rounded') {
+            let d = element.getAttribute('d');
+            let firstnrLength = d.split(',')[0].length;
+            let nr = parseFloat(d.substr(1, firstnrLength));
+            let newnr = nr - 7;
+            let nrstring = nr.toString();
+            let newnrstring = newnr.toString();
+            let newD = d.replace(nrstring, newnrstring);
+            let secondnrLength = d.split(',')[1].split(' ')[0].length;
+            let tnr = parseFloat(d.substr(5, secondnrLength));
+            let tnewnr = tnr + 2;
+            let tnrstring = tnr.toString();
+            let tnewnrstring = tnewnr.toString();
+            newD = newD.replace(tnrstring, tnewnrstring);
+            element.setAttribute('d', newD)
+          }
+        } else {
+          if (this.selectedShape === 'Rounded') {
+            let d = element.getAttribute('d');
+            let firstnrLength = d.split(',')[0].length;
+            let nr = parseFloat(d.substr(1, firstnrLength));
+            let newnr = nr - 7;
+            let nrstring = nr.toString();
+            let newnrstring = newnr.toString();
+            let newD = d.replace(nrstring, newnrstring);
+            let secondnrLength = d.split(',')[1].split(' ')[0].length;
+            let tnr = parseFloat(d.substr(5, secondnrLength));
+            let tnewnr = tnr + 2;
+            let tnrstring = tnr.toString();
+            let tnewnrstring = tnewnr.toString();
+            newD = newD.replace(tnrstring, tnewnrstring);
+            element.setAttribute('d', newD)
+          }
+        }
+      }
+    });
+  }
+  setAltBoxes(oDOM) {
+    this.styling.getTagList(oDOM, 'rect').forEach((element: SVGPathElement) => {
+      if (element.getAttribute('rx') === null && element.getAttribute('class') === null && parseFloat(element.getAttribute('width')) !== 10) {
+        element.replaceWith();
+      }
+    });
+    this.styling.getTagList(oDOM, 'text').forEach((element: SVGPathElement) => {
+      if (element.getAttribute('font-size') === '11' && (element.previousSibling as SVGLineElement).getAttribute('class') === 'null dotted' && element.textContent.includes('[') ) {
+        (element.previousSibling as SVGLineElement).setAttribute('class', 'altDivider');
       }
     });
   }
@@ -886,7 +978,6 @@ export class GenerateService {
     let count = 1;
     let half = false;
     Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-      console.log(this.footnotes);
       if (this.footnotes) {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {

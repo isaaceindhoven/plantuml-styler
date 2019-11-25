@@ -35,7 +35,7 @@ export class AutoNumberService {
           r = (((fs / 13) * 10) + (r * 2));
           let cx = (parseFloat(element.getAttribute('x')) - (fs / 13) + ((r * 0.4) + extra));
           let cy = (parseFloat(element.getAttribute('y')) - 2 + ((fs / 13) * 2) - (r / 2));
-          element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 2).toString());
+          element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 1).toString());
           circle.setAttributeNS(null, 'r', r.toString())
           circle.setAttributeNS(null, 'cx', cx.toString())
           circle.setAttributeNS(null, 'cy', cy.toString())

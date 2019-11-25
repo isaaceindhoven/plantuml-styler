@@ -84,6 +84,11 @@ export class HomeComponent implements OnInit {
     this.generate.colorParticipantBackground7 = '#fefece'
     this.generate.colorParticipantBackground8 = '#fefece'
     this.generate.colorParticipantBackground9 = '#fefece'
+    this.generate.selectedTheme = 'ISAAC';
+    this.generate.isThemed = true;
+    setTimeout(() => {
+      this.editTheme();
+    }, 1000);
   }
   reduceTextarea() {
     document.getElementById('tA').style.height = '150px';

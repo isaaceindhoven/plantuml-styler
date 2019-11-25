@@ -466,11 +466,11 @@ $secondary-color: #ffffff;
 $tertiary-color: #fbfb77;
 $quaternary-color: #3a3a3a;
 $text-color: #000000;
-@keyframes dash {
-  to {
-    stroke-dashoffset: -20;
-  }
-}
+// @keyframes dash {
+//   to {
+//     stroke-dashoffset: -20;
+//   }
+// }
 @keyframes draw {
   from {
     stroke-dashoffset: 7500;
@@ -612,11 +612,21 @@ svg g rect.box {
   fill: var(--box-back-color);
   stroke: var(--box-stroke-color);
 }
+svg g rect.titleBox {
+  fill: none;
+  stroke: white;
+  stroke-width: 5;
 
+}
 svg g line.divider {
   stroke: var(--primary-color);
-  stroke-width: 4;
+  stroke-width: 3.5;
 }
+svg g line.altDivider {
+  stroke: var(--primary-color);
+  stroke-dasharray: 2, 2;
+}
+
 
 svg g path.alt {
   fill: var(--primary-color);
@@ -626,8 +636,8 @@ svg g path.alt {
 svg g path.actorClass {
   fill: var(--primary-color);
   stroke: var(--primary-color);
-
 }
+
 svg g .participant1 {
   stroke: var(--participant1-border-color) !important;
   fill: var(--participant1-background-color) !important;
