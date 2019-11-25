@@ -969,7 +969,7 @@ export class GenerateService {
       }
     });
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGPathElement) => {
-      if (element.getAttribute('font-size') === '11' && (element.previousSibling as SVGLineElement).getAttribute('class') === 'null dotted' && element.textContent.includes('[') ) {
+      if (element.getAttribute('font-size') === '11' && (element.previousSibling as SVGLineElement).getAttribute('class') === 'null dotted' && element.textContent.includes('[')) {
         (element.previousSibling as SVGLineElement).setAttribute('class', 'altDivider');
       }
     });
@@ -992,6 +992,10 @@ export class GenerateService {
               (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
             }
           }
+          else if (element.getAttribute('class').includes('actorClass')) {
+            (element as SVGRectElement).setAttribute('class', `participant${count}`);
+            count++;
+          }
         } else {
           if (half) {
             (element as SVGRectElement).setAttribute('class', `participant${count}`)
@@ -1007,6 +1011,10 @@ export class GenerateService {
           if (element.getAttribute('class').includes('actorshape')) {
             (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
             (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+            count++;
+          }
+          else if (element.getAttribute('class').includes('actorClass')) {
+            (element as SVGRectElement).setAttribute('class', `participant${count}`);
             count++;
           }
         }
