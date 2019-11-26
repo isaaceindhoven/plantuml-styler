@@ -592,6 +592,12 @@ svg g path.note {
   stroke-width: 1;
   font-size: 12;
 }
+svg g polygon.note {
+  stroke: var(--quaternary-color);
+  fill: var(--tertiary-color);
+  stroke-width: 1;
+  font-size: 12;
+}
 
 svg g .transparent {
   fill: none;

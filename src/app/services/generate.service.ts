@@ -139,6 +139,7 @@ export class GenerateService {
     this.findDividers(oDOM);
     this.findAlts(oDOM);
     this.findDbs(oDOM);
+    this.findNotes(oDOM);
     this.setFont(oDOM);
     this.setAlts(oDOM);
     this.setAltBoxes(oDOM);
@@ -864,7 +865,7 @@ export class GenerateService {
     });
   }
   findBoxes(oDOM) {
-    let height = parseFloat(oDOM.getElementById('svgTag').style.height) * 0.9;
+    let height = parseFloat(oDOM.getElementById('svgTag').style.height) * 0.88;
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (parseFloat(element.getAttribute('height')) >= height) {
         if (element.getAttribute('class')) {
@@ -876,6 +877,13 @@ export class GenerateService {
         element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 5).toString())
         element.setAttribute('x', (parseFloat(element.getAttribute('x')) - 5).toString())
         element.setAttribute('width', (parseFloat(element.getAttribute('width')) + 10).toString())
+      }
+    });
+  }
+  findNotes(oDOM) {
+    this.styling.getTagList(oDOM, 'polygon').forEach((element: SVGPolygonElement) => {
+      if (element.animatedPoints.length != 4) {
+        element.setAttribute('class', 'note');
       }
     });
   }
@@ -909,7 +917,9 @@ export class GenerateService {
       if (element.getTotalLength().toPrecision(7) == '168.1421'
         || element.getTotalLength().toPrecision(7) == '187.1421'
         || element.getTotalLength().toPrecision(7) == '213.1421'
-        || element.getTotalLength().toPrecision(7) == '194.1421') {
+        || element.getTotalLength().toPrecision(7) == '194.1421'
+        || element.getTotalLength().toPrecision(7) == '136.1421'
+        || element.getTotalLength().toPrecision(7) == '155.1421') {
         element.setAttribute('class', 'alt');
       }
     });
@@ -927,14 +937,15 @@ export class GenerateService {
         if (this.isThemed) {
           if (this.themedShape === 'Rounded') {
             let d = element.getAttribute('d');
-            let firstnrLength = d.split(',')[0].length;
+            let firstnrLength = d.split(',')[0].length - 1;
             let nr = parseFloat(d.substr(1, firstnrLength));
             let newnr = nr - 7;
             let nrstring = nr.toString();
             let newnrstring = newnr.toString();
             let newD = d.replace(nrstring, newnrstring);
             let secondnrLength = d.split(',')[1].split(' ')[0].length;
-            let tnr = parseFloat(d.substr(5, secondnrLength));
+            let start = nr.toString().length + 2;
+            let tnr = parseFloat(d.substr(start, secondnrLength));
             let tnewnr = tnr + 2;
             let tnrstring = tnr.toString();
             let tnewnrstring = tnewnr.toString();
@@ -944,14 +955,15 @@ export class GenerateService {
         } else {
           if (this.selectedShape === 'Rounded') {
             let d = element.getAttribute('d');
-            let firstnrLength = d.split(',')[0].length;
+            let firstnrLength = d.split(',')[0].length - 1;
             let nr = parseFloat(d.substr(1, firstnrLength));
             let newnr = nr - 7;
             let nrstring = nr.toString();
             let newnrstring = newnr.toString();
             let newD = d.replace(nrstring, newnrstring);
             let secondnrLength = d.split(',')[1].split(' ')[0].length;
-            let tnr = parseFloat(d.substr(5, secondnrLength));
+            let start = nr.toString().length + 2;
+            let tnr = parseFloat(d.substr(start, secondnrLength));
             let tnewnr = tnr + 2;
             let tnrstring = tnr.toString();
             let tnewnrstring = tnewnr.toString();

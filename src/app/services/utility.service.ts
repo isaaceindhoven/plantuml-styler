@@ -153,12 +153,25 @@ export class UtilityService {
       stroke: var(--quaternary-color);
       fill: var(--tertiary-color);
       stroke-width: 1;
+      font-size: 12;
+    }
+    svg g polygon.note {
+      stroke: var(--quaternary-color);
+      fill: var(--tertiary-color);
+      stroke-width: 1;
+      font-size: 12;
     }
     
     svg g .transparent {
       fill: none;
     }
-
+    
+    svg g path.database {
+      fill: var(--secondary-color);
+      stroke: var(--primary-color);
+      stroke-width: 1.5px;
+    }
+    
     svg g path.squiggly {
       fill: none !important;
       stroke: var(--line-color) !important;
@@ -168,11 +181,21 @@ export class UtilityService {
       fill: var(--box-back-color);
       stroke: var(--box-stroke-color);
     }
+    svg g rect.titleBox {
+      fill: none;
+      stroke: white;
+      stroke-width: 5;
     
+    }
     svg g line.divider {
       stroke: var(--primary-color);
-      stroke-width: 4;
+      stroke-width: 3.5;
     }
+    svg g line.altDivider {
+      stroke: var(--primary-color);
+      stroke-dasharray: 2, 2;
+    }
+    
     
     svg g path.alt {
       fill: var(--primary-color);
@@ -182,8 +205,8 @@ export class UtilityService {
     svg g path.actorClass {
       fill: var(--primary-color);
       stroke: var(--primary-color);
-    
     }
+    
     svg g .participant1 {
       stroke: var(--participant1-border-color)!important;
       fill: var(--participant1-background-color)!important;
