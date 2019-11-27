@@ -39,6 +39,15 @@ export class ImportExportService {
       colorParticipantBackground7: this.gen.colorParticipantBackground7,
       colorParticipantBackground8: this.gen.colorParticipantBackground8,
       colorParticipantBackground9: this.gen.colorParticipantBackground9,
+      colorParticipantText1: this.gen.colorParticipantText1,
+      colorParticipantText2: this.gen.colorParticipantText2,
+      colorParticipantText3: this.gen.colorParticipantText3,
+      colorParticipantText4: this.gen.colorParticipantText4,
+      colorParticipantText5: this.gen.colorParticipantText5,
+      colorParticipantText6: this.gen.colorParticipantText6,
+      colorParticipantText7: this.gen.colorParticipantText7,
+      colorParticipantText8: this.gen.colorParticipantText8,
+      colorParticipantText9: this.gen.colorParticipantText9,
       selectedSize: this.gen.selectedSize,
       selectedTheme: this.gen.selectedTheme,
       selectedFont: this.gen.selectedFont,
@@ -141,6 +150,15 @@ export class ImportExportService {
     this.gen.colorParticipantBackground7 = json.colorParticipantBackground7;
     this.gen.colorParticipantBackground8 = json.colorParticipantBackground8;
     this.gen.colorParticipantBackground9 = json.colorParticipantBackground9;
+    this.gen.colorParticipantText1 = json.colorParticipantText1;
+    this.gen.colorParticipantText2 = json.colorParticipantText2;
+    this.gen.colorParticipantText3 = json.colorParticipantText3;
+    this.gen.colorParticipantText4 = json.colorParticipantText4;
+    this.gen.colorParticipantText5 = json.colorParticipantText5;
+    this.gen.colorParticipantText6 = json.colorParticipantText6;
+    this.gen.colorParticipantText7 = json.colorParticipantText7;
+    this.gen.colorParticipantText8 = json.colorParticipantText8;
+    this.gen.colorParticipantText9 = json.colorParticipantText9;
     this.gen.selectedSize = json.selectedSize;
     this.gen.selectedTheme = json.selectedTheme;
     this.gen.selectedFont = json.selectedFont;

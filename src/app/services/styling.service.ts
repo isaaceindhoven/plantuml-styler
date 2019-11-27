@@ -9,16 +9,6 @@ export class StylingService {
   actorlist: string[] = [];
   oldActorElements: any[] = [];
   image;
-  PlantUMLStyle = [
-    '#a80036',
-    '#fefece',
-    '#fbfb77',
-    '#3a3a3a',
-    '#000000',
-    '#a80036',
-    '#a80036',
-    '#fefece',
-    '#000000',];
   IsaacStyle = [
     '#cccccc',
     '#ffffff',
@@ -31,6 +21,18 @@ export class StylingService {
     '#009ddc',
     '#f5f5f5',
     '#f5f5f5',];
+  PlantUMLStyle = [
+    '#a80036',
+    '#fefece',
+    '#fbfb77',
+    '#3a3a3a',
+    '#000000',
+    '#a80036',
+    '#a80036',
+    '#fefece',
+    '#000000',
+    '#fefece',
+    '#a80036',];
   JohanStyle = [
     '#90c9cc',
     '#a6dee1',
@@ -40,7 +42,9 @@ export class StylingService {
     '#737373',
     '#32bdb8',
     '#32bdb8',
-    '#ffffff',];
+    '#ffffff',
+    '#a6dee1',
+    '#90c9cc',];
   GraytoneStyle = [
     '#bfbcbc',
     '#ffffff',
@@ -50,7 +54,9 @@ export class StylingService {
     '#bfbcbc',
     '#bfbcbc',
     '#ffffff',
-    '#707070',];
+    '#707070',
+    '#ffffff',
+    '#bfbcbc',];
   BlackWhiteStyle = [
     '#121212',
     '#ffffff',
@@ -58,6 +64,8 @@ export class StylingService {
     '#121212',
     '#121212',
     '#121212',
+    '#121212',
+    '#ffffff',
     '#121212',
     '#ffffff',
     '#121212',];
@@ -331,6 +339,15 @@ export class StylingService {
     colorParticipantBackground7?,
     colorParticipantBackground8?,
     colorParticipantBackground9?,
+    colorParticipantText1?,
+    colorParticipantText2?,
+    colorParticipantText3?,
+    colorParticipantText4?,
+    colorParticipantText5?,
+    colorParticipantText6?,
+    colorParticipantText7?,
+    colorParticipantText8?,
+    colorParticipantText9?,
   ) {
     if (!oDOM) {
       oDOM = document;
@@ -367,6 +384,16 @@ export class StylingService {
       oDOM.getElementById('svgTag').style.setProperty(`--participant7-background-color`, colorParticipantBackground7);
       oDOM.getElementById('svgTag').style.setProperty(`--participant8-background-color`, colorParticipantBackground8);
       oDOM.getElementById('svgTag').style.setProperty(`--participant9-background-color`, colorParticipantBackground9);
+
+      oDOM.getElementById('svgTag').style.setProperty(`--participant1-text-color`, colorParticipantText1);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant2-text-color`, colorParticipantText2);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant3-text-color`, colorParticipantText3);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant4-text-color`, colorParticipantText4);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant5-text-color`, colorParticipantText5);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant6-text-color`, colorParticipantText6);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant7-text-color`, colorParticipantText7);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant8-text-color`, colorParticipantText8);
+      oDOM.getElementById('svgTag').style.setProperty(`--participant9-text-color`, colorParticipantText9);
     }
     if (document.getElementById('svgTag')) {
       document.getElementById('svgTag').style.setProperty(`--primary-color`, color1)
@@ -400,6 +427,16 @@ export class StylingService {
       document.getElementById('svgTag').style.setProperty(`--participant7-background-color`, colorParticipantBackground7);
       document.getElementById('svgTag').style.setProperty(`--participant8-background-color`, colorParticipantBackground8);
       document.getElementById('svgTag').style.setProperty(`--participant9-background-color`, colorParticipantBackground9);
+
+      document.getElementById('svgTag').style.setProperty(`--participant1-text-color`, colorParticipantText1);
+      document.getElementById('svgTag').style.setProperty(`--participant2-text-color`, colorParticipantText2);
+      document.getElementById('svgTag').style.setProperty(`--participant3-text-color`, colorParticipantText3);
+      document.getElementById('svgTag').style.setProperty(`--participant4-text-color`, colorParticipantText4);
+      document.getElementById('svgTag').style.setProperty(`--participant5-text-color`, colorParticipantText5);
+      document.getElementById('svgTag').style.setProperty(`--participant6-text-color`, colorParticipantText6);
+      document.getElementById('svgTag').style.setProperty(`--participant7-text-color`, colorParticipantText7);
+      document.getElementById('svgTag').style.setProperty(`--participant8-text-color`, colorParticipantText8);
+      document.getElementById('svgTag').style.setProperty(`--participant9-text-color`, colorParticipantText9);
     }
   }
   setNode(oDOM, type, textImages) {

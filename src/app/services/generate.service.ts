@@ -75,6 +75,15 @@ export class GenerateService {
   colorParticipantBackground7 = '';
   colorParticipantBackground8 = '';
   colorParticipantBackground9 = '';
+  colorParticipantText1 = '';
+  colorParticipantText2 = '';
+  colorParticipantText3 = '';
+  colorParticipantText4 = '';
+  colorParticipantText5 = '';
+  colorParticipantText6 = '';
+  colorParticipantText7 = '';
+  colorParticipantText8 = '';
+  colorParticipantText9 = '';
   colorBoxBack = '';
   colorBoxStroke = '';
   selectedSize = '14'
@@ -94,6 +103,7 @@ export class GenerateService {
   img;
   multi = false;
   multicount = 1;
+  selectedParticipant = 'participant 1';
   /* #endregion */
 
   async generateSVG(text: string) {
@@ -378,7 +388,16 @@ export class GenerateService {
           this.styling.PlantUMLStyle[1],
           this.styling.PlantUMLStyle[1],
           this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1])
+          this.styling.PlantUMLStyle[1],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4],
+          this.styling.PlantUMLStyle[4])
       }
       else if (this.selectedTheme == 'ISAAC') {
         this.styling.addColorToStyle(
@@ -411,7 +430,16 @@ export class GenerateService {
           this.styling.IsaacStyle[1],
           this.styling.IsaacStyle[1],
           this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1])
+          this.styling.IsaacStyle[1],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4],
+          this.styling.IsaacStyle[4])
       }
       else if (this.selectedTheme == 'Johan') {
         this.styling.addColorToStyle(
@@ -444,7 +472,16 @@ export class GenerateService {
           this.styling.JohanStyle[1],
           this.styling.JohanStyle[1],
           this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1])
+          this.styling.JohanStyle[1],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4],
+          this.styling.JohanStyle[4])
       }
       else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
@@ -477,7 +514,16 @@ export class GenerateService {
           this.styling.GraytoneStyle[1],
           this.styling.GraytoneStyle[1],
           this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1])
+          this.styling.GraytoneStyle[1],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4],
+          this.styling.GraytoneStyle[4])
       }
       else if (this.selectedTheme == 'Blackwhite') {
         this.styling.addColorToStyle(
@@ -510,7 +556,16 @@ export class GenerateService {
           this.styling.BlackWhiteStyle[1],
           this.styling.BlackWhiteStyle[1],
           this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1])
+          this.styling.BlackWhiteStyle[1],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4],
+          this.styling.BlackWhiteStyle[4])
       }
     } else {
       this.styling.addColorToStyle(
@@ -543,7 +598,16 @@ export class GenerateService {
         this.colorParticipantBackground6,
         this.colorParticipantBackground7,
         this.colorParticipantBackground8,
-        this.colorParticipantBackground9)
+        this.colorParticipantBackground9,
+        this.colorParticipantText1,
+        this.colorParticipantText2,
+        this.colorParticipantText3,
+        this.colorParticipantText4,
+        this.colorParticipantText5,
+        this.colorParticipantText6,
+        this.colorParticipantText7,
+        this.colorParticipantText8,
+        this.colorParticipantText9)
 
     }
   }
@@ -997,6 +1061,7 @@ export class GenerateService {
               (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
               (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
               half = false;
+              (element.nextSibling.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
               count++;
             } else {
               half = true;
@@ -1006,16 +1071,18 @@ export class GenerateService {
           }
           else if (element.getAttribute('class').includes('actorClass')) {
             (element as SVGRectElement).setAttribute('class', `participant${count}`);
+            (element.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
             count++;
           }
         } else {
           if (half) {
-            (element as SVGRectElement).setAttribute('class', `participant${count}`)
+            (element as SVGRectElement).setAttribute('class', `participant${count}`);
+            (element.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
             half = false;
             count++;
           } else {
             half = true;
-            (element as SVGRectElement).setAttribute('class', `participant${count}`)
+            (element as SVGRectElement).setAttribute('class', `participant${count}`);
           }
         }
       } else {
@@ -1023,20 +1090,30 @@ export class GenerateService {
           if (element.getAttribute('class').includes('actorshape')) {
             (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
             (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+            (element.nextSibling.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
             count++;
           }
           else if (element.getAttribute('class').includes('actorClass')) {
             (element as SVGRectElement).setAttribute('class', `participant${count}`);
+            (element.parentElement.parentElement.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
             count++;
           }
         }
         else {
           (element as SVGRectElement).setAttribute('class', `participant${count}`);
+          (element.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
           count++;
         }
       }
     }
     );
     return count - 1;
+  }
+  getParticipants() {
+    let array = [];
+    for (let i = 0; i < this.multicount; i++) {
+      array.push(`participant ${i+1}`);
+    }
+    return array;
   }
 }
