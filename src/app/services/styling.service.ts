@@ -175,60 +175,89 @@ export class StylingService {
   toImageNode(oDOM) {
     this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
-        let ns = 'http://www.w3.org/2000/svg'
-        let image = oDOM.createElementNS(ns, 'image');
-        image.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-        image.setAttributeNS(null, 'width', element.getAttribute('width'))
-        image.setAttributeNS(null, 'height', element.getAttribute('height'))
-        image.setAttributeNS(null, 'x', element.getAttribute('x'))
-        image.setAttributeNS(null, 'y', element.getAttribute('y'))
-        image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.image)
-        element.parentNode.replaceChild(image, element);
+        this.setImage(oDOM, element);
       }
     });
+  }
+  setImage(oDOM, element) {
+    let ns = 'http://www.w3.org/2000/svg'
+    let image = oDOM.createElementNS(ns, 'image');
+    image.setAttributeNS(null, 'filter', element.getAttribute('filter'))
+    image.setAttributeNS(null, 'width', element.getAttribute('width'))
+    image.setAttributeNS(null, 'height', element.getAttribute('height'))
+    image.setAttributeNS(null, 'x', element.getAttribute('x'))
+    image.setAttributeNS(null, 'y', element.getAttribute('y'))
+    image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.image)
+    element.parentNode.replaceChild(image, element);
   }
   toEllipseNode(oDOM) {
     this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
-        let ns = 'http://www.w3.org/2000/svg'
-        let ellipse = oDOM.createElementNS(ns, 'ellipse');
-        let rx = (parseFloat(element.getAttribute('width')) / 2);
-        let ry = (parseFloat(element.getAttribute('height')) / 2);
-        let cx = (parseFloat(element.getAttribute('x')) + rx);
-        let cy = (parseFloat(element.getAttribute('y')) + ry);
-        ellipse.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-        ellipse.setAttributeNS(null, 'rx', rx.toString())
-        ellipse.setAttributeNS(null, 'ry', ry.toString())
-        ellipse.setAttributeNS(null, 'cx', cx.toString())
-        ellipse.setAttributeNS(null, 'cy', cy.toString())
-        element.parentNode.replaceChild(ellipse, element);
+        this.setEllipse(oDOM, element);
       }
     });
+  }
+  setEllipse(oDOM, element, participant?) {
+    let ns = 'http://www.w3.org/2000/svg'
+    let ellipse = oDOM.createElementNS(ns, 'ellipse');
+    let rx = (parseFloat(element.getAttribute('width')) / 2);
+    let ry = (parseFloat(element.getAttribute('height')) / 2);
+    let cx = (parseFloat(element.getAttribute('x')) + rx);
+    let cy = (parseFloat(element.getAttribute('y')) + ry);
+    ellipse.setAttributeNS(null, 'filter', element.getAttribute('filter'))
+    ellipse.setAttributeNS(null, 'rx', rx.toString())
+    ellipse.setAttributeNS(null, 'ry', ry.toString())
+    ellipse.setAttributeNS(null, 'cx', cx.toString())
+    ellipse.setAttributeNS(null, 'cy', cy.toString())
+    if(participant){
+      ellipse.setAttribute('class', participant);
+    }
+    element.parentNode.replaceChild(ellipse, element);
   }
   toCircleNode(oDOM) {
     this.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
-        let ns = 'http://www.w3.org/2000/svg'
-        let circle = oDOM.createElementNS(ns, 'circle');
-        let r = ((parseFloat(element.getAttribute('width')) / 2) * 0.9);
-        let cx = (parseFloat(element.getAttribute('x')) + (r * 1.12));
-        let cy;
-        if (parseFloat(element.getAttribute('width')) >= 50) {
-          cy = (parseFloat(element.getAttribute('y')) + (r * 0.5));
-        } else if (parseFloat(element.getAttribute('width')) >= 100) {
-          cy = (parseFloat(element.getAttribute('y')) - (r * 1.5));
-        } else if (parseFloat(element.getAttribute('width')) >= 130) {
-          cy = (parseFloat(element.getAttribute('y')) - (r * 4));
-        } else {
-          cy = (parseFloat(element.getAttribute('y')) + (r * 0.8));
-        }
-        circle.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-        circle.setAttributeNS(null, 'r', r.toString())
-        circle.setAttributeNS(null, 'cx', cx.toString())
-        circle.setAttributeNS(null, 'cy', cy.toString())
-        element.parentNode.replaceChild(circle, element);
+        this.setCircle(oDOM, element);
       }
     });
+  }
+  setCircle(oDOM, element, participant?) {
+    let ns = 'http://www.w3.org/2000/svg'
+    let circle = oDOM.createElementNS(ns, 'circle');
+    let r = ((parseFloat(element.getAttribute('width')) / 2) * 0.9);
+    let cx = (parseFloat(element.getAttribute('x')) + (r * 1.12));
+    let cy;
+    if (parseFloat(element.getAttribute('width')) >= 50) {
+      cy = (parseFloat(element.getAttribute('y')) + (r * 0.5));
+    } else if (parseFloat(element.getAttribute('width')) >= 100) {
+      cy = (parseFloat(element.getAttribute('y')) - (r * 1.5));
+    } else if (parseFloat(element.getAttribute('width')) >= 130) {
+      cy = (parseFloat(element.getAttribute('y')) - (r * 4));
+    } else {
+      cy = (parseFloat(element.getAttribute('y')) + (r * 0.8));
+    }
+    circle.setAttributeNS(null, 'filter', element.getAttribute('filter'))
+    circle.setAttributeNS(null, 'r', r.toString())
+    circle.setAttributeNS(null, 'cx', cx.toString())
+    circle.setAttributeNS(null, 'cy', cy.toString())
+    if(participant){
+      circle.setAttribute('class', participant);
+    }
+    element.parentNode.replaceChild(circle, element);
+  }
+  setRounded(oDOM, element, participant?) {
+    element.setAttribute('rx', 10);
+    element.setAttribute('ry', 10);
+    if(participant){
+      element.setAttribute('class', participant);
+    }
+  }
+  setRectangle(oDOM, element, participant?) {
+    element.setAttribute('rx', 0.5);
+    element.setAttribute('ry', 0.5);
+    if(participant){
+      element.setAttribute('class', participant);
+    }
   }
   removeStyling(oDOM) {
     this.removeStyleFrom(oDOM, 'rect');

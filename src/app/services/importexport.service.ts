@@ -77,7 +77,16 @@ export class ImportExportService {
       lineThickness: this.gen.lineThickness,
       themedLineThickness: this.gen.themedLineThickness,
       multi: this.gen.multi,
-      multicount: this.gen.multicount
+      multicount: this.gen.multicount,
+      participant1shape: this.gen.participant1shape,
+      participant2shape: this.gen.participant2shape,
+      participant3shape: this.gen.participant3shape,
+      participant4shape: this.gen.participant4shape,
+      participant5shape: this.gen.participant5shape,
+      participant6shape: this.gen.participant6shape,
+      participant7shape: this.gen.participant7shape,
+      participant8shape: this.gen.participant8shape,
+      participant9shape: this.gen.participant9shape,
     });
     if (returning) {
       return json;
@@ -189,6 +198,15 @@ export class ImportExportService {
     this.gen.themedLineThickness = json.themedLineThickness;
     this.gen.multicount = json.multicount;
     this.gen.multi = json.multi;
+    this.gen.participant1shape = json.participant1shape;
+    this.gen.participant2shape = json.participant2shape;
+    this.gen.participant3shape = json.participant3shape;
+    this.gen.participant4shape = json.participant4shape;
+    this.gen.participant5shape = json.participant5shape;
+    this.gen.participant6shape = json.participant6shape;
+    this.gen.participant7shape = json.participant7shape;
+    this.gen.participant8shape = json.participant8shape;
+    this.gen.participant9shape = json.participant9shape;
     if (this.gen.halfwayDoneProcessing) {
       this.gen.isDoneProcessing = true;
       this.gen.generateSVG(this.gen.text)

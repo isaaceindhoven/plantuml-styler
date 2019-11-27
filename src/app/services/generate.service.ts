@@ -104,6 +104,15 @@ export class GenerateService {
   multi = false;
   multicount = 1;
   selectedParticipant = 'participant 1';
+  participant1shape;
+  participant2shape;
+  participant3shape;
+  participant4shape;
+  participant5shape;
+  participant6shape;
+  participant7shape;
+  participant8shape;
+  participant9shape;
   /* #endregion */
 
   async generateSVG(text: string) {
@@ -132,7 +141,9 @@ export class GenerateService {
   styleSVG(oDOM) {
     //removing all the styling PlantUML puts on it
     this.styling.removeStyling(oDOM);
-    this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
+    if (!this.multi) {
+      this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
+    }
     this.isThemed ?
       (this.themedHiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM)) :
       (this.hiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM));
@@ -159,6 +170,7 @@ export class GenerateService {
     if (this.multi) {
       this.multicount = this.setMultiParticipants(oDOM);
     }
+    this.setMultiParticipantShapes(oDOM);
     let s = new XMLSerializer();
     let str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
@@ -1112,8 +1124,54 @@ export class GenerateService {
   getParticipants() {
     let array = [];
     for (let i = 0; i < this.multicount; i++) {
-      array.push(`participant ${i+1}`);
+      array.push(`participant ${i + 1}`);
     }
     return array;
+  }
+  setMultiParticipantShapes(oDOM) {
+    Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+      if (element.getAttribute('class') === 'participant1') {
+        this.changeNode(oDOM, element, this.participant1shape, 'participant1');
+      }
+      else if (element.getAttribute('class') === 'participant2') {
+        this.changeNode(oDOM, element, this.participant2shape, 'participant2');
+      }
+      else if (element.getAttribute('class') === 'participant3') {
+        this.changeNode(oDOM, element, this.participant3shape, 'participant3');
+      }
+      else if (element.getAttribute('class') === 'participant4') {
+        this.changeNode(oDOM, element, this.participant4shape, 'participant4');
+      }
+      else if (element.getAttribute('class') === 'participant5') {
+        this.changeNode(oDOM, element, this.participant5shape, 'participant5');
+      }
+      else if (element.getAttribute('class') === 'participant6') {
+        this.changeNode(oDOM, element, this.participant6shape, 'participant6');
+      }
+      else if (element.getAttribute('class') === 'participant7') {
+        this.changeNode(oDOM, element, this.participant7shape, 'participant7');
+      }
+      else if (element.getAttribute('class') === 'participant8') {
+        this.changeNode(oDOM, element, this.participant8shape, 'participant8');
+      }
+      else if (element.getAttribute('class') === 'participant9') {
+        this.changeNode(oDOM, element, this.participant9shape, 'participant9');
+      }
+    });
+  }
+
+  changeNode(oDOM, element, shape, participant) {
+    if (shape === 'Ellipse') {
+      this.styling.setEllipse(oDOM, element, participant);
+    }
+    else if (shape === 'Circle') {
+      this.styling.setCircle(oDOM, element, participant);
+    }
+    else if (shape === 'Rectangle') {
+      this.styling.setRectangle(oDOM, element, participant);
+    }
+    else if (shape === 'Rounded') {
+      this.styling.setRounded(oDOM, element, participant);
+    }
   }
 }
