@@ -21,33 +21,6 @@ export class ImportExportService {
       color9: this.gen.color9,
       colorBoxBack: this.gen.colorBoxBack,
       colorBoxStroke: this.gen.colorBoxStroke,
-      colorParticipantBorder1: this.gen.colorParticipantBorder1,
-      colorParticipantBorder2: this.gen.colorParticipantBorder2,
-      colorParticipantBorder3: this.gen.colorParticipantBorder3,
-      colorParticipantBorder4: this.gen.colorParticipantBorder4,
-      colorParticipantBorder5: this.gen.colorParticipantBorder5,
-      colorParticipantBorder6: this.gen.colorParticipantBorder6,
-      colorParticipantBorder7: this.gen.colorParticipantBorder7,
-      colorParticipantBorder8: this.gen.colorParticipantBorder8,
-      colorParticipantBorder9: this.gen.colorParticipantBorder9,
-      colorParticipantBackground1: this.gen.colorParticipantBackground1,
-      colorParticipantBackground2: this.gen.colorParticipantBackground2,
-      colorParticipantBackground3: this.gen.colorParticipantBackground3,
-      colorParticipantBackground4: this.gen.colorParticipantBackground4,
-      colorParticipantBackground5: this.gen.colorParticipantBackground5,
-      colorParticipantBackground6: this.gen.colorParticipantBackground6,
-      colorParticipantBackground7: this.gen.colorParticipantBackground7,
-      colorParticipantBackground8: this.gen.colorParticipantBackground8,
-      colorParticipantBackground9: this.gen.colorParticipantBackground9,
-      colorParticipantText1: this.gen.colorParticipantText1,
-      colorParticipantText2: this.gen.colorParticipantText2,
-      colorParticipantText3: this.gen.colorParticipantText3,
-      colorParticipantText4: this.gen.colorParticipantText4,
-      colorParticipantText5: this.gen.colorParticipantText5,
-      colorParticipantText6: this.gen.colorParticipantText6,
-      colorParticipantText7: this.gen.colorParticipantText7,
-      colorParticipantText8: this.gen.colorParticipantText8,
-      colorParticipantText9: this.gen.colorParticipantText9,
       selectedSize: this.gen.selectedSize,
       selectedTheme: this.gen.selectedTheme,
       selectedFont: this.gen.selectedFont,
@@ -78,15 +51,9 @@ export class ImportExportService {
       themedLineThickness: this.gen.themedLineThickness,
       multi: this.gen.multi,
       multicount: this.gen.multicount,
-      participant1shape: this.gen.participant1shape,
-      participant2shape: this.gen.participant2shape,
-      participant3shape: this.gen.participant3shape,
-      participant4shape: this.gen.participant4shape,
-      participant5shape: this.gen.participant5shape,
-      participant6shape: this.gen.participant6shape,
-      participant7shape: this.gen.participant7shape,
-      participant8shape: this.gen.participant8shape,
-      participant9shape: this.gen.participant9shape,
+      participants: this.gen.participants,
+      participantColors:this.gen.participantColors,
+      participantShapes: this.gen.participantShapes
     });
     if (returning) {
       return json;
@@ -141,33 +108,6 @@ export class ImportExportService {
     this.gen.color9 = json.color9;
     this.gen.colorBoxBack = json.colorBoxBack;
     this.gen.colorBoxStroke = json.colorBoxStroke;
-    this.gen.colorParticipantBorder1 = json.colorParticipantBorder1;
-    this.gen.colorParticipantBorder2 = json.colorParticipantBorder2;
-    this.gen.colorParticipantBorder3 = json.colorParticipantBorder3;
-    this.gen.colorParticipantBorder4 = json.colorParticipantBorder4;
-    this.gen.colorParticipantBorder5 = json.colorParticipantBorder5;
-    this.gen.colorParticipantBorder6 = json.colorParticipantBorder6;
-    this.gen.colorParticipantBorder7 = json.colorParticipantBorder7;
-    this.gen.colorParticipantBorder8 = json.colorParticipantBorder8;
-    this.gen.colorParticipantBorder9 = json.colorParticipantBorder9;
-    this.gen.colorParticipantBackground1 = json.colorParticipantBackground1;
-    this.gen.colorParticipantBackground2 = json.colorParticipantBackground2;
-    this.gen.colorParticipantBackground3 = json.colorParticipantBackground3;
-    this.gen.colorParticipantBackground4 = json.colorParticipantBackground4;
-    this.gen.colorParticipantBackground5 = json.colorParticipantBackground5;
-    this.gen.colorParticipantBackground6 = json.colorParticipantBackground6;
-    this.gen.colorParticipantBackground7 = json.colorParticipantBackground7;
-    this.gen.colorParticipantBackground8 = json.colorParticipantBackground8;
-    this.gen.colorParticipantBackground9 = json.colorParticipantBackground9;
-    this.gen.colorParticipantText1 = json.colorParticipantText1;
-    this.gen.colorParticipantText2 = json.colorParticipantText2;
-    this.gen.colorParticipantText3 = json.colorParticipantText3;
-    this.gen.colorParticipantText4 = json.colorParticipantText4;
-    this.gen.colorParticipantText5 = json.colorParticipantText5;
-    this.gen.colorParticipantText6 = json.colorParticipantText6;
-    this.gen.colorParticipantText7 = json.colorParticipantText7;
-    this.gen.colorParticipantText8 = json.colorParticipantText8;
-    this.gen.colorParticipantText9 = json.colorParticipantText9;
     this.gen.selectedSize = json.selectedSize;
     this.gen.selectedTheme = json.selectedTheme;
     this.gen.selectedFont = json.selectedFont;
@@ -198,15 +138,9 @@ export class ImportExportService {
     this.gen.themedLineThickness = json.themedLineThickness;
     this.gen.multicount = json.multicount;
     this.gen.multi = json.multi;
-    this.gen.participant1shape = json.participant1shape;
-    this.gen.participant2shape = json.participant2shape;
-    this.gen.participant3shape = json.participant3shape;
-    this.gen.participant4shape = json.participant4shape;
-    this.gen.participant5shape = json.participant5shape;
-    this.gen.participant6shape = json.participant6shape;
-    this.gen.participant7shape = json.participant7shape;
-    this.gen.participant8shape = json.participant8shape;
-    this.gen.participant9shape = json.participant9shape;
+    this.gen.participants = json.participants;
+    this.gen.participantColors = json.participantColors;
+    this.gen.participantShapes = json.participantShapes;
     if (this.gen.halfwayDoneProcessing) {
       this.gen.isDoneProcessing = true;
       this.gen.generateSVG(this.gen.text)

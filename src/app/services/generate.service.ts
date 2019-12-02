@@ -10,6 +10,7 @@ import { UtilityService } from './utility.service';
 })
 export class GenerateService {
 
+
   constructor(private utility: UtilityService, private styling: StylingService, private http: HttpClient, private autonumbering: AutoNumberService) { }
   /* #region variables   */
   timeoutId;
@@ -57,33 +58,6 @@ export class GenerateService {
   color7 = '';
   color8 = '';
   color9 = '';
-  colorParticipantBorder1 = '';
-  colorParticipantBorder2 = '';
-  colorParticipantBorder3 = '';
-  colorParticipantBorder4 = '';
-  colorParticipantBorder5 = '';
-  colorParticipantBorder6 = '';
-  colorParticipantBorder7 = '';
-  colorParticipantBorder8 = '';
-  colorParticipantBorder9 = '';
-  colorParticipantBackground1 = '';
-  colorParticipantBackground2 = '';
-  colorParticipantBackground3 = '';
-  colorParticipantBackground4 = '';
-  colorParticipantBackground5 = '';
-  colorParticipantBackground6 = '';
-  colorParticipantBackground7 = '';
-  colorParticipantBackground8 = '';
-  colorParticipantBackground9 = '';
-  colorParticipantText1 = '';
-  colorParticipantText2 = '';
-  colorParticipantText3 = '';
-  colorParticipantText4 = '';
-  colorParticipantText5 = '';
-  colorParticipantText6 = '';
-  colorParticipantText7 = '';
-  colorParticipantText8 = '';
-  colorParticipantText9 = '';
   colorBoxBack = '';
   colorBoxStroke = '';
   selectedSize = '14'
@@ -103,16 +77,24 @@ export class GenerateService {
   img;
   multi = false;
   multicount = 1;
-  selectedParticipant = 'participant 1';
-  participant1shape;
-  participant2shape;
-  participant3shape;
-  participant4shape;
-  participant5shape;
-  participant6shape;
-  participant7shape;
-  participant8shape;
-  participant9shape;
+  selectedParticipant;
+  participants = {};
+  participantShapes = [
+    {
+      name: null,
+      shape: null
+    }
+  ];
+  participantColors = [
+    {
+      name: null,
+      border: null,
+      background: null,
+      text: null,
+    }
+  ];
+  parshape = 'Rectangle';
+
   /* #endregion */
 
   async generateSVG(text: string) {
@@ -170,7 +152,10 @@ export class GenerateService {
     if (this.multi) {
       this.multicount = this.setMultiParticipants(oDOM);
     }
+
     this.setMultiParticipantShapes(oDOM);
+    this.setMultiParticipantColors(oDOM);
+
     let s = new XMLSerializer();
     let str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
@@ -593,33 +578,7 @@ export class GenerateService {
         oDOM,
         this.colorBoxBack,
         this.colorBoxStroke,
-        this.colorParticipantBorder1,
-        this.colorParticipantBorder2,
-        this.colorParticipantBorder3,
-        this.colorParticipantBorder4,
-        this.colorParticipantBorder5,
-        this.colorParticipantBorder6,
-        this.colorParticipantBorder7,
-        this.colorParticipantBorder8,
-        this.colorParticipantBorder9,
-        this.colorParticipantBackground1,
-        this.colorParticipantBackground2,
-        this.colorParticipantBackground3,
-        this.colorParticipantBackground4,
-        this.colorParticipantBackground5,
-        this.colorParticipantBackground6,
-        this.colorParticipantBackground7,
-        this.colorParticipantBackground8,
-        this.colorParticipantBackground9,
-        this.colorParticipantText1,
-        this.colorParticipantText2,
-        this.colorParticipantText3,
-        this.colorParticipantText4,
-        this.colorParticipantText5,
-        this.colorParticipantText6,
-        this.colorParticipantText7,
-        this.colorParticipantText8,
-        this.colorParticipantText9)
+      )
 
     }
   }
@@ -775,6 +734,7 @@ export class GenerateService {
     this.themedParticipantfontsize = 16;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 2;
+    this.multi = false;
   }
   JohanStyle() {
     this.themedBreak = 'Squiggly';
@@ -787,6 +747,8 @@ export class GenerateService {
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
+    this.multi = false;
+
   }
   GrayToneStyle() {
     this.themedBreak = 'Squiggly';
@@ -799,6 +761,7 @@ export class GenerateService {
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 2;
+    this.multi = false;
 
   }
   BlackWhiteStyle() {
@@ -812,6 +775,8 @@ export class GenerateService {
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
+    this.multi = false;
+
   }
   plantumlStyle() {
     this.themedBreak = 'Default';
@@ -824,6 +789,8 @@ export class GenerateService {
     this.themedParticipantfontsize = 13;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
+    this.multi = false;
+
   }
   setTheme() {
     if (this.isThemed) {
@@ -1065,62 +1032,99 @@ export class GenerateService {
   setMultiParticipants(oDOM: Document) {
     let count = 1;
     let half = false;
+    this.participants = [];
     Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+      var el;
       if (this.footnotes) {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {
             if (half) {
-              (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
-              (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
               half = false;
               (element.nextSibling.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+              let name = element.nextSibling.textContent;
+              let elements = [element, element.nextSibling];
+              let el = {};
+              el[name] = elements;
+              this.addToParticipants(name, elements);
               count++;
             } else {
               half = true;
-              (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
-              (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+              let name = element.nextSibling.textContent;
+              let elements = [element, element.nextSibling];
+              let el = {};
+              el[name] = elements;
+              this.addToParticipants(name, elements);
             }
           }
           else if (element.getAttribute('class').includes('actorClass')) {
-            (element as SVGRectElement).setAttribute('class', `participant${count}`);
-            (element.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
+            let name = element.parentElement.parentElement.nextSibling.textContent;
+            let elements = [element, element.parentElement.parentElement.nextSibling];
+            let el = {};
+            el[name] = elements;
+            this.addToParticipants(name, elements);
             count++;
           }
         } else {
           if (half) {
-            (element as SVGRectElement).setAttribute('class', `participant${count}`);
-            (element.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
             half = false;
+            let name = element.nextSibling.textContent;
+            let elements = [element, element.nextSibling];
+            let el = {};
+            el[name] = elements;
+            this.addToParticipants(name, elements);
             count++;
           } else {
             half = true;
-            (element as SVGRectElement).setAttribute('class', `participant${count}`);
+            let name = element.nextSibling.textContent;
+            let elements = [element, element.nextSibling];
+            let el = {};
+            el[name] = elements;
+            this.addToParticipants(name, elements);
           }
         }
       } else {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {
-            (element as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
-            (element.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
-            (element.nextSibling.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+            let name = element.nextSibling.textContent;
+            let elements = [element, element.nextSibling.nextSibling];
+            let el = {};
+            el[name] = elements;
+            this.addToParticipants(name, elements);
             count++;
           }
           else if (element.getAttribute('class').includes('actorClass')) {
-            (element as SVGRectElement).setAttribute('class', `participant${count}`);
-            (element.parentElement.parentElement.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
+            let name = element.parentElement.parentElement.nextSibling.textContent;
+            let elements = [element, element.parentElement.parentElement.nextSibling];
+            let el = {};
+            el[name] = elements;
+            this.addToParticipants(name, elements);
             count++;
           }
         }
         else {
-          (element as SVGRectElement).setAttribute('class', `participant${count}`);
-          (element.nextSibling as SVGRectElement).setAttribute('class', `participant${count}`);
+          let name = element.nextSibling.textContent;
+          let elements = [element, element.nextSibling];
+          let el = {};
+          el[name] = elements;
+          this.addToParticipants(name, elements);
           count++;
         }
       }
     }
     );
     return count - 1;
+
   }
+  addToParticipants(name, elements) {
+    if (this.participants[name]) {
+      this.participants[name].push(...elements);
+    }
+    else {
+      this.participants[name] = elements
+    }
+ 
+  }
+
   getParticipants() {
     let array = [];
     for (let i = 0; i < this.multicount; i++) {
@@ -1129,49 +1133,212 @@ export class GenerateService {
     return array;
   }
   setMultiParticipantShapes(oDOM) {
-    Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-      if (element.getAttribute('class') === 'participant1') {
-        this.changeNode(oDOM, element, this.participant1shape, 'participant1');
+    this.participantShapes.forEach(ps => {
+      let participant = this.participants[ps.name];
+      if (participant) {
+        Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+          if (participant[0]) {
+            if (this.footnotes) {
+              if (element.getAttribute('y') === participant[2].getAttribute('y') &&
+                element.getAttribute('x') === participant[2].getAttribute('x')) {
+                this.changeNode(oDOM, element, ps.shape, participant, true);
+              }
+            }
+            if (element.getAttribute('y') === participant[0].getAttribute('y') &&
+              element.getAttribute('x') === participant[0].getAttribute('x')) {
+              this.changeNode(oDOM, element, ps.shape, participant);
+            }
+          }
+        })
       }
-      else if (element.getAttribute('class') === 'participant2') {
-        this.changeNode(oDOM, element, this.participant2shape, 'participant2');
-      }
-      else if (element.getAttribute('class') === 'participant3') {
-        this.changeNode(oDOM, element, this.participant3shape, 'participant3');
-      }
-      else if (element.getAttribute('class') === 'participant4') {
-        this.changeNode(oDOM, element, this.participant4shape, 'participant4');
-      }
-      else if (element.getAttribute('class') === 'participant5') {
-        this.changeNode(oDOM, element, this.participant5shape, 'participant5');
-      }
-      else if (element.getAttribute('class') === 'participant6') {
-        this.changeNode(oDOM, element, this.participant6shape, 'participant6');
-      }
-      else if (element.getAttribute('class') === 'participant7') {
-        this.changeNode(oDOM, element, this.participant7shape, 'participant7');
-      }
-      else if (element.getAttribute('class') === 'participant8') {
-        this.changeNode(oDOM, element, this.participant8shape, 'participant8');
-      }
-      else if (element.getAttribute('class') === 'participant9') {
-        this.changeNode(oDOM, element, this.participant9shape, 'participant9');
+    });
+  }
+  setMultiParticipantColors(oDOM) {
+    this.participantColors.forEach(pc => {
+      let participant = this.participants[pc.name];
+      if (participant) {
+        Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+          if (participant[0]) {
+            if (this.footnotes) {
+              if (element.getAttribute('y') === participant[2].getAttribute('y') &&
+                element.getAttribute('cx') === participant[2].getAttribute('cx') &&
+                element.getAttribute('cy') === participant[2].getAttribute('cy') &&
+                element.getAttribute('x') === participant[2].getAttribute('x')) {
+                (element as SVGRectElement).style.stroke = pc.border;
+                (element as SVGRectElement).style.fill = pc.background;
+                if (element.nextSibling) {
+                  (element.nextSibling as SVGRectElement).style.fill = pc.text;
+                  (element.nextSibling as SVGRectElement).style.stroke = 'none';
+                } else {
+                  (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
+                  (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
+                }
+              }
+            }
+            if (element.getAttribute('y') === participant[0].getAttribute('y') &&
+              element.getAttribute('cx') === participant[0].getAttribute('cx') &&
+              element.getAttribute('cy') === participant[0].getAttribute('cy') &&
+              element.getAttribute('x') === participant[0].getAttribute('x')) {
+              (element as SVGRectElement).style.stroke = pc.border;
+              (element as SVGRectElement).style.fill = pc.background;
+              if (element.nextSibling) {
+                (element.nextSibling as SVGRectElement).style.fill = pc.text;
+                (element.nextSibling as SVGRectElement).style.stroke = 'none';
+              } else {
+                (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
+                (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
+              }
+            }
+          }
+        })
       }
     });
   }
 
-  changeNode(oDOM, element, shape, participant) {
+
+  changeNode(oDOM, element, shape, participant, second?) {
     if (shape === 'Ellipse') {
-      this.styling.setEllipse(oDOM, element, participant);
+      this.styling.setEllipse(oDOM, element, participant, second);
     }
     else if (shape === 'Circle') {
-      this.styling.setCircle(oDOM, element, participant);
+      this.styling.setCircle(oDOM, element, participant, second);
     }
     else if (shape === 'Rectangle') {
-      this.styling.setRectangle(oDOM, element, participant);
+      this.styling.setRectangle(oDOM, element, participant, second);
     }
     else if (shape === 'Rounded') {
-      this.styling.setRounded(oDOM, element, participant);
+      this.styling.setRounded(oDOM, element, participant, second);
     }
+  }
+
+  setShapes(pname, pshape) {
+    var index = this.participantShapes.findIndex(x => x.name == pname)
+    if (index === -1) {
+      if (!this.participantShapes[0].name) {
+        this.participantShapes.splice(0, 1, {
+          name: pname,
+          shape: pshape
+        })
+      } else {
+        this.participantShapes.push({
+          name: pname,
+          shape: pshape
+        });
+      }
+    }
+    else {
+      this.participantShapes.splice(index, 1, {
+        name: pname,
+        shape: pshape
+      })
+    }
+    for (let i = 0; i < this.participantShapes.length; i++) {
+      const ps = this.participantShapes[i];
+
+      if (!this.participants[ps.name])
+        this.participantShapes.splice(i, 1);
+    }
+  }
+  setMultiColors(participant, pname, pborder?, pbackground?, ptext?) {
+    var index = this.participantColors.findIndex(x => x.name == pname)
+    if (index === -1) {
+      if (!this.participantColors[0].name) {
+        this.participantColors.splice(0, 1, {
+          name: pname,
+          border: pborder,
+          background: pbackground,
+          text: ptext
+        })
+      } else {
+        this.participantColors.push({
+          name: pname,
+          border: pborder,
+          background: pbackground,
+          text: ptext
+        });
+      }
+    }
+    else {
+      if (pbackground)
+        this.participantColors[index].background = pbackground;
+      if (pborder)
+        this.participantColors[index].border = pborder;
+      if (ptext)
+        this.participantColors[index].text = ptext;
+    }
+    for (let i = 0; i < this.participantColors.length; i++) {
+      const ps = this.participantColors[i];
+
+      if (!this.participants[ps.name])
+        this.participantColors.splice(i, 1);
+
+    }
+    if (this.footnotes) {
+      Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+        if (element.getAttribute('cx') === participant[2].getAttribute('cx') &&
+          element.getAttribute('cy') === participant[2].getAttribute('cy') &&
+          element.getAttribute('y') === participant[2].getAttribute('y') &&
+          element.getAttribute('x') === participant[2].getAttribute('x')) {
+          (element as SVGRectElement).style.stroke = participant[0].style.stroke;
+          (element as SVGRectElement).style.fill = participant[0].style.fill;
+          if (element.nextSibling) {
+            (element.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
+            (element.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
+          } else {
+            (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
+            (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
+          }
+        }
+      })
+    }
+    Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+      if (element.getAttribute('cx') === participant[0].getAttribute('cx') &&
+        element.getAttribute('cy') === participant[0].getAttribute('cy') &&
+        element.getAttribute('y') === participant[0].getAttribute('y') &&
+        element.getAttribute('x') === participant[0].getAttribute('x')) {
+        (element as SVGRectElement).style.stroke = participant[0].style.stroke;
+        (element as SVGRectElement).style.fill = participant[0].style.fill;
+        if (element.nextSibling) {
+          (element.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
+          (element.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
+        } else {
+          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
+          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
+        }
+      }
+    })
+  }
+
+  getParticipantByElement(participant) {
+    Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+      if (element.getAttribute('height') === participant.getAttribute('height') &&
+        element.getAttribute('width') === participant.getAttribute('width') &&
+        element.getAttribute('y') === participant.getAttribute('y') &&
+        element.getAttribute('x') === participant.getAttribute('x')) {
+
+        return (element as SVGRectElement).style;
+      }
+    });
+    let ellipse = document.createElement('ellipse');
+    return ellipse;
+  }
+
+  setParticipantDoc(participant) {
+    Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+      if (element.getAttribute('height') === participant[0].getAttribute('height') &&
+        element.getAttribute('width') === participant[0].getAttribute('width') &&
+        element.getAttribute('y') === participant[0].getAttribute('y') &&
+        element.getAttribute('x') === participant[0].getAttribute('x')) {
+        (element as SVGRectElement).style.stroke = participant[0].style.stroke;
+        (element as SVGRectElement).style.fill = participant[0].style.fill;
+        if (element.nextSibling) {
+          (element.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
+          (element.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
+        } else {
+          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
+          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
+        }
+      }
+    })
   }
 }

@@ -64,36 +64,6 @@ export class HomeComponent implements OnInit {
     this.generate.color9 = '#000000'
     this.generate.colorBoxBack = '#fefece'
     this.generate.colorBoxStroke = '#a80036'
-
-    this.generate.colorParticipantBorder1 = '#a80036'
-    this.generate.colorParticipantBorder2 = '#a80036'
-    this.generate.colorParticipantBorder3 = '#a80036'
-    this.generate.colorParticipantBorder4 = '#a80036'
-    this.generate.colorParticipantBorder5 = '#a80036'
-    this.generate.colorParticipantBorder6 = '#a80036'
-    this.generate.colorParticipantBorder7 = '#a80036'
-    this.generate.colorParticipantBorder8 = '#a80036'
-    this.generate.colorParticipantBorder9 = '#a80036'
-
-    this.generate.colorParticipantBackground1 = '#fefece'
-    this.generate.colorParticipantBackground2 = '#fefece'
-    this.generate.colorParticipantBackground3 = '#fefece'
-    this.generate.colorParticipantBackground4 = '#fefece'
-    this.generate.colorParticipantBackground5 = '#fefece'
-    this.generate.colorParticipantBackground6 = '#fefece'
-    this.generate.colorParticipantBackground7 = '#fefece'
-    this.generate.colorParticipantBackground8 = '#fefece'
-    this.generate.colorParticipantBackground9 = '#fefece'
-
-    this.generate.colorParticipantText1 = '#000000'
-    this.generate.colorParticipantText2 = '#000000'
-    this.generate.colorParticipantText3 = '#000000'
-    this.generate.colorParticipantText4 = '#000000'
-    this.generate.colorParticipantText5 = '#000000'
-    this.generate.colorParticipantText6 = '#000000'
-    this.generate.colorParticipantText7 = '#000000'
-    this.generate.colorParticipantText8 = '#000000'
-    this.generate.colorParticipantText9 = '#000000'
     this.generate.selectedTheme = 'ISAAC';
     this.generate.isThemed = true;
     setTimeout(() => {
@@ -187,33 +157,6 @@ export class HomeComponent implements OnInit {
     this.generate.color9 = array[8];
     this.generate.colorBoxBack = array[9];
     this.generate.colorBoxStroke = array[10];
-    this.generate.colorParticipantBorder1 = array[0];
-    this.generate.colorParticipantBorder2 = array[0];
-    this.generate.colorParticipantBorder3 = array[0];
-    this.generate.colorParticipantBorder4 = array[0];
-    this.generate.colorParticipantBorder5 = array[0];
-    this.generate.colorParticipantBorder6 = array[0];
-    this.generate.colorParticipantBorder7 = array[0];
-    this.generate.colorParticipantBorder8 = array[0];
-    this.generate.colorParticipantBorder9 = array[0];
-    this.generate.colorParticipantBackground1 = array[1];
-    this.generate.colorParticipantBackground2 = array[1];
-    this.generate.colorParticipantBackground3 = array[1];
-    this.generate.colorParticipantBackground4 = array[1];
-    this.generate.colorParticipantBackground5 = array[1];
-    this.generate.colorParticipantBackground6 = array[1];
-    this.generate.colorParticipantBackground7 = array[1];
-    this.generate.colorParticipantBackground8 = array[1];
-    this.generate.colorParticipantBackground9 = array[1];
-    this.generate.colorParticipantText1 = array[4];
-    this.generate.colorParticipantText2 = array[4];
-    this.generate.colorParticipantText3 = array[4];
-    this.generate.colorParticipantText4 = array[4];
-    this.generate.colorParticipantText5 = array[4];
-    this.generate.colorParticipantText6 = array[4];
-    this.generate.colorParticipantText7 = array[4];
-    this.generate.colorParticipantText8 = array[4];
-    this.generate.colorParticipantText9 = array[4];
   }
   dropped(files: NgxFileDropEntry[]) {
     this.files = files;

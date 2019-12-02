@@ -197,9 +197,13 @@ export class StylingService {
       }
     });
   }
-  setEllipse(oDOM, element, participant?) {
+  setEllipse(oDOM, element, participant?, second?) {
+    if ((element as SVGEllipseElement).nodeName != 'rect') {
+      return;
+    }
     let ns = 'http://www.w3.org/2000/svg'
     let ellipse = oDOM.createElementNS(ns, 'ellipse');
+
     let rx = (parseFloat(element.getAttribute('width')) / 2);
     let ry = (parseFloat(element.getAttribute('height')) / 2);
     let cx = (parseFloat(element.getAttribute('x')) + rx);
@@ -209,8 +213,14 @@ export class StylingService {
     ellipse.setAttributeNS(null, 'ry', ry.toString())
     ellipse.setAttributeNS(null, 'cx', cx.toString())
     ellipse.setAttributeNS(null, 'cy', cy.toString())
-    if(participant){
-      ellipse.setAttribute('class', participant);
+    ellipse.setAttributeNS(null, 'style', element.getAttribute('style'));
+    ellipse.setAttributeNS(null, 'name', 'participantshape')
+    if (participant) {
+      if (second) {
+        (participant).splice(2, 1, ellipse);
+      } else {
+        (participant).splice(0, 1, ellipse);
+      }
     }
     element.parentNode.replaceChild(ellipse, element);
   }
@@ -221,7 +231,10 @@ export class StylingService {
       }
     });
   }
-  setCircle(oDOM, element, participant?) {
+  setCircle(oDOM, element, participant?, second?) {
+    if ((element as SVGCircleElement).nodeName != 'rect') {
+      return;
+    }
     let ns = 'http://www.w3.org/2000/svg'
     let circle = oDOM.createElementNS(ns, 'circle');
     let r = ((parseFloat(element.getAttribute('width')) / 2) * 0.9);
@@ -236,27 +249,41 @@ export class StylingService {
     } else {
       cy = (parseFloat(element.getAttribute('y')) + (r * 0.8));
     }
-    circle.setAttributeNS(null, 'filter', element.getAttribute('filter'))
-    circle.setAttributeNS(null, 'r', r.toString())
-    circle.setAttributeNS(null, 'cx', cx.toString())
-    circle.setAttributeNS(null, 'cy', cy.toString())
-    if(participant){
-      circle.setAttribute('class', participant);
+    circle.setAttributeNS(null, 'filter', element.getAttribute('filter'));
+    circle.setAttributeNS(null, 'r', r.toString());
+    circle.setAttributeNS(null, 'cx', cx.toString());
+    circle.setAttributeNS(null, 'cy', cy.toString());
+    circle.setAttributeNS(null, 'name', 'participantshape');
+    circle.setAttributeNS(null, 'style', element.getAttribute('style'));
+    if (participant) {
+      if (second) {
+        (participant).splice(2, 1, circle);
+      } else {
+        (participant).splice(0, 1, circle);
+      }
     }
     element.parentNode.replaceChild(circle, element);
   }
-  setRounded(oDOM, element, participant?) {
+  setRounded(oDOM, element, participant?, second?) {
     element.setAttribute('rx', 10);
     element.setAttribute('ry', 10);
-    if(participant){
-      element.setAttribute('class', participant);
+    if (participant) {
+      if (second) {
+        (participant).splice(2, 1, element);
+      } else {
+        (participant).splice(0, 1, element);
+      }
     }
   }
-  setRectangle(oDOM, element, participant?) {
+  setRectangle(oDOM, element, participant?, second?) {
     element.setAttribute('rx', 0.5);
     element.setAttribute('ry', 0.5);
-    if(participant){
-      element.setAttribute('class', participant);
+    if (participant) {
+      if (second) {
+        (participant).splice(2, 1, element);
+      } else {
+        (participant).splice(0, 1, element);
+      }
     }
   }
   removeStyling(oDOM) {

@@ -64,7 +64,7 @@ div.right {
 .diagram {
   max-width: 1500px;
   max-height: 900px;
-  overflow: scroll;
+  overflow: auto;
   margin: 8px;
   box-shadow: none;
 }

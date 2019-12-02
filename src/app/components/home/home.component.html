@@ -201,7 +201,7 @@
                             </mat-slide-toggle>
                             <mat-slide-toggle color="primary" class="example-margin" [(ngModel)]="generate.multi"
                                 (change)="generate.generateSVG(tA.value)">
-                                Multi colored participants
+                                Multi participants
                             </mat-slide-toggle>
                         </section>
                         <input hidden #img id="img" type="file" accept="image/*" (change)="setImage(img, tA.value)"
@@ -403,603 +403,83 @@
                             </tr>
                         </table>
                     </mat-expansion-panel>
-                    <!--Multi participant colors-->
+                    <!--Multi participants-->
                     <mat-expansion-panel *ngIf="generate.multi" [expanded]="generate.multi" (click)="reduceTextarea()"
                         [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="multiColorsAccordion">
-                                Multi participant colors
+                                Multi participants
                             </mat-panel-title>
                         </mat-expansion-panel-header>
                         <mat-form-field>
                             <mat-label>Participant</mat-label>
                             <mat-select [(value)]="generate.selectedParticipant">
-                                <mat-option *ngFor="let participant of generate.getParticipants()"
+                                <mat-option *ngFor="let participant of generate.participants | keyvalue"
                                     [value]="participant">
-                                    {{participant}}
+                                    {{participant.key}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <table>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 1'">
+                        <table *ngIf="generate.selectedParticipant">
+                            <tr>
                                 <td style="width: 50%;">
-                                    Participant 1 border
+                                    Border
                                 </td>
                                 <td style="width: 25%;">
                                     <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder1" />
+                                        (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key,generate.selectedParticipant.value[0].style.stroke,null,null)"
+                                        type="text" [(ngModel)]="generate.selectedParticipant.value[0].style.stroke" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
                                     <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                         style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder1"
-                                        [(colorPicker)]="generate.colorParticipantBorder1"
-                                        (colorPickerChange)="generate.setColors(null)" />
+                                        [style.background]="generate.selectedParticipant.value[0].style.stroke"
+                                        [(colorPicker)]="generate.selectedParticipant.value[0].style.stroke"
+                                        (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key,generate.selectedParticipant.value[0].style.stroke,null,null)" />
                                 </td>
                             </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 1'">
+                            <tr>
                                 <td style="width: 50%;">
-                                    Participant 1 bg
+                                    Background
                                 </td>
                                 <td style="width: 25%;">
                                     <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground1" />
+                                        (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)"
+                                        type="text" [(ngModel)]="generate.selectedParticipant.value[0].style.fill" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
                                     <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                         style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground1"
-                                        [(colorPicker)]="generate.colorParticipantBackground1"
-                                        (colorPickerChange)="generate.setColors(null)" />
+                                        [style.background]="generate.selectedParticipant.value[0].style.fill"
+                                        [(colorPicker)]="generate.selectedParticipant.value[0].style.fill"
+                                        (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)" />
                                 </td>
                             </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 1'">
+                            <tr>
                                 <td style="width: 50%;">
-                                    Participant 1 text
+                                    Text
                                 </td>
                                 <td style="width: 25%;">
                                     <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText1" />
+                                        (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)"
+                                        type="text" [(ngModel)]="generate.selectedParticipant.value[1].style.fill" />
                                 </td>
                                 <td></td>
                                 <td style="width: 35%;">
                                     <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
                                         style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText1"
-                                        [(colorPicker)]="generate.colorParticipantText1"
-                                        (colorPickerChange)="generate.setColors(null)" />
+                                        [style.background]="generate.selectedParticipant.value[1].style.fill"
+                                        [(colorPicker)]="generate.selectedParticipant.value[1].style.fill"
+                                        (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value, generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)" />
                                 </td>
                             </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 1'">
+                            <tr>
                                 <mat-form-field>
-                                    <mat-label>Participant 1 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant1shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 2'">
-                                <td style="width: 50%;">
-                                    Participant 2 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color12input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder2" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder2"
-                                        [(colorPicker)]="generate.colorParticipantBorder2"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 2'">
-                                <td style="width: 50%;">
-                                    Participant 2 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground2" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground2"
-                                        [(colorPicker)]="generate.colorParticipantBackground2"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 2'">
-                                <td style="width: 50%;">
-                                    Participant 2 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText2" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText2"
-                                        [(colorPicker)]="generate.colorParticipantText2"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 2'">
-                                <mat-form-field>
-                                    <mat-label>Participant 2 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant2shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 3'">
-                                <td style="width: 50%;">
-                                    Participant 3 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder3" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder3"
-                                        [(colorPicker)]="generate.colorParticipantBorder3"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 3'">
-                                <td style="width: 50%;">
-                                    Participant 3 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground3" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground3"
-                                        [(colorPicker)]="generate.colorParticipantBackground3"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 3'">
-                                <td style="width: 50%;">
-                                    Participant 3 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText3" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText3"
-                                        [(colorPicker)]="generate.colorParticipantText3"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 3'">
-                                <mat-form-field>
-                                    <mat-label>Participant 3 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant3shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 4'">
-                                <td style="width: 50%;">
-                                    Participant 4 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder4" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder4"
-                                        [(colorPicker)]="generate.colorParticipantBorder4"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 4'">
-                                <td style="width: 50%;">
-                                    Participant 4 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground4" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground4"
-                                        [(colorPicker)]="generate.colorParticipantBackground4"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 4'">
-                                <td style="width: 50%;">
-                                    Participant 4 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText4" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText4"
-                                        [(colorPicker)]="generate.colorParticipantText4"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 4'">
-                                <mat-form-field>
-                                    <mat-label>Participant 4 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant4shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 5'">
-                                <td style="width: 50%;">
-                                    Participant 5 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder5" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder5"
-                                        [(colorPicker)]="generate.colorParticipantBorder5"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 5'">
-                                <td style="width: 50%;">
-                                    Participant 5 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground5" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground5"
-                                        [(colorPicker)]="generate.colorParticipantBackground5"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 5'">
-                                <td style="width: 50%;">
-                                    Participant 5 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText5" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText5"
-                                        [(colorPicker)]="generate.colorParticipantText5"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 5'">
-                                <mat-form-field>
-                                    <mat-label>Participant 5 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant5shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 6'">
-                                <td style="width: 50%;">
-                                    Participant 6 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder6" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder6"
-                                        [(colorPicker)]="generate.colorParticipantBorder6"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 6'">
-                                <td style="width: 50%;">
-                                    Participant 6 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground6" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground6"
-                                        [(colorPicker)]="generate.colorParticipantBackground6"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 6'">
-                                <td style="width: 50%;">
-                                    Participant 6 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText6" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText6"
-                                        [(colorPicker)]="generate.colorParticipantText6"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 6'">
-                                <mat-form-field>
-                                    <mat-label>Participant 6 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant6shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 7'">
-                                <td style="width: 50%;">
-                                    Participant 7 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder7" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder7"
-                                        [(colorPicker)]="generate.colorParticipantBorder7"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 7'">
-                                <td style="width: 50%;">
-                                    Participant 7 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground7" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground7"
-                                        [(colorPicker)]="generate.colorParticipantBackground7"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 7'">
-                                <td style="width: 50%;">
-                                    Participant 7 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText7" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText7"
-                                        [(colorPicker)]="generate.colorParticipantText7"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 7'">
-                                <mat-form-field>
-                                    <mat-label>Participant 7 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant7shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 8'">
-                                <td style="width: 50%;">
-                                    Participant 8 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder8" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder8"
-                                        [(colorPicker)]="generate.colorParticipantBorder8"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 8'">
-                                <td style="width: 50%;">
-                                    Participant 8 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground8" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground8"
-                                        [(colorPicker)]="generate.colorParticipantBackground8"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 8'">
-                                <td style="width: 50%;">
-                                    Participant 8 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText8" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText8"
-                                        [(colorPicker)]="generate.colorParticipantText8"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 8'">
-                                <mat-form-field>
-                                    <mat-label>Participant 8 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant8shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
-                                        <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                            {{shape}}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 9'">
-                                <td style="width: 50%;">
-                                    Participant 9 border
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBorder9" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBorder9"
-                                        [(colorPicker)]="generate.colorParticipantBorder9"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 9'">
-                                <td style="width: 50%;">
-                                    Participant 9 bg
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color13input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantBackground9" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantBackground9"
-                                        [(colorPicker)]="generate.colorParticipantBackground9"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 9'">
-                                <td style="width: 50%;">
-                                    Participant 9 text
-                                </td>
-                                <td style="width: 25%;">
-                                    <input matInput id="color1input" class="inputHover"
-                                        (change)="generate.setColors(null)" type="text"
-                                        [(ngModel)]="generate.colorParticipantText9" />
-                                </td>
-                                <td></td>
-                                <td style="width: 35%;">
-                                    <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                        style="width: 100%;" id="primary" class="inputHoverColor"
-                                        [style.background]="generate.colorParticipantText9"
-                                        [(colorPicker)]="generate.colorParticipantText9"
-                                        (colorPickerChange)="generate.setColors(null)" />
-                                </td>
-                            </tr>
-                            <tr *ngIf="generate.selectedParticipant ==='participant 9'">
-                                <mat-form-field>
-                                    <mat-label>Participant 9 shape</mat-label>
-                                    <mat-select [(value)]="generate.participant9shape"
-                                        (selectionChange)="generate.generateSVG(tA.value)">
+                                    <mat-label>Shape</mat-label>
+                                    <mat-select [(value)]="generate.parshape"
+                                        (selectionChange)="generate.setShapes(generate.selectedParticipant.key, generate.parshape);generate.generateSVG(tA.value);">
                                         <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
                                             {{shape}}
                                         </mat-option>
