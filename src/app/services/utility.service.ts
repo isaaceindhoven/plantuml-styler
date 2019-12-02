@@ -64,20 +64,6 @@ export class UtilityService {
   getSVGStyle() {
     return `<style>
     
-    @keyframes dash {
-      to {
-        stroke-dashoffset: -20;
-      }
-    }
-    @keyframes draw {
-      from {
-        stroke-dashoffset: 7500;
-      }
-      to {
-        stroke-dashoffset: 0;
-      }
-    }
-    
     svg g ellipse,
     svg g circle,
     svg g rect {
@@ -85,30 +71,30 @@ export class UtilityService {
       stroke-width: var(--participant-stroke-width);
       /* fill: url(#image); */
       fill: var(--secondary-color);
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
+      stroke-dasharray: 7500;
+      animation: draw 5s linear;
     }
     
     svg g path {
       fill: var(--tertiary-color);
       stroke: var(--quaternary-color);
       stroke-width: 1.5;
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
+      stroke-dasharray: 7500;
+      animation: draw 5s linear;
     }
     
     svg g polygon {
       fill: var(--line-color);
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
+      stroke-dasharray: 7500;
+      animation: draw 5s linear;
     }
     
     svg g line,
     svg g polyline {
       stroke: var(--line-color);
-      stroke-width: 1px;
-      stroke-dasharray: 3000;
-      animation: draw 3s linear;
+      stroke-width: var(--border-thickness);
+      stroke-dasharray: 7500;
+      animation: draw 5s linear;
     }
     
     svg g text {
@@ -207,42 +193,7 @@ export class UtilityService {
       stroke: var(--primary-color);
     }
     
-    svg g .participant1 {
-      stroke: var(--participant1-border-color)!important;
-      fill: var(--participant1-background-color)!important;
-    }
-    svg g .participant2 {
-      stroke: var(--participant2-border-color)!important;
-      fill: var(--participant2-background-color)!important;
-    }
-    svg g .participant3 {
-      stroke: var(--participant3-border-color)!important;
-      fill: var(--participant3-background-color)!important;
-    }
-    svg g .participant4 {
-      stroke: var(--participant4-border-color)!important;
-      fill: var(--participant4-background-color)!important;
-    }
-    svg g .participant5 {
-      stroke: var(--participant5-border-color)!important;
-      fill: var(--participant5-background-color)!important;
-    }
-    svg g .participant6 {
-      stroke: var(--participant6-border-color)!important;
-      fill: var(--participant6-background-color)!important;
-    }
-    svg g .participant7 {
-      stroke: var(--participant7-border-color)!important;
-      fill: var(--participant7-background-color)!important;
-    }
-    svg g .participant8 {
-      stroke: var(--participant8-border-color)!important;
-      fill: var(--participant8-background-color)!important;
-    }
-    svg g .participant9 {
-      stroke: var(--participant9-border-color)!important;
-      fill: var(--participant9-background-color)!important;
-    }</style>
+    </style>
     `;
   }
 }

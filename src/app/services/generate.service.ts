@@ -151,10 +151,11 @@ export class GenerateService {
     this.triggerResize(oDOM);
     if (this.multi) {
       this.multicount = this.setMultiParticipants(oDOM);
+      this.setMultiParticipantShapes(oDOM);
+      this.setMultiParticipantColors(oDOM);
     }
 
-    this.setMultiParticipantShapes(oDOM);
-    this.setMultiParticipantColors(oDOM);
+
 
     let s = new XMLSerializer();
     let str = s.serializeToString((oDOM as XMLDocument).firstChild);
@@ -1122,7 +1123,7 @@ export class GenerateService {
     else {
       this.participants[name] = elements
     }
- 
+
   }
 
   getParticipants() {
