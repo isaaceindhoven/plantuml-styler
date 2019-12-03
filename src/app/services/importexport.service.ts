@@ -93,7 +93,6 @@ export class ImportExportService {
         this.gen.halfwayDoneProcessing = true;
       }
     }, 200);
-
   }
   onConfigReaderLoad(event) {
     let json = JSON.parse(event.target.result);

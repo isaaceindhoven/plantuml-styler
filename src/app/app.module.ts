@@ -13,7 +13,7 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { TextAreaComponent } from './components/text-area/text-area.component';
 import { DownloadComponent } from './components/download/download.component';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
-import { AceModule, AceComponent } from 'ngx-ace-wrapper';
+import { AceModule } from 'ngx-ace-wrapper';
 import { ACE_CONFIG } from 'ngx-ace-wrapper';
 import { AceConfigInterface } from 'ngx-ace-wrapper';
 const DEFAULT_ACE_CONFIG: AceConfigInterface = {

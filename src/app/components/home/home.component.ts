@@ -5,11 +5,10 @@ import * as JSZip from 'jszip'
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2'
 import { ZipService } from 'src/app/services/zip.service'
-import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry } from 'ngx-file-drop';
-import { MatExpansionPanel, MatDialog } from '@angular/material'
+import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
+import { MatDialog } from '@angular/material'
 import { GenerateService } from 'src/app/services/generate.service'
 import { ImportExportService } from 'src/app/services/importexport.service'
-import { TextAreaComponent } from '../text-area/text-area.component'
 import { UtilityService } from 'src/app/services/utility.service'
 import 'brace';
 import 'brace/mode/text';
@@ -34,8 +33,7 @@ export class HomeComponent implements OnInit {
     readOnly: false
   };
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
-
-
+ 
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
@@ -91,7 +89,6 @@ export class HomeComponent implements OnInit {
     this.generate.isLarge = false;
     this.generate.isSmall = true;
   }
-
   openTextDialog() {
     if (document.getElementById('appCard').style.width != '1000px') {
       document.getElementById('appCard').style.width = '1000px';
@@ -103,13 +100,6 @@ export class HomeComponent implements OnInit {
     else {
       this.reduceTextarea();
     }
-    // this.dialog.open(TextAreaComponent, {
-    //   height: '90%',
-    //   width: '90%',
-    //   data: {
-    //     text: this.generate.text
-    //   }
-    // });
   }
   editTheme() {
     this.generate.isThemed = false;
@@ -142,9 +132,7 @@ export class HomeComponent implements OnInit {
       default:
         break;
     }
-
   }
-
   setTheme(array) {
     this.generate.color1 = array[0];
     this.generate.color2 = array[1];
@@ -190,11 +178,6 @@ export class HomeComponent implements OnInit {
       data = data.replace('data:image/png;base64,', '')
       zip.file("diagram.png", data, { base64: true });
     });
-    // let doc = new jsPDF('landscape', 'px');
-    // svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 0.5, scale: 3 }, (data) => {
-    //   doc.addImage(data, 'PNG', 0, 0, Number.parseFloat(document.getElementById('svgTag').getAttribute('width')) / 2, Number.parseFloat(document.getElementById('svgTag').getAttribute('height')) / 2);
-    //   doc.save('diagram.pdf');
-    // });
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3 }, (data) => {
       data = data.replace('data:image/png;base64,', '')
       zip.file("diagram-Transparent.png", data, { base64: true });
@@ -206,7 +189,6 @@ export class HomeComponent implements OnInit {
         });
       this.isLoading = false;
     }, 500);
-
   }
   setImage(image, text) {
     this.stylingservice.image = window.URL.createObjectURL(image.files[0])

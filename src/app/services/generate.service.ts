@@ -6,11 +6,9 @@ import { AutoNumberService } from './autonumber.service';
 import { UtilityService } from './utility.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GenerateService {
-
-
   constructor(private utility: UtilityService, private styling: StylingService, private http: HttpClient, private autonumbering: AutoNumberService) { }
   /* #region variables   */
   timeoutId;
@@ -23,7 +21,7 @@ export class GenerateService {
   svg: any
   rectangled: any;
   png: any
-  text: any = "Bob->Alice : hello"
+  text: any = 'Bob->Alice : hello'
   hiddenNotes: boolean = true;
   footnotes: boolean = true;
   hiddenShadows: boolean = true;
@@ -82,16 +80,17 @@ export class GenerateService {
   participantShapes = [
     {
       name: null,
-      shape: null
-    }
+      shape: null,
+    },
   ];
+  participantImages = {};
   participantColors = [
     {
       name: null,
       border: null,
       background: null,
       text: null,
-    }
+    },
   ];
   parshape = 'Rectangle';
 
@@ -100,28 +99,28 @@ export class GenerateService {
   async generateSVG(text: string) {
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(async () => {
-      console.log("generating...");
-      //setting the variables to the ones needed for themes
+      console.log('generating...');
+      // setting the variables to the ones needed for themes
       this.setTheme();
-      //make the text ready for generation
+      // make the text ready for generation
       text = this.changeText(document, text);
-      //generate the svg and set it to the svg variable while checking if its rounded 
+      // generate the svg and set it to the svg variable while checking if its rounded
       let oDOM;
-      this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this)
+      this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this);
       this.styleSVG(oDOM);
     }, 300);
   }
   resetRectangle(text) {
-    text = "skinparam roundcorner 1  \n " + text;
-    text = "skinparam notefontsize 12 \n " + text;
-    let t = unescape(encodeURIComponent(text))
+    text = 'skinparam roundcorner 1  \n ' + text;
+    text = 'skinparam notefontsize 12 \n ' + text;
+    const t = unescape(encodeURIComponent(text));
     this.http.get(environment.api.base + this.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
-      data => {
+      (data) => {
         this.svg = data;
       });
   }
   styleSVG(oDOM) {
-    //removing all the styling PlantUML puts on it
+    // removing all the styling PlantUML puts on it
     this.styling.removeStyling(oDOM);
     if (!this.multi) {
       this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
@@ -153,36 +152,36 @@ export class GenerateService {
       this.multicount = this.setMultiParticipants(oDOM);
       this.setMultiParticipantShapes(oDOM);
       this.setMultiParticipantColors(oDOM);
+      this.setMultiParticipantImages(oDOM);
     }
-
-
-
-    let s = new XMLSerializer();
-    let str = s.serializeToString((oDOM as XMLDocument).firstChild);
+    const s = new XMLSerializer();
+    const str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
     setTimeout(() => {
-      if (this.isLarge)
+      if (this.isLarge) {
         this.styling.setDiagramCardsize();
+      }
     });
   }
   changeText(oDOM, text: string) {
     this.styling.getActors(text);
     if (this.isThemed) {
       text = this.utility.replaceAll(text, 'Actor', 'actor');
-      if (!this.themedFootnotes)
-        text = 'hide footbox \n' + text
-      if (!this.themedHiddenShadows)
-        text = 'skinparam Shadowing false \n' + text
+      if (!this.themedFootnotes) {
+        text = 'hide footbox \n' + text;
+      }
+      if (!this.themedHiddenShadows) {
+        text = 'skinparam Shadowing false \n' + text;
+      }
       text = `skinparam notefontsize 12 \n ` + text;
-      text = `skinparam   ParticipantPadding  ${this.themedParticipantpadding} \n` + text
-      text = `skinparam   ParticipantFontSize ${this.themedParticipantfontsize} \n` + text
-      text = `skinparam   ActorFontSize ${this.themedParticipantfontsize} \n` + text
-      text = `skinparam   ArrowFontSize  ${this.themedSequencetextsize} \n` + text
-      text = 'skinparam SequenceDividerFontSize 14 \n' + text
-      text = 'skinparam BoxPadding 15 \n' + text
-      text = `skinparam SequenceTitleFontSize ${this.themedParticipantfontsize + 1} \n` + text
-      text = ` skinparam titleBorderThickness 2 \n` + text
-
+      text = `skinparam   ParticipantPadding  ${this.themedParticipantpadding} \n` + text;
+      text = `skinparam   ParticipantFontSize ${this.themedParticipantfontsize} \n` + text;
+      text = `skinparam   ActorFontSize ${this.themedParticipantfontsize} \n` + text;
+      text = `skinparam   ArrowFontSize  ${this.themedSequencetextsize} \n` + text;
+      text = 'skinparam SequenceDividerFontSize 14 \n' + text;
+      text = 'skinparam BoxPadding 15 \n' + text;
+      text = `skinparam SequenceTitleFontSize ${this.themedParticipantfontsize + 1} \n` + text;
+      text = ` skinparam titleBorderThickness 2 \n` + text;
       switch (this.themedNumber) {
         case 'None':
           break;
@@ -192,40 +191,40 @@ export class GenerateService {
           break;
         case 'Circular':
           text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           break;
         case 'Rectangular':
           text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           break;
         case 'Rectangular-Framed':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         case 'Circular-Framed':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         case 'Rounded-Framed':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         case 'Rounded':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         default:
           break;
       }
-    }
-    else {
-      text = this.utility.replaceAll(text, 'Actor', 'actor')
-      if (!this.footnotes)
-        text = 'hide footbox \n' + text
-      if (!this.hiddenShadows)
-        text = 'skinparam Shadowing false \n' + text
+    } else {
+      text = this.utility.replaceAll(text, 'Actor', 'actor');
+      if (!this.footnotes) {
+        text = 'hide footbox \n' + text;
+      }
+      if (!this.hiddenShadows) {
+        text = 'skinparam Shadowing false \n' + text;
+      }
       text = `skinparam notefontsize 12 \n ` + text;
-
       if (this.participantfontsize < 1) {
         this.participantfontsize = 1;
       }
@@ -244,17 +243,14 @@ export class GenerateService {
       if (this.participantpadding > 500) {
         this.participantpadding = 500;
       }
-
-      text = `skinparam   ParticipantPadding  ${this.participantpadding} \n` + text
-      text = `skinparam   ParticipantFontSize ${this.participantfontsize} \n` + text
-      text = `skinparam   ActorFontSize ${this.participantfontsize} \n` + text
-      text = `skinparam   ArrowFontSize  ${this.sequencetextsize} \n` + text
-
-      text = 'skinparam SequenceDividerFontSize 14 \n' + text
-      text = 'skinparam BoxPadding 15 \n' + text
-      text = `skinparam SequenceTitleFontSize ${this.participantfontsize + 1} \n` + text
-      text = ` skinparam titleBorderThickness 2 \n` + text
-
+      text = `skinparam   ParticipantPadding  ${this.participantpadding} \n` + text;
+      text = `skinparam   ParticipantFontSize ${this.participantfontsize} \n` + text;
+      text = `skinparam   ActorFontSize ${this.participantfontsize} \n` + text;
+      text = `skinparam   ArrowFontSize  ${this.sequencetextsize} \n` + text;
+      text = 'skinparam SequenceDividerFontSize 14 \n' + text;
+      text = 'skinparam BoxPadding 15 \n' + text;
+      text = `skinparam SequenceTitleFontSize ${this.participantfontsize + 1} \n` + text;
+      text = ` skinparam titleBorderThickness 2 \n` + text;
       switch (this.selectedNumber) {
         case 'None':
           break;
@@ -264,26 +260,26 @@ export class GenerateService {
           break;
         case 'Circular':
           text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           break;
         case 'Rectangular':
           text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           break;
         case 'Rectangular-Framed':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         case 'Circular-Framed':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         case 'Rounded-Framed':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         case 'Rounded':
-          text = `skinparam   Padding  4 \n` + text
+          text = `skinparam   Padding  4 \n` + text;
           text = 'autonumber 1\n' + text;
           break;
         default:
@@ -296,12 +292,12 @@ export class GenerateService {
     return new Promise(function (resolve, reject) {
       text = `skinparam roundcorner ${roundcorner}  \n ${text}`;
       generate.styling.getActors(text);
-      let t = unescape(encodeURIComponent(text))
+      const t = unescape(encodeURIComponent(text));
       generate.http.get(environment.api.base + generate.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
-        data => {
-          data = (data as string).replace("<svg", `<svg id="svgTag"`);
-          let oParser = new DOMParser();
-          let oDOM = oParser.parseFromString(data, "image/svg+xml");
+        (data) => {
+          data = (data as string).replace('<svg', `<svg id="svgTag"`);
+          const oParser = new DOMParser();
+          const oDOM = oParser.parseFromString(data, 'image/svg+xml');
           // generate.svg = data;
           resolve(oDOM);
         });
@@ -328,8 +324,8 @@ export class GenerateService {
     });
   }
   showNotes() {
-    let notes: any = document.getElementsByName('note')
-    let list = Array.from(notes);
+    const notes: any = document.getElementsByName('note');
+    const list = Array.from(notes);
     list.forEach((element: SVGRectElement) => {
       element.setAttribute('display', '');
     });
@@ -344,8 +340,7 @@ export class GenerateService {
       } else {
         this.showNotes();
       }
-    }
-    else {
+    } else {
       if (!this.hiddenNotes) {
         this.hideNotes(oDOM);
       } else {
@@ -368,36 +363,8 @@ export class GenerateService {
           this.styling.PlantUMLStyle[8],
           oDOM,
           this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[0],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[1],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4],
-          this.styling.PlantUMLStyle[4])
-      }
-      else if (this.selectedTheme == 'ISAAC') {
+          this.styling.PlantUMLStyle[0]);
+      } else if (this.selectedTheme == 'ISAAC') {
         this.styling.addColorToStyle(
           this.styling.IsaacStyle[0],
           this.styling.IsaacStyle[1],
@@ -410,36 +377,8 @@ export class GenerateService {
           this.styling.IsaacStyle[8],
           oDOM,
           this.styling.IsaacStyle[9],
-          this.styling.IsaacStyle[10],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[0],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[1],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4],
-          this.styling.IsaacStyle[4])
-      }
-      else if (this.selectedTheme == 'Johan') {
+          this.styling.IsaacStyle[10]);
+      } else if (this.selectedTheme == 'Johan') {
         this.styling.addColorToStyle(
           this.styling.JohanStyle[0],
           this.styling.JohanStyle[1],
@@ -452,36 +391,8 @@ export class GenerateService {
           this.styling.JohanStyle[8],
           oDOM,
           this.styling.JohanStyle[1],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[4])
-      }
-      else if (this.selectedTheme == 'Graytone') {
+          this.styling.JohanStyle[0]);
+      } else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
           this.styling.GraytoneStyle[0],
           this.styling.GraytoneStyle[1],
@@ -494,36 +405,8 @@ export class GenerateService {
           this.styling.GraytoneStyle[8],
           oDOM,
           this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[0],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[1],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4],
-          this.styling.GraytoneStyle[4])
-      }
-      else if (this.selectedTheme == 'Blackwhite') {
+          this.styling.GraytoneStyle[0]);
+      } else if (this.selectedTheme == 'Blackwhite') {
         this.styling.addColorToStyle(
           this.styling.BlackWhiteStyle[0],
           this.styling.BlackWhiteStyle[1],
@@ -536,34 +419,7 @@ export class GenerateService {
           this.styling.BlackWhiteStyle[8],
           oDOM,
           this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[0],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[1],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4],
-          this.styling.BlackWhiteStyle[4])
+          this.styling.BlackWhiteStyle[0]);
       }
     } else {
       this.styling.addColorToStyle(
@@ -579,29 +435,28 @@ export class GenerateService {
         oDOM,
         this.colorBoxBack,
         this.colorBoxStroke,
-      )
-
+      );
     }
   }
   addListeners(oDOM) {
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (element.getAttribute('rx') != null) {
-        this.addListenersTo(element)
-        this.addListenersTo(element.nextElementSibling)
+        this.addListenersTo(element);
+        this.addListenersTo(element.nextElementSibling);
       }
-    })
+    });
     this.styling.getTagList(oDOM, 'image').forEach((element: SVGRectElement) => {
-      this.addListenersTo(element)
-      this.addListenersTo(element.nextElementSibling)
-    })
+      this.addListenersTo(element);
+      this.addListenersTo(element.nextElementSibling);
+    });
     this.styling.getTagList(oDOM, 'ellipse').forEach((element: SVGRectElement) => {
-      this.addListenersTo(element)
-      this.addListenersTo(element.nextElementSibling)
-    })
+      this.addListenersTo(element);
+      this.addListenersTo(element.nextElementSibling);
+    });
     this.styling.getTagList(oDOM, 'circle').forEach((element: SVGRectElement) => {
-      this.addListenersTo(element)
-      this.addListenersTo(element.nextElementSibling)
-    })
+      this.addListenersTo(element);
+      this.addListenersTo(element.nextElementSibling);
+    });
   }
   addListenersTo(element) {
     element.addEventListener('mouseover', () => {
@@ -612,7 +467,7 @@ export class GenerateService {
     });
     element.addEventListener('mouseleave', () => {
       this.hideNotes(document);
-    })
+    });
   }
   setAutoNumberLabel(oDOM) {
     if (this.isThemed) {
@@ -638,8 +493,7 @@ export class GenerateService {
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberDefault(oDOM);
       }
-    }
-    else {
+    } else {
       if (this.selectedNumber == 'Circular') {
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberCircular(oDOM);
@@ -669,28 +523,28 @@ export class GenerateService {
       if (document.getElementById('googlelink')) {
         document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.themedFont);
       } else {
-        let headID = document.getElementsByTagName('head')[0];
-        let link = document.createElement('link');
+        const headID = document.getElementsByTagName('head')[0];
+        const link = document.createElement('link');
         link.type = 'text/css';
         link.rel = 'stylesheet';
-        link.id = 'googlelink'
+        link.id = 'googlelink';
         headID.appendChild(link);
         link.href = 'https://fonts.googleapis.com/css?family=' + this.themedFont;
       }
-      oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.themedFont)
+      oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.themedFont);
     } else {
       if (document.getElementById('googlelink')) {
         document.getElementById('googlelink').setAttribute('href', 'https://fonts.googleapis.com/css?family=' + this.selectedFont);
       } else {
-        let headID = document.getElementsByTagName('head')[0];
-        let link = document.createElement('link');
+        const headID = document.getElementsByTagName('head')[0];
+        const link = document.createElement('link');
         link.type = 'text/css';
         link.rel = 'stylesheet';
-        link.id = 'googlelink'
+        link.id = 'googlelink';
         headID.appendChild(link);
         link.href = 'https://fonts.googleapis.com/css?family=' + this.selectedFont;
       }
-      oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont)
+      oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont);
     }
   }
   setStroke(oDOM) {
@@ -701,35 +555,33 @@ export class GenerateService {
       this.participantstroke = 15;
     }
     if (this.isThemed) {
-      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.themedParticipantstroke.toString())
-    }
-    else {
-      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.participantstroke.toString())
+      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.themedParticipantstroke.toString());
+    } else {
+      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.participantstroke.toString());
     }
   }
   setLineBorders(oDOM) {
     if (this.isThemed) {
-      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.themedLineThickness.toString())
-    }
-    else {
+      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.themedLineThickness.toString());
+    } else {
       if (this.lineThickness > 4) {
         this.lineThickness = 4;
       }
       if (this.lineThickness < 0) {
         this.lineThickness = 0;
       }
-      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.lineThickness.toString())
+      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.lineThickness.toString());
     }
   }
   triggerResize(oDOM) {
-    oDOM.getElementById('svgTag').style.setProperty(`--font-size`, this.selectedSize)
+    oDOM.getElementById('svgTag').style.setProperty(`--font-size`, this.selectedSize);
   }
   isaacStyle() {
     this.themedBreak = 'Squiggly';
     this.themedNumber = 'Circular';
     this.themedShape = 'Rounded';
     this.themedActor = 'Modern';
-    this.themedFont = 'Open Sans'
+    this.themedFont = 'Open Sans';
     this.themedFootnotes = false;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 16;
@@ -742,72 +594,64 @@ export class GenerateService {
     this.themedNumber = 'Circular';
     this.themedShape = 'Rectangle';
     this.themedActor = 'Modern';
-    this.themedFont = 'Muli'
+    this.themedFont = 'Muli';
     this.themedFootnotes = false;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
     this.multi = false;
-
   }
   GrayToneStyle() {
     this.themedBreak = 'Squiggly';
     this.themedNumber = 'Circular';
     this.themedShape = 'Rectangle';
     this.themedActor = 'Modern';
-    this.themedFont = 'Open Sans'
+    this.themedFont = 'Open Sans';
     this.themedFootnotes = false;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 2;
     this.multi = false;
-
   }
   BlackWhiteStyle() {
     this.themedBreak = 'Squiggly';
     this.themedNumber = 'Default';
     this.themedShape = 'Rounded';
     this.themedActor = 'Modern';
-    this.themedFont = 'Open Sans'
+    this.themedFont = 'Open Sans';
     this.themedFootnotes = true;
     this.themedHiddenShadows = false;
     this.themedParticipantfontsize = 18;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
     this.multi = false;
-
   }
   plantumlStyle() {
     this.themedBreak = 'Default';
     this.themedNumber = 'None';
     this.themedShape = 'Rectangle';
     this.themedActor = 'Default';
-    this.themedFont = 'Roboto'
+    this.themedFont = 'Roboto';
     this.themedFootnotes = true;
     this.themedHiddenShadows = true;
     this.themedParticipantfontsize = 13;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
     this.multi = false;
-
   }
   setTheme() {
     if (this.isThemed) {
       if (this.selectedTheme == 'PlantUML') {
-        this.plantumlStyle()
-      }
-      else if (this.selectedTheme == 'ISAAC') {
+        this.plantumlStyle();
+      } else if (this.selectedTheme == 'ISAAC') {
         this.isaacStyle();
-      }
-      else if (this.selectedTheme == 'Johan') {
+      } else if (this.selectedTheme == 'Johan') {
         this.JohanStyle();
-      }
-      else if (this.selectedTheme == 'Graytone') {
+      } else if (this.selectedTheme == 'Graytone') {
         this.GrayToneStyle();
-      }
-      else if (this.selectedTheme == 'Blackwhite') {
+      } else if (this.selectedTheme == 'Blackwhite') {
         this.BlackWhiteStyle();
       }
     }
@@ -882,8 +726,7 @@ export class GenerateService {
         if (element.textContent == last.textContent) {
           element.setAttribute('name', 'participant');
           last.setAttribute('name', 'participant');
-        }
-        else {
+        } else {
           last = element;
         }
       } else {
@@ -899,8 +742,7 @@ export class GenerateService {
           once = false;
           (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
         }
-      }
-      else {
+      } else {
         if (parseFloat(element.getAttribute('font-size')) === this.participantfontsize + 1 && once) {
           once = false;
           (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
@@ -909,7 +751,7 @@ export class GenerateService {
     });
   }
   findBoxes(oDOM) {
-    let height = parseFloat(oDOM.getElementById('svgTag').style.height) * 0.88;
+    const height = parseFloat(oDOM.getElementById('svgTag').style.height) * 0.88;
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (parseFloat(element.getAttribute('height')) >= height) {
         if (element.getAttribute('class')) {
@@ -917,10 +759,10 @@ export class GenerateService {
         } else {
           element.setAttribute('class', 'box');
         }
-        element.setAttribute('height', (parseFloat(element.getAttribute('height')) + 5).toString())
-        element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 5).toString())
-        element.setAttribute('x', (parseFloat(element.getAttribute('x')) - 5).toString())
-        element.setAttribute('width', (parseFloat(element.getAttribute('width')) + 10).toString())
+        element.setAttribute('height', (parseFloat(element.getAttribute('height')) + 5).toString());
+        element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 5).toString());
+        element.setAttribute('x', (parseFloat(element.getAttribute('x')) - 5).toString());
+        element.setAttribute('width', (parseFloat(element.getAttribute('width')) + 10).toString());
       }
     });
   }
@@ -958,12 +800,12 @@ export class GenerateService {
   }
   findAlts(oDOM) {
     this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
-      if (element.getTotalLength().toPrecision(7) == '168.1421'
-        || element.getTotalLength().toPrecision(7) == '187.1421'
-        || element.getTotalLength().toPrecision(7) == '213.1421'
-        || element.getTotalLength().toPrecision(7) == '194.1421'
-        || element.getTotalLength().toPrecision(7) == '136.1421'
-        || element.getTotalLength().toPrecision(7) == '155.1421') {
+      if (element.getTotalLength().toPrecision(7) == '168.1421' ||
+        element.getTotalLength().toPrecision(7) == '187.1421' ||
+        element.getTotalLength().toPrecision(7) == '213.1421' ||
+        element.getTotalLength().toPrecision(7) == '194.1421' ||
+        element.getTotalLength().toPrecision(7) == '136.1421' ||
+        element.getTotalLength().toPrecision(7) == '155.1421') {
         element.setAttribute('class', 'alt');
       }
     });
@@ -980,39 +822,39 @@ export class GenerateService {
       if (element.className.baseVal === 'alt') {
         if (this.isThemed) {
           if (this.themedShape === 'Rounded') {
-            let d = element.getAttribute('d');
-            let firstnrLength = d.split(',')[0].length - 1;
-            let nr = parseFloat(d.substr(1, firstnrLength));
-            let newnr = nr - 7;
-            let nrstring = nr.toString();
-            let newnrstring = newnr.toString();
+            const d = element.getAttribute('d');
+            const firstnrLength = d.split(',')[0].length - 1;
+            const nr = parseFloat(d.substr(1, firstnrLength));
+            const newnr = nr - 7;
+            const nrstring = nr.toString();
+            const newnrstring = newnr.toString();
             let newD = d.replace(nrstring, newnrstring);
-            let secondnrLength = d.split(',')[1].split(' ')[0].length;
-            let start = nr.toString().length + 2;
-            let tnr = parseFloat(d.substr(start, secondnrLength));
-            let tnewnr = tnr + 2;
-            let tnrstring = tnr.toString();
-            let tnewnrstring = tnewnr.toString();
+            const secondnrLength = d.split(',')[1].split(' ')[0].length;
+            const start = nr.toString().length + 2;
+            const tnr = parseFloat(d.substr(start, secondnrLength));
+            const tnewnr = tnr + 2;
+            const tnrstring = tnr.toString();
+            const tnewnrstring = tnewnr.toString();
             newD = newD.replace(tnrstring, tnewnrstring);
-            element.setAttribute('d', newD)
+            element.setAttribute('d', newD);
           }
         } else {
           if (this.selectedShape === 'Rounded') {
-            let d = element.getAttribute('d');
-            let firstnrLength = d.split(',')[0].length - 1;
-            let nr = parseFloat(d.substr(1, firstnrLength));
-            let newnr = nr - 7;
-            let nrstring = nr.toString();
-            let newnrstring = newnr.toString();
+            const d = element.getAttribute('d');
+            const firstnrLength = d.split(',')[0].length - 1;
+            const nr = parseFloat(d.substr(1, firstnrLength));
+            const newnr = nr - 7;
+            const nrstring = nr.toString();
+            const newnrstring = newnr.toString();
             let newD = d.replace(nrstring, newnrstring);
-            let secondnrLength = d.split(',')[1].split(' ')[0].length;
-            let start = nr.toString().length + 2;
-            let tnr = parseFloat(d.substr(start, secondnrLength));
-            let tnewnr = tnr + 2;
-            let tnrstring = tnr.toString();
-            let tnewnrstring = tnewnr.toString();
+            const secondnrLength = d.split(',')[1].split(' ')[0].length;
+            const start = nr.toString().length + 2;
+            const tnr = parseFloat(d.substr(start, secondnrLength));
+            const tnewnr = tnr + 2;
+            const tnrstring = tnr.toString();
+            const tnewnrstring = tnewnr.toString();
             newD = newD.replace(tnrstring, tnewnrstring);
-            element.setAttribute('d', newD)
+            element.setAttribute('d', newD);
           }
         }
       }
@@ -1035,32 +877,31 @@ export class GenerateService {
     let half = false;
     this.participants = [];
     Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-      var el;
+      let el;
       if (this.footnotes) {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {
             if (half) {
               half = false;
               (element.nextSibling.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
-              let name = element.nextSibling.textContent;
-              let elements = [element, element.nextSibling];
-              let el = {};
+              const name = element.nextSibling.textContent;
+              const elements = [element, element.nextSibling];
+              const el = {};
               el[name] = elements;
               this.addToParticipants(name, elements);
               count++;
             } else {
               half = true;
-              let name = element.nextSibling.textContent;
-              let elements = [element, element.nextSibling];
-              let el = {};
+              const name = element.nextSibling.textContent;
+              const elements = [element, element.nextSibling];
+              const el = {};
               el[name] = elements;
               this.addToParticipants(name, elements);
             }
-          }
-          else if (element.getAttribute('class').includes('actorClass')) {
-            let name = element.parentElement.parentElement.nextSibling.textContent;
-            let elements = [element, element.parentElement.parentElement.nextSibling];
-            let el = {};
+          } else if (element.getAttribute('class').includes('actorClass')) {
+            const name = element.parentElement.parentElement.nextSibling.textContent;
+            const elements = [element, element.parentElement.parentElement.nextSibling];
+            const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
             count++;
@@ -1068,17 +909,17 @@ export class GenerateService {
         } else {
           if (half) {
             half = false;
-            let name = element.nextSibling.textContent;
-            let elements = [element, element.nextSibling];
-            let el = {};
+            const name = element.nextSibling.textContent;
+            const elements = [element, element.nextSibling];
+            const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
             count++;
           } else {
             half = true;
-            let name = element.nextSibling.textContent;
-            let elements = [element, element.nextSibling];
-            let el = {};
+            const name = element.nextSibling.textContent;
+            const elements = [element, element.nextSibling];
+            const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
           }
@@ -1086,259 +927,215 @@ export class GenerateService {
       } else {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {
-            let name = element.nextSibling.textContent;
-            let elements = [element, element.nextSibling.nextSibling];
-            let el = {};
+            const name = element.nextSibling.textContent;
+            const elements = [element, element.nextSibling.nextSibling];
+            const el = {};
+            el[name] = elements;
+            this.addToParticipants(name, elements);
+            count++;
+          } else if (element.getAttribute('class').includes('actorClass')) {
+            const name = element.parentElement.parentElement.nextSibling.textContent;
+            const elements = [element, element.parentElement.parentElement.nextSibling];
+            const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
             count++;
           }
-          else if (element.getAttribute('class').includes('actorClass')) {
-            let name = element.parentElement.parentElement.nextSibling.textContent;
-            let elements = [element, element.parentElement.parentElement.nextSibling];
-            let el = {};
-            el[name] = elements;
-            this.addToParticipants(name, elements);
-            count++;
-          }
-        }
-        else {
-          let name = element.nextSibling.textContent;
-          let elements = [element, element.nextSibling];
-          let el = {};
+        } else {
+          const name = element.nextSibling.textContent;
+          const elements = [element, element.nextSibling];
+          const el = {};
           el[name] = elements;
           this.addToParticipants(name, elements);
           count++;
         }
       }
-    }
+    },
     );
     return count - 1;
-
   }
   addToParticipants(name, elements) {
     if (this.participants[name]) {
       this.participants[name].push(...elements);
+    } else {
+      this.participants[name] = elements;
     }
-    else {
-      this.participants[name] = elements
-    }
-
   }
-
   getParticipants() {
-    let array = [];
+    const array = [];
     for (let i = 0; i < this.multicount; i++) {
       array.push(`participant ${i + 1}`);
     }
     return array;
   }
   setMultiParticipantShapes(oDOM) {
-    this.participantShapes.forEach(ps => {
-      let participant = this.participants[ps.name];
+    this.participantShapes.forEach((ps) => {
+      const participant = this.participants[ps.name];
       if (participant) {
         Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
           if (participant[0]) {
             if (this.footnotes) {
               if (element.getAttribute('y') === participant[2].getAttribute('y') &&
                 element.getAttribute('x') === participant[2].getAttribute('x')) {
-                this.changeNode(oDOM, element, ps.shape, participant, true);
+                this.changeNode(oDOM, element, ps.shape, participant, ps.name, true);
               }
             }
             if (element.getAttribute('y') === participant[0].getAttribute('y') &&
               element.getAttribute('x') === participant[0].getAttribute('x')) {
-              this.changeNode(oDOM, element, ps.shape, participant);
+              this.changeNode(oDOM, element, ps.shape, participant, ps.name);
             }
           }
-        })
+        });
       }
     });
+  }
+  styleMultiParticipants(element, participant, pc) {
+    if (this.footnotes) {
+      if (element.getAttribute('y') === participant[2].getAttribute('y') &&
+        element.getAttribute('cx') === participant[2].getAttribute('cx') &&
+        element.getAttribute('cy') === participant[2].getAttribute('cy') &&
+        element.getAttribute('x') === participant[2].getAttribute('x')) {
+        (element as SVGRectElement).style.stroke = pc.border;
+        (element as SVGRectElement).style.fill = pc.background;
+        if (element.nextSibling) {
+          (element.nextSibling as SVGRectElement).style.fill = pc.text;
+          (element.nextSibling as SVGRectElement).style.stroke = 'none';
+        } else {
+          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
+          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
+        }
+      }
+    }
+    if (element.getAttribute('y') === participant[0].getAttribute('y') &&
+      element.getAttribute('cx') === participant[0].getAttribute('cx') &&
+      element.getAttribute('cy') === participant[0].getAttribute('cy') &&
+      element.getAttribute('x') === participant[0].getAttribute('x')) {
+      (element as SVGRectElement).style.stroke = pc.border;
+      (element as SVGRectElement).style.fill = pc.background;
+      if (element.nextSibling) {
+        (element.nextSibling as SVGRectElement).style.fill = pc.text;
+        (element.nextSibling as SVGRectElement).style.stroke = 'none';
+      } else {
+        (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
+        (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
+      }
+    }
   }
   setMultiParticipantColors(oDOM) {
-    this.participantColors.forEach(pc => {
-      let participant = this.participants[pc.name];
+    this.participantColors.forEach((pc) => {
+      const participant = this.participants[pc.name];
       if (participant) {
         Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
           if (participant[0]) {
-            if (this.footnotes) {
-              if (element.getAttribute('y') === participant[2].getAttribute('y') &&
-                element.getAttribute('cx') === participant[2].getAttribute('cx') &&
-                element.getAttribute('cy') === participant[2].getAttribute('cy') &&
-                element.getAttribute('x') === participant[2].getAttribute('x')) {
-                (element as SVGRectElement).style.stroke = pc.border;
-                (element as SVGRectElement).style.fill = pc.background;
-                if (element.nextSibling) {
-                  (element.nextSibling as SVGRectElement).style.fill = pc.text;
-                  (element.nextSibling as SVGRectElement).style.stroke = 'none';
-                } else {
-                  (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
-                  (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
-                }
-              }
-            }
-            if (element.getAttribute('y') === participant[0].getAttribute('y') &&
-              element.getAttribute('cx') === participant[0].getAttribute('cx') &&
-              element.getAttribute('cy') === participant[0].getAttribute('cy') &&
-              element.getAttribute('x') === participant[0].getAttribute('x')) {
-              (element as SVGRectElement).style.stroke = pc.border;
-              (element as SVGRectElement).style.fill = pc.background;
-              if (element.nextSibling) {
-                (element.nextSibling as SVGRectElement).style.fill = pc.text;
-                (element.nextSibling as SVGRectElement).style.stroke = 'none';
-              } else {
-                (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
-                (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
-              }
-            }
+            this.styleMultiParticipants(element, participant, pc);
           }
-        })
+        });
       }
     });
   }
-
-
-  changeNode(oDOM, element, shape, participant, second?) {
+  changeNode(oDOM, element, shape, participant, name, second?) {
     if (shape === 'Ellipse') {
       this.styling.setEllipse(oDOM, element, participant, second);
-    }
-    else if (shape === 'Circle') {
+    } else if (shape === 'Circle') {
       this.styling.setCircle(oDOM, element, participant, second);
-    }
-    else if (shape === 'Rectangle') {
+    } else if (shape === 'Rectangle') {
       this.styling.setRectangle(oDOM, element, participant, second);
-    }
-    else if (shape === 'Rounded') {
+    } else if (shape === 'Rounded') {
       this.styling.setRounded(oDOM, element, participant, second);
+    } else if (shape === 'Images') {
+      this.styling.setImage(oDOM, element, this.participantImages[name], participant, second);
     }
   }
-
   setShapes(pname, pshape) {
-    var index = this.participantShapes.findIndex(x => x.name == pname)
+    const index = this.participantShapes.findIndex((x) => x.name == pname);
     if (index === -1) {
       if (!this.participantShapes[0].name) {
         this.participantShapes.splice(0, 1, {
           name: pname,
-          shape: pshape
-        })
+          shape: pshape,
+        });
       } else {
         this.participantShapes.push({
           name: pname,
-          shape: pshape
+          shape: pshape,
         });
       }
-    }
-    else {
+    } else {
       this.participantShapes.splice(index, 1, {
         name: pname,
-        shape: pshape
-      })
+        shape: pshape,
+      });
     }
     for (let i = 0; i < this.participantShapes.length; i++) {
       const ps = this.participantShapes[i];
-
-      if (!this.participants[ps.name])
+      if (!this.participants[ps.name]) {
         this.participantShapes.splice(i, 1);
+      }
     }
   }
   setMultiColors(participant, pname, pborder?, pbackground?, ptext?) {
-    var index = this.participantColors.findIndex(x => x.name == pname)
+    const index = this.participantColors.findIndex((x) => x.name == pname);
     if (index === -1) {
       if (!this.participantColors[0].name) {
         this.participantColors.splice(0, 1, {
           name: pname,
           border: pborder,
           background: pbackground,
-          text: ptext
-        })
+          text: ptext,
+        });
       } else {
         this.participantColors.push({
           name: pname,
           border: pborder,
           background: pbackground,
-          text: ptext
+          text: ptext,
         });
       }
-    }
-    else {
-      if (pbackground)
+    } else {
+      if (pbackground) {
         this.participantColors[index].background = pbackground;
-      if (pborder)
+      }
+      if (pborder) {
         this.participantColors[index].border = pborder;
-      if (ptext)
+      }
+      if (ptext) {
         this.participantColors[index].text = ptext;
+      }
     }
     for (let i = 0; i < this.participantColors.length; i++) {
       const ps = this.participantColors[i];
-
-      if (!this.participants[ps.name])
+      if (!this.participants[ps.name]) {
         this.participantColors.splice(i, 1);
-
-    }
-    if (this.footnotes) {
-      Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-        if (element.getAttribute('cx') === participant[2].getAttribute('cx') &&
-          element.getAttribute('cy') === participant[2].getAttribute('cy') &&
-          element.getAttribute('y') === participant[2].getAttribute('y') &&
-          element.getAttribute('x') === participant[2].getAttribute('x')) {
-          (element as SVGRectElement).style.stroke = participant[0].style.stroke;
-          (element as SVGRectElement).style.fill = participant[0].style.fill;
-          if (element.nextSibling) {
-            (element.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
-            (element.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
-          } else {
-            (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
-            (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
-          }
-        }
-      })
-    }
-    Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-      if (element.getAttribute('cx') === participant[0].getAttribute('cx') &&
-        element.getAttribute('cy') === participant[0].getAttribute('cy') &&
-        element.getAttribute('y') === participant[0].getAttribute('y') &&
-        element.getAttribute('x') === participant[0].getAttribute('x')) {
-        (element as SVGRectElement).style.stroke = participant[0].style.stroke;
-        (element as SVGRectElement).style.fill = participant[0].style.fill;
-        if (element.nextSibling) {
-          (element.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
-          (element.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
-        } else {
-          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
-          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
-        }
       }
-    })
-  }
-
-  getParticipantByElement(participant) {
+    }
+    const pc = { border: participant[0].style.stroke, background: participant[0].style.fill, text: participant[1].style.fill };
     Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-      if (element.getAttribute('height') === participant.getAttribute('height') &&
-        element.getAttribute('width') === participant.getAttribute('width') &&
-        element.getAttribute('y') === participant.getAttribute('y') &&
-        element.getAttribute('x') === participant.getAttribute('x')) {
-
-        return (element as SVGRectElement).style;
+      this.styleMultiParticipants(element, participant, pc);
+    });
+  }
+  setMultiParticipantImages(oDOM) {
+    this.participantColors.forEach((pc) => {
+      const participant = this.participants[pc.name];
+      if (participant) {
+        Array.from(oDOM.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
+          if (participant[0]) {
+            this.styleMultiParticipants(element, participant, pc);
+          }
+        });
       }
     });
-    let ellipse = document.createElement('ellipse');
-    return ellipse;
   }
-
-  setParticipantDoc(participant) {
-    Array.from(document.querySelectorAll('[name=participantshape]')).forEach((element: Element) => {
-      if (element.getAttribute('height') === participant[0].getAttribute('height') &&
-        element.getAttribute('width') === participant[0].getAttribute('width') &&
-        element.getAttribute('y') === participant[0].getAttribute('y') &&
-        element.getAttribute('x') === participant[0].getAttribute('x')) {
-        (element as SVGRectElement).style.stroke = participant[0].style.stroke;
-        (element as SVGRectElement).style.fill = participant[0].style.fill;
-        if (element.nextSibling) {
-          (element.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
-          (element.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
-        } else {
-          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = participant[1].style.fill;
-          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = participant[1].style.stroke;
-        }
+  setParticipantImage(img, name) {
+    this.utility.toBase64(img).then(data => {
+      this.participantImages[name] = data;
+    }).then(() => {
+      this.generateSVG(this.text);
+    })
+  }
+  getShapeByName(name) {
+    this.participantShapes.forEach((shape) => {
+      if (shape.name === name) {
+        this.parshape = shape.shape;
       }
     })
   }

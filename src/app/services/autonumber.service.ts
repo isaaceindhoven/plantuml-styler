@@ -133,7 +133,6 @@ export class AutoNumberService {
             rect.setAttributeNS(null, 'y', (+(sibling.getAttribute('y') as unknown as number) - 16).toString())
             rect.setAttributeNS(null, 'name', 'label')
             rect.setAttributeNS(null, 'class', 'label')
-
             let line = document.createElementNS(ns, 'line');
             let x = (Number.parseFloat(element.getAttribute('x')) + Number.parseFloat(element.getAttribute('textLength')) + 5).toString();
             line.setAttributeNS(null, 'x1', x);
@@ -141,7 +140,6 @@ export class AutoNumberService {
             line.setAttributeNS(null, 'y1', rect.getAttribute('y'));
             line.setAttributeNS(null, 'y2', (Number.parseFloat(rect.getAttribute('y')) + Number.parseFloat(rect.getAttribute('height'))).toString());
             line.setAttributeNS(null, 'class', 'labelDivider label')
-
             element.parentNode.insertBefore(rect, element)
             element.parentNode.insertBefore(line, element)
           }
@@ -207,7 +205,6 @@ export class AutoNumberService {
             if (italics > 0) {
               elementNr = elementNr + (8 * italics);
             }
-
             sibling = element.nextElementSibling;
             let ns = 'http://www.w3.org/2000/svg'
             let rect = document.createElementNS(ns, 'rect');
@@ -218,7 +215,6 @@ export class AutoNumberService {
             rect.setAttributeNS(null, 'name', 'label')
             rect.setAttributeNS(null, 'class', 'label')
             rect.setAttributeNS(null, 'rx', '15')
-
             let line = document.createElementNS(ns, 'line');
             let x = (Number.parseFloat(element.getAttribute('x')) + Number.parseFloat(element.getAttribute('textLength')) + 5).toString();
             line.setAttributeNS(null, 'x1', x);
@@ -227,7 +223,6 @@ export class AutoNumberService {
             line.setAttributeNS(null, 'y2', (Number.parseFloat(rect.getAttribute('y')) + Number.parseFloat(rect.getAttribute('height'))).toString());
             line.setAttributeNS(null, 'class', 'labelDivider')
             line.setAttributeNS(null, 'class', 'labelDivider label')
-
             element.parentNode.insertBefore(rect, element)
             element.parentNode.insertBefore(line, element)
           }
@@ -303,7 +298,6 @@ export class AutoNumberService {
             rect.setAttributeNS(null, 'name', 'label')
             rect.setAttributeNS(null, 'class', 'label')
             rect.setAttributeNS(null, 'rx', '3')
-
             let line = document.createElementNS(ns, 'line');
             let x = (Number.parseFloat(element.getAttribute('x')) + Number.parseFloat(element.getAttribute('textLength')) + 5).toString();
             line.setAttributeNS(null, 'x1', x);
@@ -311,7 +305,6 @@ export class AutoNumberService {
             line.setAttributeNS(null, 'y1', rect.getAttribute('y'));
             line.setAttributeNS(null, 'y2', (Number.parseFloat(rect.getAttribute('y')) + Number.parseFloat(rect.getAttribute('height'))).toString());
             line.setAttributeNS(null, 'class', 'labelDivider label')
-
             element.parentNode.insertBefore(rect, element)
             element.parentNode.insertBefore(line, element)
           }
