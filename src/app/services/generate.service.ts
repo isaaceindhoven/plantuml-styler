@@ -1133,10 +1133,11 @@ export class GenerateService {
     })
   }
   getShapeByName(name) {
+    this.parshape = 'Rectangle';
     this.participantShapes.forEach((shape) => {
       if (shape.name === name) {
         this.parshape = shape.shape;
-      }
+      } 
     })
   }
 }
