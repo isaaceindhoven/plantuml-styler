@@ -1,0 +1,46 @@
+<mat-toolbar class="sticky">
+    <mat-toolbar-row>
+        <span><img src="../../../assets/isaac-alternative-logo-invert-white-rgb-transparent-250px.png"></span>
+        <span class="spacer"></span>
+        <h1>StyleUML</h1>
+        <button disableRipple matTooltip="Sequence-diagram Styler for PlantUML" mat-icon-button>
+            <i style="transform: rotate(180deg);" class="material-icons">error_outline</i>
+        </button>
+        <span class="spacer"></span>
+        <mat-form-field (click)="util.openEditor = false;" class="navDropDown" style="width: fit-content;">
+            <mat-label>Theme</mat-label>
+            <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
+                (selectionChange)="activateTheme()">
+                <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
+                    {{theme}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button (click)="editTheme();" matTooltip="Sequence-diagram Styler for PlantUML"
+            mat-icon-button>
+            <i class="material-icons">edit</i>
+        </button>
+        <span class="spacer"></span>
+        <span class="spacer"></span>
+        <span class="spacer"></span>
+        <span class="spacer"></span>
+        <span class="spacer"></span>
+        <span class="spacer"></span>
+        <mat-form-field class="navDropDown" style="width: fit-content;">
+            <mat-label>Server</mat-label>
+            <input matInput #envBox type="text" (change)="setEnvironment(envBox.value)"
+                value="https://plantuml.isaac.local/plantuml/svg/">
+        </mat-form-field>
+        <span class="spacer"></span>
+        <span class="spacer"></span>
+        <button (click)="jsons.click()" matTooltip="Import .zip, .json, .txt, .puml file" mat-icon-button>
+            <i style="transform: rotate(180deg);" class="material-icons">get_app</i>
+        </button>
+        <button (click)="download()" matTooltip="Download .zip file" mat-icon-button>
+            <i class="material-icons">get_app</i>
+        </button>
+        <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt" (change)="fileChanged($event)"
+            value="Json">
+        <span class="spacer"></span>
+    </mat-toolbar-row>
+</mat-toolbar>

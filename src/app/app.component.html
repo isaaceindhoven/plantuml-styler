@@ -1,1 +1,27 @@
-<router-outlet></router-outlet>
+<!-- <div class="box-column" (mouseup)="getEndPoint()">
+    <app-navbar style="flex: 0 1 0;" id="nav"></app-navbar>
+    <div class="box">
+        <div id="resizableTextarea" style="min-width: 400px; width: 40%;">
+            <app-text-area id="text"></app-text-area>
+        </div>
+        <div class="two" style="background: #484848;" (mousedown)="getStartPoint($event)"></div>
+        <div class="three">
+            <app-diagram id="diagram" style="min-width: 400px; height: 100%;"></app-diagram>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="box-column" (mouseup)="getEndPoint()">
+    <app-navbar id="nav"></app-navbar>
+    <app-editor id="editor"></app-editor>
+    <div class="box">
+        <div id="resizableTextarea" style="min-width: 400px; width: 40%;">
+            <app-text-area id="text"></app-text-area>
+        </div>
+        <div class="two" style="background: #484848;" (mousedown)="getStartPoint($event)"></div>
+        <div class="three">
+            <app-diagram id="diagram" style="min-width: 400px; height: 100%;"></app-diagram>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,10 @@ import { Injectable } from '@angular/core';
 export class UtilityService {
 
   constructor() { }
-
+  diagram;
+  text;
+  openEditor = false;
+  textarea;
   encode64(data) {
     let r = "";
     for (let i = 0; i < data.length; i += 3) {
@@ -60,6 +63,18 @@ export class UtilityService {
   }
   getTagList(type) {
     return Array.from(document.getElementsByTagName(type));
+  }
+  resizeAce(){
+    this.textarea.ace().resize(true);
+  }
+  calcHeight() {
+    console.log(document.getElementById('editor').clientHeight);
+    this.diagram.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - document.getElementById('editor').clientHeight}px`);
+    this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - document.getElementById('editor').clientHeight}px`);
+  }
+  calcWidth(pageX) {
+    this.diagram.style.setProperty(`--comp-width`, `${window.innerWidth - pageX}px`);
+    this.text.style.setProperty(`--comp-width`, `${pageX}px`);
   }
   getSVGStyle() {
     return `<style>

@@ -1,6 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { GenerateService } from 'src/app/services/generate.service';
+import { Component, OnInit, ViewChild } from '@angular/core'
+import { GenerateService } from 'src/app/services/generate.service'
+import 'brace';
+import 'brace/mode/text';
+import 'brace/theme/dawn';
+import { AceConfigInterface } from 'ngx-ace-wrapper/dist/lib/ace.interfaces';
+import { AceComponent } from 'ngx-ace-wrapper';
+import { UtilityService } from 'src/app/services/utility.service';
 
 @Component({
   selector: 'app-text-area',
@@ -9,10 +14,16 @@ import { GenerateService } from 'src/app/services/generate.service';
 })
 export class TextAreaComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string, public generate: GenerateService) {}
-
+  @ViewChild('aceComp', { static: true }) aceElement: AceComponent;
+  constructor(public generate: GenerateService, public util: UtilityService) { }
+  openText: boolean;
+  public config: AceConfigInterface = {
+    mode: 'text',
+    theme: 'dawn',
+    readOnly: false
+  };
   ngOnInit() {
-    document.getElementById('tA').innerText = this.generate.text
+   this.util.textarea = this.aceElement.directiveRef;
   }
 
 }

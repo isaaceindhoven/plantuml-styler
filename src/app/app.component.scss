@@ -1,0 +1,27 @@
+.box {
+  display: flex;
+  flex: 1 1 0;
+}
+.two {
+  flex: 0 0 3px;
+}
+.two:hover {
+  cursor: col-resize;
+}
+.three {
+  flex: 1 1 0;
+}
+
+.box-column {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.nav {
+  background: purple;
+  border: 1px dotted #000;
+  height: 64px;
+  width: 100%;
+  flex: 0 0 64px;
+}

@@ -1,0 +1,110 @@
+:root {
+    --comp-height: 880px;
+    --comp-width: 800px;
+  }
+  div.right {
+    position: relative;
+    float: right;
+    margin-right: 40%;
+  }
+  @media screen and (min-width: 1400px) and (max-width: 1900px) {
+    div.right {
+      position: relative;
+      float: right;
+      margin-right: 20%;
+    }
+  }
+  
+  @media (max-width: 1400px) {
+    div.right {
+      position: relative;
+      float: right;
+      margin-right: 0%;
+    }
+  }
+  
+  #scrollbar2::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+    background-color: #ffffff;
+  }
+  
+  #scrollbar2::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+  }
+  
+  #scrollbar2::-webkit-scrollbar-thumb {
+    background-color: #009edc;
+  }
+  
+  .card {
+    width: 360px;
+    margin: 8px;
+  }
+  
+  .resetBtn {
+    position: relative;
+    margin-top: 1.1%;
+    margin-left: 1%;
+    z-index: 1;
+  }
+  
+  .diagram {
+    overflow: auto;
+    max-height: var(--comp-height);
+    max-width: var(--comp-width);
+  }
+  
+  .inputHover:hover {
+    outline: lightblue solid 1px;
+  }
+  .inputHoverColor:hover {
+    outline: lightblue solid 2px;
+  }
+  // .inputHover {
+  //   mar
+  // }
+  .inputHoverColor {
+    transform: translate(0px, 6px);
+  }
+  html,
+  body {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    font-family: Tahoma, "Helvetica Neue", sans-serif;
+  }
+  
+  .mat-mini-fab {
+    background-color: #009ddc;
+    color: #ffffff;
+  }
+  
+  .accordionbtn:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  .accordionbtn {
+    text-align: left;
+    font-style: normal;
+    font-family: Tahoma, "Helvetica Neue", sans-serif;
+    width: 100%;
+    height: 48px;
+  }
+  mat-form-field {
+    width: 100%;
+  }
+  
+  .example-header-image {
+    background-image: url("../../../assets/isaac-icon-logo-rgb-250px.png");
+    background-size: cover;
+  }
+  
+  .coding {
+    font-family: Consolas, "Courier New", monospace;
+    width: 100%;
+    height: 500px;
+  }
+  

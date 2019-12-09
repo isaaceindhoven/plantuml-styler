@@ -28,7 +28,7 @@ export class GenerateService {
   themedHiddenNotes: boolean = true;
   themedFootnotes: boolean = true;
   themedHiddenShadows: boolean = true;
-  isThemed: boolean = false;
+  isThemed: boolean = true;
   textImages: boolean = false;
   participantpadding = 0;
   participantfontsize = 13;
@@ -46,7 +46,7 @@ export class GenerateService {
   actors = ['Default', 'Modern', 'Male', 'Female'];
   breaks = ['Default', 'Squiggly'];
   fonts = ['Tahoma'];
-  themes = ['PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
+  themes = ['No theme','PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
   color1 = '';
   color2 = '';
   color3 = '';
@@ -105,6 +105,7 @@ export class GenerateService {
       // make the text ready for generation
       text = this.changeText(document, text);
       // generate the svg and set it to the svg variable while checking if its rounded
+      this.utility.resizeAce();
       let oDOM;
       this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this);
       this.styleSVG(oDOM);

@@ -1,0 +1,12 @@
+.grid-container{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto;
+    grid-column-gap: 10px;
+}
+
+.editor{
+    font-family: "Open Sans";
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #484848;
+}

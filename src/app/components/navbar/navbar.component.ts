@@ -13,34 +13,29 @@ import { UtilityService } from 'src/app/services/utility.service'
 import 'brace';
 import 'brace/mode/text';
 import 'brace/theme/dawn';
-import { AceConfigInterface } from 'ngx-ace-wrapper/dist/lib/ace.interfaces';
-import { AceComponent } from 'ngx-ace-wrapper';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class NavbarComponent implements OnInit {
 
-  @ViewChild('aceComp', { static: true }) aceElement: AceComponent;
-  files: NgxFileDropEntry[] = [];
-  isOpen: boolean;
-  isLoading = false;
-  public config: AceConfigInterface = {
-    mode: 'text',
-    theme: 'dawn',
-    readOnly: false
-  };
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
- 
+  isLoading = false;
+  importing = false;
+  files: NgxFileDropEntry[] = [];
   ngOnInit() {
     window.addEventListener("dragover", e => {
       e && e.preventDefault();
       let dt = e.dataTransfer;
       if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.includes('Files'))) {
-        if (!this.isOpen) {
-          this.isOpen = true;
+        if (!this.util.openEditor) {
+          this.util.openEditor = true;
+        }
+        if (!this.importing) {
+          this.importing = true;
         }
       }
     }, false);
@@ -68,40 +63,12 @@ export class HomeComponent implements OnInit {
       this.editTheme();
     }, 1000);
   }
-  reduceTextarea() {
-    document.getElementById('tA').style.height = '150px';
-    document.getElementById('appCard').style.width = '360px';
-    document.getElementById('appCard').style.display = '';
-    document.getElementById('scrollbar2').style.width = null;
-    document.getElementById('scrollbar2').style.maxWidth = '1500px';
-    document.getElementById('scrollbar2').style.marginLeft = null;
-    this.generate.isLarge = false;
-    this.generate.isSmall = false;
-    this.aceElement.directiveRef.ace().resize();
-  }
-  closeApp() {
-    document.getElementById('tA').style.height = '150px';
-    document.getElementById('appCard').style.width = '0px';
-    document.getElementById('appCard').style.display = 'none';
-    document.getElementById('scrollbar2').style.width = '95%';
-    document.getElementById('scrollbar2').style.maxWidth = '95%';
-    document.getElementById('scrollbar2').style.marginLeft = '5%';
-    this.generate.isLarge = false;
-    this.generate.isSmall = true;
-  }
-  openTextDialog() {
-    if (document.getElementById('appCard').style.width != '1000px') {
-      document.getElementById('appCard').style.width = '1000px';
-      document.getElementById('tA').style.height = '450px';
-      this.stylingservice.setDiagramCardsize();
-      this.generate.isLarge = true;
-      this.aceElement.directiveRef.ace().resize();
-    }
-    else {
-      this.reduceTextarea();
-    }
-  }
   editTheme() {
+    this.util.openEditor = !this.util.openEditor;
+    setTimeout(() => {
+      this.util.calcHeight();
+      this.util.resizeAce();
+    }, );
     this.generate.isThemed = false;
     this.generate.selectedBreak = this.generate.themedBreak
     this.generate.selectedNumber = this.generate.themedNumber
@@ -132,6 +99,7 @@ export class HomeComponent implements OnInit {
       default:
         break;
     }
+
   }
   setTheme(array) {
     this.generate.color1 = array[0];
@@ -146,24 +114,10 @@ export class HomeComponent implements OnInit {
     this.generate.colorBoxBack = array[9];
     this.generate.colorBoxStroke = array[10];
   }
-  dropped(files: NgxFileDropEntry[]) {
-    this.files = files;
-    const droppedFile = files[0];
-    // Is it a file?
-    if (droppedFile.fileEntry.isFile) {
-      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
-      fileEntry.file((file: File) => {
-        this.loadFile(file)
-      });
-    } else {
-      // It was a directory (empty directories are added, otherwise only files)
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'You uploaded a empty directory!',
-        showConfirmButton: false,
-        timer: 1500
-      })
+  activateTheme() {
+    if (this.generate.selectedTheme != "No theme") {
+      this.generate.isThemed = true;
+      this.generate.generateSVG(this.generate.text);
     }
   }
   download() {
@@ -189,12 +143,6 @@ export class HomeComponent implements OnInit {
         });
       this.isLoading = false;
     }, 500);
-  }
-  setImage(image, text) {
-    this.stylingservice.image = window.URL.createObjectURL(image.files[0])
-    setTimeout(() => {
-      this.generate.generateSVG(text);
-    }, 100);
   }
   loadFile(file) {
     if (file.type == 'application/zip') {
@@ -283,5 +231,28 @@ export class HomeComponent implements OnInit {
   fileChanged(event) {
     const file = event.target.files[0];
     this.loadFile(file);
+  }
+  dropped(files: NgxFileDropEntry[]) {
+    this.files = files;
+    const droppedFile = files[0];
+    // Is it a file?
+    if (droppedFile.fileEntry.isFile) {
+      const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
+      fileEntry.file((file: File) => {
+        this.loadFile(file)
+      });
+    } else {
+      // It was a directory (empty directories are added, otherwise only files)
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'You uploaded a empty directory!',
+        showConfirmButton: false,
+        timer: 1500
+      })
+    }
+  }
+  setEnvironment(string) {
+    environment.api.base = string;
   }
 }
