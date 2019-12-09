@@ -1,5 +1,5 @@
-<div class="editor">
-    <div [hidden]="!util.openEditor">
+<div [ngClass]="{ 'run-fadeIn': util.openEditor, 'noHeight': !util.openEditor }" class="editor">
+    <div>
         <br>
         <div class="grid-container">
             <!--Dropdowns-->
@@ -373,6 +373,11 @@
                     </tr>
                 </table>
                 <br>
+            </div>
+            <div *ngIf="!generate.multi"></div>
+            <div>
+                <button class="exitBtn" mat-icon-button (click)="util.openEditor = false;"><i
+                        class="material-icons">clear</i></button>
             </div>
         </div>
     </div>

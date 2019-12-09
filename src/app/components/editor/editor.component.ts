@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class EditorComponent implements OnInit {
 
-  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
+  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, public util: UtilityService) { }
 
   ngOnInit() {
   }

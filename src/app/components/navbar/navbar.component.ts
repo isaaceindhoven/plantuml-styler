@@ -22,7 +22,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, private util: UtilityService) { }
+  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, public util: UtilityService) { }
   isLoading = false;
   importing = false;
   files: NgxFileDropEntry[] = [];

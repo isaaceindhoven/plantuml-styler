@@ -503,7 +503,7 @@ svg g rect {
   /* fill: url(#image); */
   fill: var(--secondary-color);
   stroke-dasharray: 7500;
-  animation: draw 5s linear;
+  animation: draw 1s linear;
 }
 
 svg g path {
@@ -511,13 +511,13 @@ svg g path {
   stroke: var(--quaternary-color);
   stroke-width: 1.5;
   stroke-dasharray: 7500;
-  animation: draw 5s linear;
+  animation: draw 1s linear;
 }
 
 svg g polygon {
   fill: var(--line-color);
   stroke-dasharray: 7500;
-  animation: draw 5s linear;
+  animation: draw 1s linear;
 }
 
 svg g line,
@@ -525,7 +525,7 @@ svg g polyline {
   stroke: var(--line-color);
   stroke-width: var(--border-thickness);
   stroke-dasharray: 7500;
-  animation: draw 5s linear;
+  animation: draw 1s linear;
 }
 
 svg g text {

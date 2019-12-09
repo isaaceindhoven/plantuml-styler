@@ -44,5 +44,8 @@ export class AppComponent {
   onMouseMove(event) {
     this.moveAt(event.pageX);
   }
- 
+  getHalf() {
+    return this.util.diagram.style.height / 2
+  }
+
 }

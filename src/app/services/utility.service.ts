@@ -64,13 +64,13 @@ export class UtilityService {
   getTagList(type) {
     return Array.from(document.getElementsByTagName(type));
   }
-  resizeAce(){
+  resizeAce() {
     this.textarea.ace().resize(true);
   }
   calcHeight() {
-    console.log(document.getElementById('editor').clientHeight);
-    this.diagram.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - document.getElementById('editor').clientHeight}px`);
-    this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - document.getElementById('editor').clientHeight}px`);
+    console.log((this.openEditor ? 320 : 0));
+    this.diagram.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - (this.openEditor ? 320 : 0)}px`);
+    this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - (this.openEditor ? 320 : 0)}px`);
   }
   calcWidth(pageX) {
     this.diagram.style.setProperty(`--comp-width`, `${window.innerWidth - pageX}px`);
