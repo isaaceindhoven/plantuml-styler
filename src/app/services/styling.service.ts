@@ -360,25 +360,17 @@ export class StylingService {
   getActors(text: string) {
     if (text.includes('actor')) {
       this.actorlist = [];
-      let newtext = text.split('actor ')[1];
-      if (newtext) {
-        const actor = (newtext.split('\n')[0]).trim();
-        newtext = text.replace(`actor ${actor}`, '');
-        this.addToActors(actor);
-      } else {
-        newtext = text.split('actor')[1];
-      }
-      while (newtext.includes('actor')) {
-        const newer = newtext;
-        const newtext2 = newtext.split('actor ')[1];
-        if (newtext2) {
-          const actor = (newtext2.split('\n')[0]).trim();
-          newtext = newer.replace(`actor ${actor}`, '');
-          this.addToActors(actor);
-        } else {
-          newtext = newtext.split('actor')[1];
+      let x = text.split(" ");
+      let actorFound = false;
+      x.forEach(word => {
+        if (actorFound) {
+          this.addToActors(word);
+          actorFound = false;
         }
-      }
+        if (word === 'actor') {
+          actorFound = true;
+        }
+      });
     }
   }
   addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM,

@@ -2,7 +2,10 @@
     <mat-toolbar-row>
         <span><img src="assets\isaac-alternative-logo-invert-white-rgb-transparent-250px.png"></span>
         <h1> StyleUML</h1>
-        <button disableRipple matTooltip="Sequence-diagram Styler for PlantUML" mat-icon-button>
+        <a target="_blank"
+            href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html#sequence-diagram"
+            hidden #syntax></a>
+        <button matTooltip="Sequence-diagram Styler for PlantUML" (click)="syntax.click()" mat-icon-button>
             <i style="transform: rotate(180deg);" class="material-icons">error_outline</i>
         </button>
         <span class="spacer"></span>
@@ -15,8 +18,7 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button (click)="editTheme();" matTooltip="Edit diagram"
-            mat-icon-button>
+        <button (click)="editTheme();" matTooltip="Edit diagram" mat-icon-button>
             <i class="material-icons">edit</i>
         </button>
         <span class="spacer"></span>

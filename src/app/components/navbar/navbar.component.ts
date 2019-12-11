@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import * as svg from 'save-svg-as-png'
 import { StylingService } from 'src/app/services/styling.service'
 import * as JSZip from 'jszip'
@@ -10,9 +10,6 @@ import { MatDialog } from '@angular/material'
 import { GenerateService } from 'src/app/services/generate.service'
 import { ImportExportService } from 'src/app/services/importexport.service'
 import { UtilityService } from 'src/app/services/utility.service'
-import 'brace';
-import 'brace/mode/text';
-import 'brace/theme/dawn';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -68,7 +65,7 @@ export class NavbarComponent implements OnInit {
     setTimeout(() => {
       this.util.calcHeight();
       this.util.resizeAce();
-    }, );
+    });
     this.generate.isThemed = false;
     this.generate.selectedBreak = this.generate.themedBreak
     this.generate.selectedNumber = this.generate.themedNumber
@@ -118,6 +115,10 @@ export class NavbarComponent implements OnInit {
     if (this.generate.selectedTheme != "No theme") {
       this.generate.isThemed = true;
       this.generate.generateSVG(this.generate.text);
+    }
+    else {
+      this.generate.isThemed = false;
+       this.generate.generateSVG(this.generate.text);
     }
   }
   download() {

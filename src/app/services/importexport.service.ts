@@ -140,6 +140,9 @@ export class ImportExportService {
     this.gen.participants = json.participants;
     this.gen.participantColors = json.participantColors;
     this.gen.participantShapes = json.participantShapes;
+    if(!this.gen.isThemed){
+      this.gen.selectedTheme="No theme";
+    }
     if (this.gen.halfwayDoneProcessing) {
       this.gen.isDoneProcessing = true;
       this.gen.generateSVG(this.gen.text)
