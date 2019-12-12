@@ -97,7 +97,12 @@ export class StylingService {
       const ns = 'http://www.w3.org/2000/svg';
       const actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString());
-      actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
+      let half = parseFloat(element.parentElement.parentElement.style.height) / 2;
+      if (parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) > half) {
+        actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) - 5).toString()));
+      } else {
+        actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
+      }
       actor.setAttributeNS(null, 'width', '45px');
       actor.setAttributeNS(null, 'height', '45px');
       actor.setAttributeNS(null, 'viewBox', '0 -1 45 45');
@@ -122,7 +127,12 @@ export class StylingService {
       const ns = 'http://www.w3.org/2000/svg';
       const actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString());
-      actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
+      let half = parseFloat(element.parentElement.parentElement.style.height) / 2;
+      if (parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) > half) {
+        actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) - 5).toString()));
+      } else {
+        actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
+      }
       actor.setAttributeNS(null, 'width', '45px');
       actor.setAttributeNS(null, 'height', '45px');
       actor.setAttributeNS(null, 'viewBox', '0 -1 45 45');
@@ -147,7 +157,12 @@ export class StylingService {
       const ns = 'http://www.w3.org/2000/svg';
       const actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString());
-      actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
+      let half = parseFloat(element.parentElement.parentElement.style.height) / 2;
+      if (parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) > half) {
+        actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) - 5).toString()));
+      } else {
+        actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) + 5).toString()));
+      }
       actor.setAttributeNS(null, 'width', '45px');
       actor.setAttributeNS(null, 'height', '45px');
       actor.setAttributeNS(null, 'viewBox', '0 -1 45 45');
@@ -181,14 +196,15 @@ export class StylingService {
     const image = oDOM.createElementNS(ns, 'image');
     image.setAttributeNS(null, 'filter', element.getAttribute('filter'));
     image.setAttributeNS(null, 'width', element.getAttribute('width'));
-    image.setAttributeNS(null, 'height', element.getAttribute('height'));
+    image.setAttributeNS(null, 'height', (Number.parseFloat(element.getAttribute('height')) * 1.5).toString());
     image.setAttributeNS(null, 'x', element.getAttribute('x'));
-    image.setAttributeNS(null, 'y', element.getAttribute('y'));
+    image.setAttributeNS(null, 'y', (Number.parseFloat(element.getAttribute('y')) * 0.8).toString());
     image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', img);
     image.setAttributeNS(null, 'style', element.getAttribute('style'));
     image.setAttributeNS(null, 'name', 'participantshape');
     if (participant) {
       if (second) {
+        image.setAttributeNS(null, 'y', (Number.parseFloat(element.getAttribute('y'))).toString());
         (participant).splice(2, 1, image);
       } else {
         (participant).splice(0, 1, image);
