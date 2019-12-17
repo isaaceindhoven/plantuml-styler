@@ -96,7 +96,7 @@ export class StylingService {
     Array.from(oDOM.getElementsByClassName('actor transparent')).forEach((element: SVGPathElement) => {
       const ns = 'http://www.w3.org/2000/svg';
       const actor = oDOM.createElementNS(ns, 'svg');
-      actor.setAttributeNS(null, 'x', (+(element.previousSibling as SVGCircleElement).getAttribute('cx') - (25)).toString());
+      actor.setAttributeNS(null, 'x', (+(<SVGCircleElement>element.previousSibling).getAttribute('cx') - (25)).toString());
       let half = parseFloat(element.parentElement.parentElement.style.height) / 2;
       if (parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) > half) {
         actor.setAttributeNS(null, 'y', ((parseFloat((element.previousSibling as SVGCircleElement).getAttribute('cy')) - 5).toString()));
@@ -236,13 +236,7 @@ export class StylingService {
     ellipse.setAttributeNS(null, 'cy', cy.toString());
     ellipse.setAttributeNS(null, 'style', element.getAttribute('style'));
     ellipse.setAttributeNS(null, 'name', 'participantshape');
-    if (participant) {
-      if (second) {
-        (participant).splice(2, 1, ellipse);
-      } else {
-        (participant).splice(0, 1, ellipse);
-      }
-    }
+    participant ? second ? (participant).splice(2, 1, ellipse) : null : (participant).splice(0, 1, ellipse);
     element.parentNode.replaceChild(ellipse, element);
   }
   toCircleNode(oDOM) {
@@ -276,36 +270,18 @@ export class StylingService {
     circle.setAttributeNS(null, 'cy', cy.toString());
     circle.setAttributeNS(null, 'name', 'participantshape');
     circle.setAttributeNS(null, 'style', element.getAttribute('style'));
-    if (participant) {
-      if (second) {
-        (participant).splice(2, 1, circle);
-      } else {
-        (participant).splice(0, 1, circle);
-      }
-    }
+    participant ? second ? (participant).splice(2, 1, circle) : null : (participant).splice(0, 1, circle);
     element.parentNode.replaceChild(circle, element);
   }
   setRounded(oDOM, element, participant?, second?) {
     element.setAttribute('rx', 10);
     element.setAttribute('ry', 10);
-    if (participant) {
-      if (second) {
-        (participant).splice(2, 1, element);
-      } else {
-        (participant).splice(0, 1, element);
-      }
-    }
+    participant ? second ? (participant).splice(2, 1, element) : null : (participant).splice(0, 1, element);
   }
   setRectangle(oDOM, element, participant?, second?) {
     element.setAttribute('rx', 0.5);
     element.setAttribute('ry', 0.5);
-    if (participant) {
-      if (second) {
-        (participant).splice(2, 1, element);
-      } else {
-        (participant).splice(0, 1, element);
-      }
-    }
+    participant ? second ? (participant).splice(2, 1, element) : null : (participant).splice(0, 1, element);
   }
   removeStyling(oDOM) {
     this.removeStyleFrom(oDOM, 'rect');

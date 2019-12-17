@@ -18,4 +18,12 @@ export class EditorComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  close(){
+    this.util.openEditor = false;
+    setTimeout(() => {
+      this.util.calcHeight();
+      this.util.resizeAce();
+    });
+  }
 }

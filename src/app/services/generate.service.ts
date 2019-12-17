@@ -16,7 +16,6 @@ export class GenerateService {
   halfwayDoneProcessing: boolean = false;
   refresh: boolean = false;
   canRefresh: boolean = true;
-  isLarge = false;
   isSmall = false;
   svg: any
   rectangled: any;
@@ -46,7 +45,7 @@ export class GenerateService {
   actors = ['Default', 'Modern', 'Male', 'Female'];
   breaks = ['Default', 'Squiggly'];
   fonts = ['Tahoma'];
-  themes = ['No theme','PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
+  themes = ['No theme', 'PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
   color1 = '';
   color2 = '';
   color3 = '';
@@ -97,6 +96,7 @@ export class GenerateService {
   /* #endregion */
 
   async generateSVG(text: string) {
+    // using a timeout to check if the diagram hasn't been requested to change within the last 300 ms. to prevent overloading the server with requests. 
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(async () => {
       console.log('generating...');
@@ -104,219 +104,189 @@ export class GenerateService {
       this.setTheme();
       // make the text ready for generation
       text = this.changeText(document, text);
-      // generate the svg and set it to the svg variable while checking if its rounded
+      // resize the text area
       this.utility.resizeAce();
+      // generate the svg and turning it into a DomParser 
       let oDOM;
       this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this);
+      // start styling the SVG
       this.styleSVG(oDOM);
     }, 300);
-  }
-  resetRectangle(text) {
-    text = 'skinparam roundcorner 1  \n ' + text;
-    text = 'skinparam notefontsize 12 \n ' + text;
-    const t = unescape(encodeURIComponent(text));
-    this.http.get(environment.api.base + this.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
-      (data) => {
-        this.svg = data;
-      });
   }
   styleSVG(oDOM) {
     // removing all the styling PlantUML puts on it
     this.styling.removeStyling(oDOM);
+    // checking if the multi participant toggle has been set because this will mean the shapes of participants shouldn't be set
     if (!this.multi) {
+      // making the diagram participants take the wished shape. based on whether or not a theme has been set the right shape should be used
       this.isThemed ? this.styling.setNode(oDOM, this.themedShape, this.textImages) : this.styling.setNode(oDOM, this.selectedShape, this.textImages);
     }
+    // hiding the notes based on the hideNotes variables which are based on if the diagram is using a theme or not
     this.isThemed ?
       (this.themedHiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM)) :
       (this.hiddenNotes ? this.ShowNotes() : this.HideNotes(oDOM));
+    // setting the variable colors to the SVG based on theme or selected colors
     this.setColors(oDOM);
+    // adding the onMouseOver listeners on the participants to show hidden notes
     this.addListeners(oDOM);
-    this.setAutoNumberLabel(oDOM);
+    // setting the selected auto numbering labels
+    this.isThemed ? this.setAutoNumberLabel(oDOM, this.themedNumber) : this.setAutoNumberLabel(oDOM, this.selectedNumber);
+    // turning the standard PlantUML actors into nice svg modern actors
     this.isThemed ? this.styling.setActor(oDOM, this.themedActor) : this.styling.setActor(oDOM, this.selectedActor);
-    this.isThemed ?
-      (this.themedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null) :
-      (this.selectedBreak == 'Squiggly' ? this.styling.setSquiggly(oDOM) : null);
-    this.findNamesInText(oDOM);
-    this.findTitle(oDOM);
+    // turning the standard breaks into nice looking breaks
+    this.isThemed ? this.setBreak(oDOM, this.themedBreak) : this.setBreak(oDOM, this.selectedBreak);
+    // finding the participant names <text> tags and making them ready to be used later
+    this.isThemed ? this.findNamesInText(oDOM, this.themedParticipantfontsize) : this.findNamesInText(oDOM, this.participantfontsize);
+    // by adding a title in PlantUML that title gets added right above the diagram. but is has very little space which makes it feel very cramped. 
+    // adding a box with a thick border solves this issue but this box is ugly. here we find this box and add some CSS to make it transparent.
+    this.isThemed ? this.findTitle(oDOM, this.themedParticipantfontsize) : this.findTitle(oDOM, this.participantfontsize);
+    // here we find the boxes that surround participants and add the styling needed to make them pretty. we make them a bit bigger too.
     this.findBoxes(oDOM);
+    // here we find the dividers in the diagram and give them the right styling
     this.findDividers(oDOM);
+    // here we find the Alt blocks in the diagram and give them the right styling
     this.findAlts(oDOM);
+    // here we find the database participant <path> elements and give them the right styling
     this.findDbs(oDOM);
+    // here we find the note elements and give them the right stling
     this.findNotes(oDOM);
+    // here we get the chosen google font from google and apply it to the diagram
     this.setFont(oDOM);
-    this.setAlts(oDOM);
+    // here we set the alt blocks to fit the diagram when the selected shape is rounded
+    this.isThemed ? this.setAlts(oDOM, this.themedShape) : this.setAlts(oDOM, this.selectedShape);
+    // for some reason PlantUML adds extra <rect> elements around alt boxes that do nothing. 
+    // they do however make the diagram ugly when rounded so we get rid of them 
     this.setAltBoxes(oDOM);
-    this.setStroke(oDOM);
-    this.setLineBorders(oDOM);
-    this.triggerResize(oDOM);
+    // here we set the border size A.K.A. the stroke
+    this.isThemed ? this.setStroke(oDOM, this.themedParticipantstroke.toString()) : this.setStroke(oDOM, this.participantstroke.toString());
+    // here we set the border size of the lines
+    this.isThemed ? this.setLineBorders(oDOM, this.themedLineThickness) : this.setLineBorders(oDOM, this.lineThickness);
+    // here we set the font size of the diagram
+    this.setFontSize(oDOM);
+    // here we check if the multi participant toggle has been toggled on. if so we need te do some extra styling.
     if (this.multi) {
       this.multicount = this.setMultiParticipants(oDOM);
       this.setMultiParticipantShapes(oDOM);
       this.setMultiParticipantColors(oDOM);
       this.setMultiParticipantImages(oDOM);
     }
+    // then finally we take the DomParser and get the changed SVG out of it and inject it into the page by setting the svg variable. 
     const s = new XMLSerializer();
     const str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
-    setTimeout(() => {
-      if (this.isLarge) {
-        this.styling.setDiagramCardsize();
-      }
-    });
   }
   changeText(oDOM, text: string) {
+    // before we start changing the text we need to know what actors exist within the diagram
     this.styling.getActors(text);
+    // then depending on whether the themed toggle has been toggled on. We decide what code to execute
     if (this.isThemed) {
-      text = this.utility.replaceAll(text, 'Actor', 'actor');
-      if (!this.themedFootnotes) {
-        text = 'hide footbox \n' + text;
-      }
-      if (!this.themedHiddenShadows) {
-        text = 'skinparam Shadowing false \n' + text;
-      }
+      // checking if the user wants to hide the footnotes and if so add the right skinparam to do so
+      this.themedFootnotes ? null : text = 'hide footbox \n' + text;
+      // checking if the user wants to hide the backdrop shadow and if so add the right skinparam to do so
+      this.themedHiddenShadows ? null : text = 'skinparam Shadowing false \n' + text;
+      // setting the fontsize of notes
       text = `skinparam notefontsize 12 \n ` + text;
-      text = `skinparam   ParticipantPadding  ${this.themedParticipantpadding} \n` + text;
-      text = `skinparam   ParticipantFontSize ${this.themedParticipantfontsize} \n` + text;
-      text = `skinparam   ActorFontSize ${this.themedParticipantfontsize} \n` + text;
-      text = `skinparam   ArrowFontSize  ${this.themedSequencetextsize} \n` + text;
+      // setting the padding between participants
+      text = `skinparam ParticipantPadding  ${this.themedParticipantpadding} \n` + text;
+      // setting the participant's font size
+      text = `skinparam ParticipantFontSize ${this.themedParticipantfontsize} \n` + text;
+      // setting the font size of the actors
+      text = `skinparam ActorFontSize ${this.themedParticipantfontsize} \n` + text;
+      // setting the font size of the arrows
+      text = `skinparam ArrowFontSize ${this.themedSequencetextsize} \n` + text;
+      // setting the font size of the sequence dividers
       text = 'skinparam SequenceDividerFontSize 14 \n' + text;
+      // setting the padding between the boxes
       text = 'skinparam BoxPadding 15 \n' + text;
+      // setting the font size of the title
       text = `skinparam SequenceTitleFontSize ${this.themedParticipantfontsize + 1} \n` + text;
-      text = ` skinparam titleBorderThickness 2 \n` + text;
-      switch (this.themedNumber) {
-        case 'None':
-          break;
-        case 'Default':
-          text = 'autonumber 1\n' + text;
-          this.styling.clearLabels(oDOM);
-          break;
-        case 'Circular':
-          text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text;
-          break;
-        case 'Rectangular':
-          text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text;
-          break;
-        case 'Rectangular-Framed':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        case 'Circular-Framed':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        case 'Rounded-Framed':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        case 'Rounded':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        default:
-          break;
-      }
+      // setting the border thickness of the title
+      text = `skinparam titleBorderThickness 2 \n` + text;
+      // setting the skinparams to allow the autonumbers to work
+      text = this.changeTextForNumbers(this.themedNumber, text, oDOM);
     } else {
-      text = this.utility.replaceAll(text, 'Actor', 'actor');
-      if (!this.footnotes) {
-        text = 'hide footbox \n' + text;
-      }
-      if (!this.hiddenShadows) {
-        text = 'skinparam Shadowing false \n' + text;
-      }
+      // checking if the user wants to hide the footnotes and if so add the right skinparam to do so
+      this.footnotes ? null : text = 'hide footbox \n' + text;
+      // checking if the user wants to hide the backdrop shadow and if so add the right skinparam to do so
+      this.hiddenShadows ? null : text = 'skinparam Shadowing false \n' + text;
+      // setting the fontsize of notes
       text = `skinparam notefontsize 12 \n ` + text;
-      if (this.participantfontsize < 1) {
-        this.participantfontsize = 1;
-      }
-      if (this.participantfontsize > 40) {
-        this.participantfontsize = 40;
-      }
-      if (this.sequencetextsize < 1) {
-        this.sequencetextsize = 1;
-      }
-      if (this.sequencetextsize > 40) {
-        this.sequencetextsize = 40;
-      }
-      if (this.participantpadding < 0) {
-        this.participantpadding = 0;
-      }
-      if (this.participantpadding > 500) {
-        this.participantpadding = 500;
-      }
-      text = `skinparam   ParticipantPadding  ${this.participantpadding} \n` + text;
-      text = `skinparam   ParticipantFontSize ${this.participantfontsize} \n` + text;
-      text = `skinparam   ActorFontSize ${this.participantfontsize} \n` + text;
-      text = `skinparam   ArrowFontSize  ${this.sequencetextsize} \n` + text;
+      // making sure the numbers don't go above or below normal amounts
+      this.participantfontsize < 1 ? this.participantfontsize = 1 : this.participantfontsize > 40 ? this.participantfontsize = 40 : null;
+      this.sequencetextsize < 1 ? this.sequencetextsize = 1 : this.sequencetextsize > 40 ? this.sequencetextsize = 40 : null;
+      this.participantpadding < 0 ? this.participantpadding = 0 : this.participantpadding > 500 ? this.participantpadding = 500 : null;
+      // setting the padding between participants
+      text = `skinparam ParticipantPadding  ${this.participantpadding} \n` + text;
+      // setting the participant's font size
+      text = `skinparam ParticipantFontSize ${this.participantfontsize} \n` + text;
+      // setting the font size of the actors
+      text = `skinparam ActorFontSize ${this.participantfontsize} \n` + text;
+      // setting the font size of the arrows
+      text = `skinparam ArrowFontSize ${this.sequencetextsize} \n` + text;
+      // setting the font size of the sequence dividers
       text = 'skinparam SequenceDividerFontSize 14 \n' + text;
+      // setting the padding between the boxes
       text = 'skinparam BoxPadding 15 \n' + text;
+      // setting the font size of the title
       text = `skinparam SequenceTitleFontSize ${this.participantfontsize + 1} \n` + text;
-      text = ` skinparam titleBorderThickness 2 \n` + text;
-      switch (this.selectedNumber) {
-        case 'None':
-          break;
-        case 'Default':
-          text = 'autonumber 1\n' + text;
-          this.styling.clearLabels(oDOM);
-          break;
-        case 'Circular':
-          text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text;
-          break;
-        case 'Rectangular':
-          text = 'autonumber 1\n' + text;
-          text = `skinparam   Padding  4 \n` + text;
-          break;
-        case 'Rectangular-Framed':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        case 'Circular-Framed':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        case 'Rounded-Framed':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        case 'Rounded':
-          text = `skinparam   Padding  4 \n` + text;
-          text = 'autonumber 1\n' + text;
-          break;
-        default:
-          break;
-      }
+      // setting the border thickness of the title
+      text = `skinparam titleBorderThickness 2 \n` + text;
+      // setting the skinparams to allow the autonumbers to work
+      text = this.changeTextForNumbers(this.selectedNumber, text, oDOM);
     }
     return text;
   }
+  changeTextForNumbers(nr, text, oDOM) {
+    // adding the autonumbers skin param and some padding if needed to gain more space for the labels to be added later
+    switch (nr) {
+      case 'None':
+        break;
+      case 'Default':
+        text = 'autonumber 1\n' + text;
+        this.styling.clearLabels(oDOM);
+        return text;
+      default:
+        text = 'autonumber 1\n' + text;
+        text = `skinparam   Padding  4 \n` + text;
+        return text;
+    }
+  }
   async getData(text, roundcorner, generate) {
     return new Promise(function (resolve, reject) {
+      // adding round corners to all rectangles to make it easier to find participants
       text = `skinparam roundcorner ${roundcorner}  \n ${text}`;
-      generate.styling.getActors(text);
+      // make the text ready to be sent to PlantUML
       const t = unescape(encodeURIComponent(text));
+      // send a request to the PlantUML server
       generate.http.get(environment.api.base + generate.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
         (data) => {
+          // add the svgTag id to the <svg> tag
           data = (data as string).replace('<svg', `<svg id="svgTag"`);
+          // creating the domparser
           const oParser = new DOMParser();
+          // parsing the svg from the PlantUML server into the domparser
           const oDOM = oParser.parseFromString(data, 'image/svg+xml');
-          // generate.svg = data;
+          // returning the domparser when done
           resolve(oDOM);
         });
     });
   }
   hideNotes(oDOM) {
+    // searching for notes and hiding them adding the note name tag
     this.styling.getTagList(oDOM, 'path').forEach((element: SVGRectElement) => {
       if (element.getAttribute('class') == null) {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
     });
+    // searching for notes and hiding them adding the note name tag
     this.styling.getTagList(oDOM, 'polygon').forEach((element: SVGRectElement) => {
       if (element.getAttribute('points').split(',').length >= 9) {
         element.setAttribute('display', 'none');
         element.setAttribute('name', 'note');
       }
     });
+    // hiding the text on the notes aswell
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.getAttribute('font-size') == '12') {
         element.setAttribute('display', 'none');
@@ -325,8 +295,10 @@ export class GenerateService {
     });
   }
   showNotes() {
+    // get all notes
     const notes: any = document.getElementsByName('note');
     const list = Array.from(notes);
+    // show all notes
     list.forEach((element: SVGRectElement) => {
       element.setAttribute('display', '');
     });
@@ -350,6 +322,7 @@ export class GenerateService {
     }
   }
   setColors(oDOM) {
+    //setting the color based on theme or own choices
     if (this.isThemed) {
       if (this.selectedTheme == 'PlantUML') {
         this.styling.addColorToStyle(
@@ -470,53 +443,47 @@ export class GenerateService {
       this.hideNotes(document);
     });
   }
-  setAutoNumberLabel(oDOM) {
-    if (this.isThemed) {
-      if (this.themedNumber == 'Circular') {
+  setAutoNumberLabel(oDOM, number) {
+    switch (number) {
+      case 'Circular':
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberCircular(oDOM);
-      } else if (this.themedNumber == 'Rectangular') {
+        break;
+      case 'Rectangular':
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberRectangular(oDOM);
-      } else if (this.themedNumber == 'Rectangular-Framed') {
+        break;
+      case 'Rectangular-Framed':
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberRectangularFramed(oDOM);
-      } else if (this.themedNumber == 'Rounded-Framed') {
+        break;
+      case 'Rounded-Framed':
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberRoundedFramed(oDOM);
-      } else if (this.themedNumber == 'Circular-Framed') {
+        break;
+      case 'Circular-Framed':
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberCircularFramed(oDOM);
-      } else if (this.themedNumber == 'Rounded') {
+        break;
+      case 'Rounded':
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberRounded(oDOM);
-      } else if (this.themedNumber == 'Default') {
+        break;
+      case 'None':
+        break;
+      default:
         this.styling.clearLabels(oDOM);
         this.autonumbering.setAutonumberDefault(oDOM);
-      }
-    } else {
-      if (this.selectedNumber == 'Circular') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberCircular(oDOM);
-      } else if (this.selectedNumber == 'Rectangular') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberRectangular(oDOM);
-      } else if (this.selectedNumber == 'Rectangular-Framed') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberRectangularFramed(oDOM);
-      } else if (this.selectedNumber == 'Rounded-Framed') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberRoundedFramed(oDOM);
-      } else if (this.selectedNumber == 'Circular-Framed') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberCircularFramed(oDOM);
-      } else if (this.selectedNumber == 'Rounded') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberRounded(oDOM);
-      } else if (this.selectedNumber == 'Default') {
-        this.styling.clearLabels(oDOM);
-        this.autonumbering.setAutonumberDefault(oDOM);
-      }
+        break;
+    }
+  }
+  setBreak(oDOM, Break) {
+    switch (Break) {
+      case 'Squiggly':
+        this.styling.setSquiggly(oDOM);
+        break;
+      default:
+        break;
     }
   }
   setFont(oDOM) {
@@ -548,33 +515,17 @@ export class GenerateService {
       oDOM.getElementById('svgTag').style.setProperty(`--font-stack`, this.selectedFont);
     }
   }
-  setStroke(oDOM) {
-    if (this.participantstroke < 0) {
-      this.participantstroke = 0;
-    }
-    if (this.participantstroke > 15) {
-      this.participantstroke = 15;
-    }
-    if (this.isThemed) {
-      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.themedParticipantstroke.toString());
-    } else {
-      oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, this.participantstroke.toString());
-    }
+  setStroke(oDOM, stroke) {
+    stroke < 0 ? stroke = 0 : stroke > 15 ? stroke = 15 : null;
+    this.participantstroke = stroke;
+    oDOM.getElementById('svgTag').style.setProperty(`--participant-stroke-width`, stroke);
   }
-  setLineBorders(oDOM) {
-    if (this.isThemed) {
-      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.themedLineThickness.toString());
-    } else {
-      if (this.lineThickness > 4) {
-        this.lineThickness = 4;
-      }
-      if (this.lineThickness < 0) {
-        this.lineThickness = 0;
-      }
-      oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, this.lineThickness.toString());
-    }
+  setLineBorders(oDOM, thickness) {
+    thickness > 4 ? thickness = 4 : thickness < 0 ? thickness = 0 : null;
+    this.lineThickness = thickness;
+    oDOM.getElementById('svgTag').style.setProperty(`--border-thickness`, thickness.toString());
   }
-  triggerResize(oDOM) {
+  setFontSize(oDOM) {
     oDOM.getElementById('svgTag').style.setProperty(`--font-size`, this.selectedSize);
   }
   isaacStyle() {
@@ -644,110 +595,70 @@ export class GenerateService {
   }
   setTheme() {
     if (this.isThemed) {
-      if (this.selectedTheme == 'PlantUML') {
-        this.plantumlStyle();
-      } else if (this.selectedTheme == 'ISAAC') {
-        this.isaacStyle();
-      } else if (this.selectedTheme == 'Johan') {
-        this.JohanStyle();
-      } else if (this.selectedTheme == 'Graytone') {
-        this.GrayToneStyle();
-      } else if (this.selectedTheme == 'Blackwhite') {
-        this.BlackWhiteStyle();
+      switch (this.selectedTheme) {
+        case 'PlantUML':
+          this.plantumlStyle();
+          break;
+        case 'ISAAC':
+          this.isaacStyle();
+          break;
+        case 'Johan':
+          this.JohanStyle();
+          break;
+        case 'Graytone':
+          this.GrayToneStyle();
+          break;
+        case 'Blackwhite':
+          this.BlackWhiteStyle();
+          break;
+        default:
+          break;
       }
     }
   }
-  findNamesInText(oDOM) {
-    let last;
+  findNamesInText(oDOM, fontsize) {
+    // loop through all the <text> tags 
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
+      // checking if its neither the first nor the last element in the diagram
       if (element.previousSibling && element.nextSibling) {
-        if (element.previousSibling.nodeName == 'rect') {
-          if ((element.previousSibling as SVGRectElement).getAttribute('rx')) {
-            if (!(element.previousSibling as SVGRectElement).getAttribute('class')) {
-              if (this.isThemed) {
-                if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
-                  (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
-                }
-              } else {
-                if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+        // now er need to do some different things depending on the kind of tag the previous sibling is
+        switch (element.previousSibling.nodeName) {
+          // if its a <rect> then we need to check if its a participant by looking at the rx and class attributes
+          case 'rect':
+            if ((element.previousSibling as SVGRectElement).getAttribute('rx')) {
+              if (!(element.previousSibling as SVGRectElement).getAttribute('class')) {
+                if (element.getAttribute('font-size') == fontsize.toString()) {
                   (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
                 }
               }
             }
-          }
-        } else if (element.previousSibling.nodeName == 'image') {
-          if (this.isThemed) {
-            if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
-              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
-            }
-          } else {
-            if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
-              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
-            }
-          }
-        } else if (element.previousSibling.nodeName == 'ellipse') {
-          if (this.isThemed) {
-            if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
-              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
-            }
-          } else {
-            if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
-              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
-            }
-          }
-        } else if (element.previousSibling.nodeName == 'circle') {
-          if (this.isThemed) {
-            if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
-              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
-            }
-          } else {
-            if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
-              (element.previousSibling as SVGImageElement).setAttribute('name', 'participantshape');
-            }
-          }
-        } else if (element.nextSibling.nodeName == 'ellipse') {
-          if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class')) {
-            if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class').includes('actor')) {
-              if (this.isThemed) {
-                if (element.getAttribute('font-size') == this.themedParticipantfontsize.toString()) {
-                  (element.nextSibling as SVGImageElement).setAttribute('name', 'participantshape');
-                  (element.nextSibling as SVGImageElement).setAttribute('class', (element.nextSibling as SVGImageElement).getAttribute('class') + ' actorshape');
-                }
-              } else {
-                if (element.getAttribute('font-size') == this.participantfontsize.toString()) {
+            break;
+          case 'ellipse':
+            // if its an <ellipse> we need to check if its not part of an actor
+            if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class')) {
+              if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class').includes('actor')) {
+                if (element.getAttribute('font-size') == fontsize.toString()) {
                   (element.nextSibling as SVGImageElement).setAttribute('name', 'participantshape');
                   (element.nextSibling as SVGImageElement).setAttribute('class', (element.nextSibling as SVGImageElement).getAttribute('class') + ' actorshape');
                 }
               }
             }
-          }
+            break;
+          default:
+            if (element.getAttribute('font-size') == fontsize.toString()) {
+              (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
+            }
+            break;
         }
-      }
-      if (last) {
-        if (element.textContent == last.textContent) {
-          element.setAttribute('name', 'participant');
-          last.setAttribute('name', 'participant');
-        } else {
-          last = element;
-        }
-      } else {
-        last = element;
       }
     });
   }
-  findTitle(oDOM) {
+  findTitle(oDOM, fontsize) {
     let once = true;
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGTextElement) => {
-      if (this.isThemed) {
-        if (parseFloat(element.getAttribute('font-size')) === this.themedParticipantfontsize + 1 && once) {
-          once = false;
-          (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
-        }
-      } else {
-        if (parseFloat(element.getAttribute('font-size')) === this.participantfontsize + 1 && once) {
-          once = false;
-          (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
-        }
+      if (parseFloat(element.getAttribute('font-size')) === fontsize + 1 && once) {
+        once = false;
+        (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
       }
     });
   }
@@ -755,11 +666,7 @@ export class GenerateService {
     const height = parseFloat(oDOM.getElementById('svgTag').style.height) * 0.88;
     this.styling.getTagList(oDOM, 'rect').forEach((element: SVGRectElement) => {
       if (parseFloat(element.getAttribute('height')) >= height) {
-        if (element.getAttribute('class')) {
-          element.setAttribute('class', element.getAttribute('class') + ' box');
-        } else {
-          element.setAttribute('class', 'box');
-        }
+        element.setAttribute('class', element.getAttribute('class') ? element.getAttribute('class') + ' box' : 'box');
         element.setAttribute('height', (parseFloat(element.getAttribute('height')) + 5).toString());
         element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 5).toString());
         element.setAttribute('x', (parseFloat(element.getAttribute('x')) - 5).toString());
@@ -769,9 +676,7 @@ export class GenerateService {
   }
   findNotes(oDOM) {
     this.styling.getTagList(oDOM, 'polygon').forEach((element: SVGPolygonElement) => {
-      if (element.animatedPoints.length != 4) {
-        element.setAttribute('class', 'note');
-      }
+      if (element.animatedPoints.length != 4) element.setAttribute('class', 'note');
     });
   }
   findDividers(oDOM) {
@@ -818,45 +723,25 @@ export class GenerateService {
       }
     });
   }
-  setAlts(oDOM) {
+  setAlts(oDOM, shape) {
     this.styling.getTagList(oDOM, 'path').forEach((element: SVGPathElement) => {
       if (element.className.baseVal === 'alt') {
-        if (this.isThemed) {
-          if (this.themedShape === 'Rounded') {
-            const d = element.getAttribute('d');
-            const firstnrLength = d.split(',')[0].length - 1;
-            const nr = parseFloat(d.substr(1, firstnrLength));
-            const newnr = nr - 7;
-            const nrstring = nr.toString();
-            const newnrstring = newnr.toString();
-            let newD = d.replace(nrstring, newnrstring);
-            const secondnrLength = d.split(',')[1].split(' ')[0].length;
-            const start = nr.toString().length + 2;
-            const tnr = parseFloat(d.substr(start, secondnrLength));
-            const tnewnr = tnr + 2;
-            const tnrstring = tnr.toString();
-            const tnewnrstring = tnewnr.toString();
-            newD = newD.replace(tnrstring, tnewnrstring);
-            element.setAttribute('d', newD);
-          }
-        } else {
-          if (this.selectedShape === 'Rounded') {
-            const d = element.getAttribute('d');
-            const firstnrLength = d.split(',')[0].length - 1;
-            const nr = parseFloat(d.substr(1, firstnrLength));
-            const newnr = nr - 7;
-            const nrstring = nr.toString();
-            const newnrstring = newnr.toString();
-            let newD = d.replace(nrstring, newnrstring);
-            const secondnrLength = d.split(',')[1].split(' ')[0].length;
-            const start = nr.toString().length + 2;
-            const tnr = parseFloat(d.substr(start, secondnrLength));
-            const tnewnr = tnr + 2;
-            const tnrstring = tnr.toString();
-            const tnewnrstring = tnewnr.toString();
-            newD = newD.replace(tnrstring, tnewnrstring);
-            element.setAttribute('d', newD);
-          }
+        if (shape === 'Rounded') {
+          let d = element.getAttribute('d');
+          let firstnrLength = d.split(',')[0].length - 1;
+          let nr = parseFloat(d.substr(1, firstnrLength));
+          let newnr = nr - 7;
+          let nrstring = nr.toString();
+          let newnrstring = newnr.toString();
+          let newD = d.replace(nrstring, newnrstring);
+          let secondnrLength = d.split(',')[1].split(' ')[0].length;
+          let start = nr.toString().length + 2;
+          let tnr = parseFloat(d.substr(start, secondnrLength));
+          let tnewnr = tnr + 2;
+          let tnrstring = tnr.toString();
+          let tnewnrstring = tnewnr.toString();
+          newD = newD.replace(tnrstring, tnewnrstring);
+          element.setAttribute('d', newD);
         }
       }
     });
@@ -1138,7 +1023,7 @@ export class GenerateService {
     this.participantShapes.forEach((shape) => {
       if (shape.name === name) {
         this.parshape = shape.shape;
-      } 
+      }
     })
   }
 }

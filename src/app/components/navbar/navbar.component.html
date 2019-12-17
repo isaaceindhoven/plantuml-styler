@@ -42,6 +42,7 @@
         </button>
         <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt" (change)="fileChanged($event)"
             value="Json">
+        <mat-spinner diameter="50" *ngIf="isLoading"></mat-spinner>
         <span class="spacer"></span>
     </mat-toolbar-row>
 </mat-toolbar>

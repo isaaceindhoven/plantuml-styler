@@ -118,7 +118,7 @@ export class NavbarComponent implements OnInit {
     }
     else {
       this.generate.isThemed = false;
-       this.generate.generateSVG(this.generate.text);
+      this.generate.generateSVG(this.generate.text);
     }
   }
   download() {
@@ -129,21 +129,30 @@ export class NavbarComponent implements OnInit {
     svgstring = svgstring.replace("<defs>", `<defs>${this.util.getSVGStyle()}`)
     zip.file("diagram.svg", svgstring);
     zip.file("style.json", this.impoexpo.saveConfig(true));
-    svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3, backgroundColor: '#fefefe' }, (data) => {
+    svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3, backgroundColor: '#fefefe' }, async (data) => {
       data = data.replace('data:image/png;base64,', '')
-      zip.file("diagram.png", data, { base64: true });
+      await zip.file("diagram.png", data, { base64: true });
     });
-    svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3 }, (data) => {
+    svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3 }, async (data) => {
       data = data.replace('data:image/png;base64,', '')
-      zip.file("diagram-Transparent.png", data, { base64: true });
+      await zip.file("diagram-Transparent.png", data, { base64: true });
     });
-    setTimeout(() => {
-      zip.generateAsync({ type: "blob" })
-        .then(function (blob) {
-          saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
-        });
-      this.isLoading = false;
-    }, 500);
+    if (this.generate.participantImages) {
+      setTimeout(() => {
+        zip.generateAsync({ type: "blob" })
+          .then(async function (blob) {
+            await saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
+          }).then(this.isLoading = false);
+      }, 3000);
+    }
+    else {
+      setTimeout(() => {
+        zip.generateAsync({ type: "blob" })
+          .then(async function (blob) {
+            await saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
+          }).then(this.isLoading = false);
+      }, 500);
+    }
   }
   loadFile(file) {
     if (file.type == 'application/zip') {

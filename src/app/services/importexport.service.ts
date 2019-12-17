@@ -53,7 +53,8 @@ export class ImportExportService {
       multicount: this.gen.multicount,
       participants: this.gen.participants,
       participantColors:this.gen.participantColors,
-      participantShapes: this.gen.participantShapes
+      participantShapes: this.gen.participantShapes,
+      participantImages: this.gen.participantImages,
     });
     if (returning) {
       return json;
@@ -84,7 +85,6 @@ export class ImportExportService {
     this.gen.isDoneProcessing = false;
     let puml = event.target.result;
     this.gen.text = puml;
-    // document.getElementById('tA').textContent = puml;
     setTimeout(() => {
       if (this.gen.halfwayDoneProcessing) {
         this.gen.isDoneProcessing = true;
@@ -140,6 +140,8 @@ export class ImportExportService {
     this.gen.participants = json.participants;
     this.gen.participantColors = json.participantColors;
     this.gen.participantShapes = json.participantShapes;
+    this.gen.participantImages = json.participantImages;
+
     if(!this.gen.isThemed){
       this.gen.selectedTheme="No theme";
     }
