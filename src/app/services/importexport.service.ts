@@ -9,7 +9,7 @@ export class ImportExportService {
   constructor(private gen: GenerateService) { }
 
   saveConfig(returning) {
-    let json = JSON.stringify({
+    const json = JSON.stringify({
       color1: this.gen.color1,
       color2: this.gen.color2,
       color3: this.gen.color3,
@@ -52,50 +52,50 @@ export class ImportExportService {
       multi: this.gen.multi,
       multicount: this.gen.multicount,
       participants: this.gen.participants,
-      participantColors:this.gen.participantColors,
+      participantColors: this.gen.participantColors,
       participantShapes: this.gen.participantShapes,
       participantImages: this.gen.participantImages,
     });
     if (returning) {
       return json;
     }
-    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
-    let a = document.createElement('a');
-    a.download = "style.json";
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
+    const a = document.createElement('a');
+    a.download = 'style.json';
     a.href = dataStr;
     document.body.appendChild(a);
     a.click();
   }
   loadConfig(json) {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = (event) => {
       this.onConfigReaderLoad(event);
-    }
+    };
     reader.readAsText(json);
   }
   loadCode(puml) {
     this.gen.isDoneProcessing = false;
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = (event) => {
       this.onCodeReaderLoad(event);
-    }
+    };
     reader.readAsText(puml);
   }
   onCodeReaderLoad(event) {
     this.gen.isDoneProcessing = false;
-    let puml = event.target.result;
+    const puml = event.target.result;
     this.gen.text = puml;
     setTimeout(() => {
       if (this.gen.halfwayDoneProcessing) {
         this.gen.isDoneProcessing = true;
-        this.gen.generateSVG(puml)
+        this.gen.generateSVG(puml);
       } else {
         this.gen.halfwayDoneProcessing = true;
       }
     }, 200);
   }
   onConfigReaderLoad(event) {
-    let json = JSON.parse(event.target.result);
+    const json = JSON.parse(event.target.result);
     this.gen.color1 = json.color1;
     this.gen.color2 = json.color2;
     this.gen.color3 = json.color3;
@@ -123,16 +123,16 @@ export class ImportExportService {
     this.gen.participantfontsize = json.participantfontsize;
     this.gen.participantstroke = json.participantstroke;
     this.gen.sequencetextsize = json.sequencetextsize;
-    this.gen.themedBreak = json.themedBreak
-    this.gen.themedNumber = json.themedNumber
-    this.gen.themedShape = json.themedShape
-    this.gen.themedActor = json.themedActor
-    this.gen.themedFont = json.themedFont
-    this.gen.themedFootnotes = json.themedHiddenFootnotes
-    this.gen.themedHiddenShadows = json.themedHiddenShadows
-    this.gen.themedParticipantfontsize = json.themedParticipantfontsize
-    this.gen.themedSequencetextsize = json.themedSequencetextsize
-    this.gen.themedParticipantstroke = json.themedParticipantstroke
+    this.gen.themedBreak = json.themedBreak;
+    this.gen.themedNumber = json.themedNumber;
+    this.gen.themedShape = json.themedShape;
+    this.gen.themedActor = json.themedActor;
+    this.gen.themedFont = json.themedFont;
+    this.gen.themedFootnotes = json.themedHiddenFootnotes;
+    this.gen.themedHiddenShadows = json.themedHiddenShadows;
+    this.gen.themedParticipantfontsize = json.themedParticipantfontsize;
+    this.gen.themedSequencetextsize = json.themedSequencetextsize;
+    this.gen.themedParticipantstroke = json.themedParticipantstroke;
     this.gen.lineThickness = json.lineThickness;
     this.gen.themedLineThickness = json.themedLineThickness;
     this.gen.multicount = json.multicount;
@@ -142,12 +142,12 @@ export class ImportExportService {
     this.gen.participantShapes = json.participantShapes;
     this.gen.participantImages = json.participantImages;
 
-    if(!this.gen.isThemed){
-      this.gen.selectedTheme="No theme";
+    if (!this.gen.isThemed) {
+      this.gen.selectedTheme = 'No theme';
     }
     if (this.gen.halfwayDoneProcessing) {
       this.gen.isDoneProcessing = true;
-      this.gen.generateSVG(this.gen.text)
+      this.gen.generateSVG(this.gen.text);
     } else {
       this.gen.halfwayDoneProcessing = true;
     }

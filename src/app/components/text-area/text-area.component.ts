@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
-import { GenerateService } from 'src/app/services/generate.service'
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { GenerateService } from 'src/app/services/generate.service';
 import 'brace';
 import 'brace/mode/text';
 import 'brace/theme/dawn';

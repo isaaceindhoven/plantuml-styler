@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AutoNumberService {
   constructor() { }
-  getTagList(oDOM, type) {
+  getTagList(oDOM: Document, type: string) {
     return Array.from(oDOM.getElementsByTagName(type));
   }
-  setAutonumberDefault(oDOM) {
+  setAutonumberDefault(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
@@ -16,25 +16,26 @@ export class AutoNumberService {
           element.setAttribute('class', 'labelText');
         }
       }
-    })
+    });
   }
-  setAutonumberCircular(oDOM) {
+
+  setAutonumberCircular(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
           element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'polygon' && element.innerHTML.length < 3) {
           element.setAttribute('class', 'labelText');
-          let ns = 'http://www.w3.org/2000/svg'
-          let circle = document.createElementNS(ns, 'circle');
+          const ns = 'http://www.w3.org/2000/svg'
+          const circle = document.createElementNS(ns, 'circle');
           let r = (element.getAttribute('textLength').length as unknown as number);
-          let fs = (element.getAttribute('font-size') as unknown as number);
+          const fs = (element.getAttribute('font-size') as unknown as number);
           let extra = (fs / 13);
           if (r == 2) {
             extra = (fs / 13) * 5;
           }
           r = (((fs / 13) * 10) + (r * 2));
-          let cx = (parseFloat(element.getAttribute('x')) - (fs / 13) + ((r * 0.4) + extra));
-          let cy = (parseFloat(element.getAttribute('y')) - 2 + ((fs / 13) * 2) - (r / 2));
+          const cx = (parseFloat(element.getAttribute('x')) - (fs / 13) + ((r * 0.4) + extra));
+          const cy = (parseFloat(element.getAttribute('y')) - 2 + ((fs / 13) * 2) - (r / 2));
           element.setAttribute('y', (parseFloat(element.getAttribute('y')) - 1).toString());
           circle.setAttributeNS(null, 'r', r.toString())
           circle.setAttributeNS(null, 'cx', cx.toString())
@@ -46,7 +47,7 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRectangular(oDOM) {
+  setAutonumberRectangular(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
@@ -66,7 +67,7 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRectangularFramed(oDOM) {
+  setAutonumberRectangularFramed(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
@@ -147,7 +148,7 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberCircularFramed(oDOM) {
+  setAutonumberCircularFramed(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
@@ -230,7 +231,7 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRoundedFramed(oDOM) {
+  setAutonumberRoundedFramed(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||
@@ -312,7 +313,7 @@ export class AutoNumberService {
       }
     })
   }
-  setAutonumberRounded(oDOM) {
+  setAutonumberRounded(oDOM: Document) {
     this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       if (element.previousElementSibling) {
         if (element.getAttribute('font-weight') == 'bold' && element.previousElementSibling.nodeName == 'line' && element.innerHTML.length < 3 ||

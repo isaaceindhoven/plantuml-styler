@@ -11,10 +11,10 @@ export class DiagramComponent implements OnInit {
   constructor(public generate: GenerateService) { }
 
   ngOnInit() {
-    window.addEventListener("dragover", e => {
+    window.addEventListener('dragover', e => {
       e && e.preventDefault();
     }, false);
-    window.addEventListener("drop", e => {
+    window.addEventListener('drop', e => {
       e && e.preventDefault();
     }, false);
   }

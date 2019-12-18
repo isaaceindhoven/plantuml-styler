@@ -16,10 +16,10 @@ export class AppComponent {
   mousemove;
   hide;
   ngOnInit() {
-    window.addEventListener("dragover", e => {
+    window.addEventListener('dragover', e => {
       e && e.preventDefault();
     }, false);
-    window.addEventListener("drop", e => {
+    window.addEventListener('drop', e => {
       e && e.preventDefault();
     }, false);
     this.resizableArea = document.getElementById('resizableTextarea');
@@ -45,7 +45,7 @@ export class AppComponent {
     this.moveAt(event.pageX);
   }
   getHalf() {
-    return this.util.diagram.style.height / 2
+    return this.util.diagram.style.height / 2;
   }
 
 }

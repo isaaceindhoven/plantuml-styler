@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core'
-import * as svg from 'save-svg-as-png'
-import { StylingService } from 'src/app/services/styling.service'
-import * as JSZip from 'jszip'
+import { Component, OnInit } from '@angular/core';
+import * as svg from 'save-svg-as-png';
+import { StylingService } from 'src/app/services/styling.service';
+import * as JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import Swal from 'sweetalert2'
-import { ZipService } from 'src/app/services/zip.service'
+import Swal from 'sweetalert2';
+import { ZipService } from 'src/app/services/zip.service';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
-import { MatDialog } from '@angular/material'
-import { GenerateService } from 'src/app/services/generate.service'
-import { ImportExportService } from 'src/app/services/importexport.service'
-import { UtilityService } from 'src/app/services/utility.service'
+import { MatDialog } from '@angular/material';
+import { GenerateService } from 'src/app/services/generate.service';
+import { ImportExportService } from 'src/app/services/importexport.service';
+import { UtilityService } from 'src/app/services/utility.service';
 import { environment } from 'src/environments/environment.prod';
 
 @Component({
@@ -24,9 +24,9 @@ export class NavbarComponent implements OnInit {
   importing = false;
   files: NgxFileDropEntry[] = [];
   ngOnInit() {
-    window.addEventListener("dragover", e => {
+    window.addEventListener('dragover', e => {
       e && e.preventDefault();
-      let dt = e.dataTransfer;
+      const dt = e.dataTransfer;
       if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.includes('Files'))) {
         if (!this.util.openEditor) {
           this.util.openEditor = true;
@@ -36,24 +36,24 @@ export class NavbarComponent implements OnInit {
         }
       }
     }, false);
-    window.addEventListener("drop", e => {
+    window.addEventListener('drop', e => {
       e && e.preventDefault();
     }, false);
-    this.generate.generateSVG(this.generate.text)
+    this.generate.generateSVG(this.generate.text);
     this.stylingservice.getFonts().subscribe(data => {
       this.generate.fonts = Array.from((data as any).items);
-    })
-    this.generate.color1 = '#a80036'
-    this.generate.color2 = '#fefece'
-    this.generate.color3 = '#fbfb77'
-    this.generate.color4 = '#3a3a3a'
-    this.generate.color5 = '#000000'
-    this.generate.color6 = '#a80036'
-    this.generate.color7 = '#a80036'
-    this.generate.color8 = '#fefece'
-    this.generate.color9 = '#000000'
-    this.generate.colorBoxBack = '#fefece'
-    this.generate.colorBoxStroke = '#a80036'
+    });
+    this.generate.color1 = '#a80036';
+    this.generate.color2 = '#fefece';
+    this.generate.color3 = '#fbfb77';
+    this.generate.color4 = '#3a3a3a';
+    this.generate.color5 = '#000000';
+    this.generate.color6 = '#a80036';
+    this.generate.color7 = '#a80036';
+    this.generate.color8 = '#fefece';
+    this.generate.color9 = '#000000';
+    this.generate.colorBoxBack = '#fefece';
+    this.generate.colorBoxStroke = '#a80036';
     this.generate.selectedTheme = 'ISAAC';
     this.generate.isThemed = true;
     setTimeout(() => {
@@ -67,31 +67,31 @@ export class NavbarComponent implements OnInit {
       this.util.resizeAce();
     });
     this.generate.isThemed = false;
-    this.generate.selectedBreak = this.generate.themedBreak
-    this.generate.selectedNumber = this.generate.themedNumber
-    this.generate.selectedShape = this.generate.themedShape
-    this.generate.selectedActor = this.generate.themedActor
-    this.generate.selectedFont = this.generate.themedFont
-    this.generate.footnotes = this.generate.themedFootnotes
-    this.generate.hiddenShadows = this.generate.themedHiddenShadows
-    this.generate.participantfontsize = this.generate.themedParticipantfontsize
-    this.generate.sequencetextsize = this.generate.themedSequencetextsize
-    this.generate.participantstroke = this.generate.themedParticipantstroke
+    this.generate.selectedBreak = this.generate.themedBreak;
+    this.generate.selectedNumber = this.generate.themedNumber;
+    this.generate.selectedShape = this.generate.themedShape;
+    this.generate.selectedActor = this.generate.themedActor;
+    this.generate.selectedFont = this.generate.themedFont;
+    this.generate.footnotes = this.generate.themedFootnotes;
+    this.generate.hiddenShadows = this.generate.themedHiddenShadows;
+    this.generate.participantfontsize = this.generate.themedParticipantfontsize;
+    this.generate.sequencetextsize = this.generate.themedSequencetextsize;
+    this.generate.participantstroke = this.generate.themedParticipantstroke;
     switch (this.generate.selectedTheme) {
       case 'PlantUML':
-        this.setTheme(this.stylingservice.PlantUMLStyle)
+        this.setTheme(this.stylingservice.PlantUMLStyle);
         break;
       case 'ISAAC':
-        this.setTheme(this.stylingservice.IsaacStyle)
+        this.setTheme(this.stylingservice.IsaacStyle);
         break;
       case 'Johan':
-        this.setTheme(this.stylingservice.JohanStyle)
+        this.setTheme(this.stylingservice.JohanStyle);
         break;
       case 'Graytone':
-        this.setTheme(this.stylingservice.GraytoneStyle)
+        this.setTheme(this.stylingservice.GraytoneStyle);
         break;
       case 'Blackwhite':
-        this.setTheme(this.stylingservice.BlackWhiteStyle)
+        this.setTheme(this.stylingservice.BlackWhiteStyle);
         break;
       default:
         break;
@@ -112,43 +112,41 @@ export class NavbarComponent implements OnInit {
     this.generate.colorBoxStroke = array[10];
   }
   activateTheme() {
-    if (this.generate.selectedTheme != "No theme") {
+    if (this.generate.selectedTheme != 'No theme') {
       this.generate.isThemed = true;
       this.generate.generateSVG(this.generate.text);
-    }
-    else {
+    } else {
       this.generate.isThemed = false;
       this.generate.generateSVG(this.generate.text);
     }
   }
   download() {
     this.isLoading = true;
-    let zip = new JSZip();
-    zip.file("code.puml", this.generate.text);
+    const zip = new JSZip();
+    zip.file('code.puml', this.generate.text);
     let svgstring = document.getElementById('svgTag').outerHTML;
-    svgstring = svgstring.replace("<defs>", `<defs>${this.util.getSVGStyle()}`)
-    zip.file("diagram.svg", svgstring);
-    zip.file("style.json", this.impoexpo.saveConfig(true));
+    svgstring = svgstring.replace('<defs>', `<defs>${this.util.getSVGStyle()}`);
+    zip.file('diagram.svg', svgstring);
+    zip.file('style.json', this.impoexpo.saveConfig(true));
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3, backgroundColor: '#fefefe' }, async (data) => {
-      data = data.replace('data:image/png;base64,', '')
-      await zip.file("diagram.png", data, { base64: true });
+      data = data.replace('data:image/png;base64,', '');
+      await zip.file('diagram.png', data, { base64: true });
     });
     svg.svgAsPngUri(document.getElementById('svgTag'), { encoderOptions: 1, scale: 3 }, async (data) => {
-      data = data.replace('data:image/png;base64,', '')
-      await zip.file("diagram-Transparent.png", data, { base64: true });
+      data = data.replace('data:image/png;base64,', '');
+      await zip.file('diagram-Transparent.png', data, { base64: true });
     });
     if (this.generate.participantImages) {
       setTimeout(() => {
-        zip.generateAsync({ type: "blob" })
-          .then(async function (blob) {
+        zip.generateAsync({ type: 'blob' })
+          .then(async function(blob) {
             await saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
           }).then(this.isLoading = false);
       }, 3000);
-    }
-    else {
+    } else {
       setTimeout(() => {
-        zip.generateAsync({ type: "blob" })
-          .then(async function (blob) {
+        zip.generateAsync({ type: 'blob' })
+          .then(async function(blob) {
             await saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
           }).then(this.isLoading = false);
       }, 500);
@@ -156,23 +154,23 @@ export class NavbarComponent implements OnInit {
   }
   loadFile(file) {
     if (file.type == 'application/zip') {
-      let entries = this.zipservice.getEntries(file);
+      const entries = this.zipservice.getEntries(file);
       entries.subscribe(data => {
         let correctFile = false;
         data.forEach(entry => {
           if (entry.filename == 'code.puml') {
             correctFile = true;
-            let newdata = this.zipservice.getData(entry);
+            const newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
-              this.impoexpo.loadCode(blob)
-            })
+              this.impoexpo.loadCode(blob);
+            });
           }
           if (entry.filename == 'style.json') {
             correctFile = true;
-            let newdata = this.zipservice.getData(entry);
+            const newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadConfig(blob);
-            })
+            });
           }
         });
         if (!correctFile) {
@@ -182,28 +180,27 @@ export class NavbarComponent implements OnInit {
             text: 'This zip contains no correct file types.',
             showConfirmButton: false,
             timer: 1500
-          })
+          });
         }
-      })
-    }
-    else if (file.type == 'application/x-zip-compressed') {
-      let entries = this.zipservice.getEntries(file);
+      });
+    } else if (file.type == 'application/x-zip-compressed') {
+      const entries = this.zipservice.getEntries(file);
       entries.subscribe(data => {
         let correctFile = false;
         data.forEach(entry => {
           if (entry.filename == 'code.puml') {
             correctFile = true;
-            let newdata = this.zipservice.getData(entry);
+            const newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
-              this.impoexpo.loadCode(blob)
-            })
+              this.impoexpo.loadCode(blob);
+            });
           }
           if (entry.filename == 'style.json') {
             correctFile = true;
-            let newdata = this.zipservice.getData(entry);
+            const newdata = this.zipservice.getData(entry);
             newdata.data.subscribe(blob => {
               this.impoexpo.loadConfig(blob);
-            })
+            });
           }
         });
         if (!correctFile) {
@@ -213,29 +210,26 @@ export class NavbarComponent implements OnInit {
             text: 'This zip contains no correct file types.',
             showConfirmButton: false,
             timer: 1500
-          })
+          });
         }
-      })
+      });
     } else if (file.type == 'application/json') {
       this.generate.halfwayDoneProcessing = true;
       this.impoexpo.loadConfig(file);
-    }
-    else if (file.name.endsWith('.puml')) {
+    } else if (file.name.endsWith('.puml')) {
       this.generate.halfwayDoneProcessing = true;
-      this.impoexpo.loadCode(file)
-    }
-    else if (file.type == 'text/plain') {
+      this.impoexpo.loadCode(file);
+    } else if (file.type == 'text/plain') {
       this.generate.halfwayDoneProcessing = true;
-      this.impoexpo.loadCode(file)
-    }
-    else {
+      this.impoexpo.loadCode(file);
+    } else {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'This file type is not supported.',
         showConfirmButton: false,
         timer: 1500
-      })
+      });
     }
   }
   fileChanged(event) {
@@ -249,7 +243,7 @@ export class NavbarComponent implements OnInit {
     if (droppedFile.fileEntry.isFile) {
       const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
       fileEntry.file((file: File) => {
-        this.loadFile(file)
+        this.loadFile(file);
       });
     } else {
       // It was a directory (empty directories are added, otherwise only files)
@@ -259,7 +253,7 @@ export class NavbarComponent implements OnInit {
         text: 'You uploaded a empty directory!',
         showConfirmButton: false,
         timer: 1500
-      })
+      });
     }
   }
   setEnvironment(string) {

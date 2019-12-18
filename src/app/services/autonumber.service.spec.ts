@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-
 import { AutoNumberService } from './autonumber.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-
 describe('AutoNumberService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule]
@@ -95,7 +93,16 @@ describe('AutoNumberService', () => {
     --label-text-color:#009ddc; --box-back-color:#f5f5f5; --box-stroke-color:#f5f5f5; --font-stack:Open Sans; 
     --participant-stroke-width:2; --border-thickness:1; --font-size:14;" version="1.1" viewBox="0 0 133 156" 
     width="133px" zoomAndPan="magnify">
-    <g xmlns="http://www.w3.org/2000/svg"><line x1="34" x2="34" y1="44.625" y2="176.0234" class="null dashed"/><line x1="117" x2="117" y1="44.625" y2="176.0234" class="null dashed"/><rect height="40.625" rx="10" ry="10" width="53" x="8" y="3" name="participantshape"/><text font-family="sans-serif" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="31" x="19" y="28.8516">Bob</text><rect height="40.625" rx="10" ry="10" width="57" x="89" y="3" name="participantshape"/><text font-family="sans-serif" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="35" x="100" y="28.8516">Alice</text><polygon points="105.5,79.7578,115.5,83.7578,105.5,87.7578,109.5,83.7578"/><line x1="34.5" x2="111.5" y1="83.7578" y2="83.7578"/><circle r="12" cx="50.3" cy="68.6919" name="label" class="label"/><text font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="9" x="45.5" y="73.6919" class="labelText">1</text><text font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="66.5" y="74.6919">hello</text><polygon points="45.5,116.8906,35.5,120.8906,45.5,124.8906,41.5,120.8906"/><line x1="39.5" x2="116.5" y1="120.8906" y2="120.8906"/><circle r="12" cx="60.3" cy="105.8247" name="label" class="label"/><text font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="9" x="55.5" y="110.8247" class="labelText">2</text><text font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="76.5" y="111.8247">hello</text><polygon points="105.5,154.0234,115.5,158.0234,105.5,162.0234,109.5,158.0234"/><line x1="34.5" x2="111.5" y1="158.0234" y2="158.0234"/><circle r="12" cx="50.3" cy="142.9575" name="label" class="label"/><text font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="9" x="45.5" y="147.9575" class="labelText">3</text><text font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="66.5" y="148.9575">hello</text><!--MD5=[1f51b3d07837a43aab3b4df1b7fb5a49]
+    <g xmlns="http://www.w3.org/2000/svg">
+    <line x1="34" x2="34" y1="44.625" y2="176.0234" class="null dashed"/>
+    <line x1="117" x2="117" y1="44.625" y2="176.0234" class="null dashed"/>
+    <rect height="40.625" rx="10" ry="10" width="53" x="8" y="3" name="participantshape"/>
+    <text font-family="sans-serif" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="31" x="19" y="28.8516">Bob</text>
+    <rect height="40.625" rx="10" ry="10" width="57" x="89" y="3" name="participantshape"/>
+    <text font-family="sans-serif" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="35" x="100" y="28.8516">Alice</text>
+    <polygon points="105.5,79.7578,115.5,83.7578,105.5,87.7578,109.5,83.7578"/><line x1="34.5" x2="111.5" y1="83.7578" y2="83.7578"/>
+    <circle r="12" cx="50.3" cy="68.6919" name="label" class="label"/>
+    <text font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="9" x="45.5" y="73.6919" class="labelText">1</text><text font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="66.5" y="74.6919">hello</text><polygon points="45.5,116.8906,35.5,120.8906,45.5,124.8906,41.5,120.8906"/><line x1="39.5" x2="116.5" y1="120.8906" y2="120.8906"/><circle r="12" cx="60.3" cy="105.8247" name="label" class="label"/><text font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="9" x="55.5" y="110.8247" class="labelText">2</text><text font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="76.5" y="111.8247">hello</text><polygon points="105.5,154.0234,115.5,158.0234,105.5,162.0234,109.5,158.0234"/><line x1="34.5" x2="111.5" y1="158.0234" y2="158.0234"/><circle r="12" cx="50.3" cy="142.9575" name="label" class="label"/><text font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="9" x="45.5" y="147.9575" class="labelText">3</text><text font-family="sans-serif" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="30" x="66.5" y="148.9575">hello</text><!--MD5=[1f51b3d07837a43aab3b4df1b7fb5a49]
 @startuml
 skinparam roundcorner 20  
  skinparam   Padding  4 
@@ -373,8 +380,8 @@ Country: null
     const oDOMexpect = oParser.parseFromString(expectSvg, 'image/svg+xml');
     const service: AutoNumberService = TestBed.get(AutoNumberService);
     service.setAutonumberCircularFramed(oDOM);
-    let oDomArray = Array.from(oDOM.getElementsByClassName("labelText"));
-    let oDomExArray = Array.from(oDOMexpect.getElementsByClassName("labelText"));
+    const oDomArray = Array.from(oDOM.getElementsByClassName("labelText"));
+    const oDomExArray = Array.from(oDOMexpect.getElementsByClassName("labelText"));
     for (let index = 0; index < oDomArray.length; index++) {
       expect(oDomArray[index]).toEqual(oDomExArray[index])
     }

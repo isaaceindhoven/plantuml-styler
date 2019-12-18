@@ -12,23 +12,23 @@ export class GenerateService {
   constructor(private utility: UtilityService, private styling: StylingService, private http: HttpClient, private autonumbering: AutoNumberService) { }
   /* #region variables   */
   timeoutId;
-  isDoneProcessing: boolean = false;
-  halfwayDoneProcessing: boolean = false;
-  refresh: boolean = false;
-  canRefresh: boolean = true;
+  isDoneProcessing = false;
+  halfwayDoneProcessing = false;
+  refresh = false;
+  canRefresh = true;
   isSmall = false;
-  svg: any
+  svg: any;
   rectangled: any;
-  png: any
-  text: any = 'Bob->Alice : hello'
-  hiddenNotes: boolean = true;
-  footnotes: boolean = true;
-  hiddenShadows: boolean = true;
-  themedHiddenNotes: boolean = true;
-  themedFootnotes: boolean = true;
-  themedHiddenShadows: boolean = true;
-  isThemed: boolean = true;
-  textImages: boolean = false;
+  png: any;
+  text: any = 'Bob->Alice : hello';
+  hiddenNotes = true;
+  footnotes = true;
+  hiddenShadows = true;
+  themedHiddenNotes = true;
+  themedFootnotes = true;
+  themedHiddenShadows = true;
+  isThemed = true;
+  textImages = false;
   participantpadding = 0;
   participantfontsize = 13;
   participantstroke = 1.5;
@@ -57,7 +57,7 @@ export class GenerateService {
   color9 = '';
   colorBoxBack = '';
   colorBoxStroke = '';
-  selectedSize = '14'
+  selectedSize = '14';
   selectedTheme = 'PlantUML';
   selectedType = 'Sequence';
   selectedFont = 'Tahoma';
@@ -96,7 +96,7 @@ export class GenerateService {
   /* #endregion */
 
   async generateSVG(text: string) {
-    // using a timeout to check if the diagram hasn't been requested to change within the last 300 ms. to prevent overloading the server with requests. 
+    // using a timeout to check if the diagram hasn't been requested to change within the last 300 ms. to prevent overloading the server with requests.
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(async () => {
       console.log('generating...');
@@ -106,7 +106,7 @@ export class GenerateService {
       text = this.changeText(document, text);
       // resize the text area
       this.utility.resizeAce();
-      // generate the svg and turning it into a DomParser 
+      // generate the svg and turning it into a DomParser
       let oDOM;
       this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this);
       // start styling the SVG
@@ -137,7 +137,7 @@ export class GenerateService {
     this.isThemed ? this.setBreak(oDOM, this.themedBreak) : this.setBreak(oDOM, this.selectedBreak);
     // finding the participant names <text> tags and making them ready to be used later
     this.isThemed ? this.findNamesInText(oDOM, this.themedParticipantfontsize) : this.findNamesInText(oDOM, this.participantfontsize);
-    // by adding a title in PlantUML that title gets added right above the diagram. but is has very little space which makes it feel very cramped. 
+    // by adding a title in PlantUML that title gets added right above the diagram. but is has very little space which makes it feel very cramped.
     // adding a box with a thick border solves this issue but this box is ugly. here we find this box and add some CSS to make it transparent.
     this.isThemed ? this.findTitle(oDOM, this.themedParticipantfontsize) : this.findTitle(oDOM, this.participantfontsize);
     // here we find the boxes that surround participants and add the styling needed to make them pretty. we make them a bit bigger too.
@@ -154,8 +154,8 @@ export class GenerateService {
     this.setFont(oDOM);
     // here we set the alt blocks to fit the diagram when the selected shape is rounded
     this.isThemed ? this.setAlts(oDOM, this.themedShape) : this.setAlts(oDOM, this.selectedShape);
-    // for some reason PlantUML adds extra <rect> elements around alt boxes that do nothing. 
-    // they do however make the diagram ugly when rounded so we get rid of them 
+    // for some reason PlantUML adds extra <rect> elements around alt boxes that do nothing.
+    // they do however make the diagram ugly when rounded so we get rid of them
     this.setAltBoxes(oDOM);
     // here we set the border size A.K.A. the stroke
     this.isThemed ? this.setStroke(oDOM, this.themedParticipantstroke.toString()) : this.setStroke(oDOM, this.participantstroke.toString());
@@ -170,7 +170,7 @@ export class GenerateService {
       this.setMultiParticipantColors(oDOM);
       this.setMultiParticipantImages(oDOM);
     }
-    // then finally we take the DomParser and get the changed SVG out of it and inject it into the page by setting the svg variable. 
+    // then finally we take the DomParser and get the changed SVG out of it and inject it into the page by setting the svg variable.
     const s = new XMLSerializer();
     const str = s.serializeToString((oDOM as XMLDocument).firstChild);
     this.svg = str;
@@ -204,6 +204,7 @@ export class GenerateService {
       text = `skinparam titleBorderThickness 2 \n` + text;
       // setting the skinparams to allow the autonumbers to work
       text = this.changeTextForNumbers(this.themedNumber, text, oDOM);
+      
     } else {
       // checking if the user wants to hide the footnotes and if so add the right skinparam to do so
       this.footnotes ? null : text = 'hide footbox \n' + text;
@@ -240,7 +241,7 @@ export class GenerateService {
     // adding the autonumbers skin param and some padding if needed to gain more space for the labels to be added later
     switch (nr) {
       case 'None':
-        break;
+        return text;
       case 'Default':
         text = 'autonumber 1\n' + text;
         this.styling.clearLabels(oDOM);
@@ -252,7 +253,7 @@ export class GenerateService {
     }
   }
   async getData(text, roundcorner, generate) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       // adding round corners to all rectangles to make it easier to find participants
       text = `skinparam roundcorner ${roundcorner}  \n ${text}`;
       // make the text ready to be sent to PlantUML
@@ -322,7 +323,7 @@ export class GenerateService {
     }
   }
   setColors(oDOM) {
-    //setting the color based on theme or own choices
+    // setting the color based on theme or own choices
     if (this.isThemed) {
       if (this.selectedTheme == 'PlantUML') {
         this.styling.addColorToStyle(
@@ -591,7 +592,7 @@ export class GenerateService {
     this.themedParticipantfontsize = 13;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
-    this.multi = false;
+    this.multi = false;    
   }
   setTheme() {
     if (this.isThemed) {
@@ -617,7 +618,7 @@ export class GenerateService {
     }
   }
   findNamesInText(oDOM, fontsize) {
-    // loop through all the <text> tags 
+    // loop through all the <text> tags
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       // checking if its neither the first nor the last element in the diagram
       if (element.previousSibling && element.nextSibling) {
@@ -676,7 +677,7 @@ export class GenerateService {
   }
   findNotes(oDOM) {
     this.styling.getTagList(oDOM, 'polygon').forEach((element: SVGPolygonElement) => {
-      if (element.animatedPoints.length != 4) element.setAttribute('class', 'note');
+      if (element.animatedPoints.length != 4) { element.setAttribute('class', 'note'); }
     });
   }
   findDividers(oDOM) {
@@ -727,19 +728,19 @@ export class GenerateService {
     this.styling.getTagList(oDOM, 'path').forEach((element: SVGPathElement) => {
       if (element.className.baseVal === 'alt') {
         if (shape === 'Rounded') {
-          let d = element.getAttribute('d');
-          let firstnrLength = d.split(',')[0].length - 1;
-          let nr = parseFloat(d.substr(1, firstnrLength));
-          let newnr = nr - 7;
-          let nrstring = nr.toString();
-          let newnrstring = newnr.toString();
+          const d = element.getAttribute('d');
+          const firstnrLength = d.split(',')[0].length - 1;
+          const nr = parseFloat(d.substr(1, firstnrLength));
+          const newnr = nr - 7;
+          const nrstring = nr.toString();
+          const newnrstring = newnr.toString();
           let newD = d.replace(nrstring, newnrstring);
-          let secondnrLength = d.split(',')[1].split(' ')[0].length;
-          let start = nr.toString().length + 2;
-          let tnr = parseFloat(d.substr(start, secondnrLength));
-          let tnewnr = tnr + 2;
-          let tnrstring = tnr.toString();
-          let tnewnrstring = tnewnr.toString();
+          const secondnrLength = d.split(',')[1].split(' ')[0].length;
+          const start = nr.toString().length + 2;
+          const tnr = parseFloat(d.substr(start, secondnrLength));
+          const tnewnr = tnr + 2;
+          const tnrstring = tnr.toString();
+          const tnewnrstring = tnewnr.toString();
           newD = newD.replace(tnrstring, tnewnrstring);
           element.setAttribute('d', newD);
         }
@@ -1016,7 +1017,7 @@ export class GenerateService {
       this.participantImages[name] = data;
     }).then(() => {
       this.generateSVG(this.text);
-    })
+    });
   }
   getShapeByName(name) {
     this.parshape = 'Rectangle';
@@ -1024,6 +1025,6 @@ export class GenerateService {
       if (shape.name === name) {
         this.parshape = shape.shape;
       }
-    })
+    });
   }
 }
