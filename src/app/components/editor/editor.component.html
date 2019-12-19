@@ -75,11 +75,6 @@
                     Backdrop
                     shadows
                 </mat-slide-toggle>
-                <br>
-                <mat-slide-toggle color="primary" class="example-margin" [(ngModel)]="generate.multi"
-                    (change)="generate.generateSVG(generate.text)">
-                    Multi participants
-                </mat-slide-toggle>
             </div>
             <!--Fonts-->
             <div>
@@ -106,91 +101,6 @@
                     <input matInput type="number" min="1" max="40" placeholder="0"
                         [(ngModel)]="generate.sequencetextsize" (change)="generate.generateSVG(generate.text)">
                 </mat-form-field>
-            </div>
-            <!--Multi Participants-->
-            <div *ngIf="generate.multi">
-                <mat-form-field>
-                    <mat-label>Participant</mat-label>
-                    <mat-select [(value)]="generate.selectedParticipant"
-                        (selectionChange)="generate.getShapeByName(generate.selectedParticipant.key)">
-                        <mat-option *ngFor="let participant of generate.participants | keyvalue" [value]="participant">
-                            {{participant.key}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <table *ngIf="generate.selectedParticipant">
-                    <tr>
-                        <td style="width: 50%;">
-                            Border
-                        </td>
-                        <td style="width: 25%;">
-                            <input matInput id="color1input" class="inputHover"
-                                (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key,generate.selectedParticipant.value[0].style.stroke,null,null)"
-                                type="text" [(ngModel)]="generate.selectedParticipant.value[0].style.stroke" />
-                        </td>
-                        <td></td>
-                        <td style="width: 35%;">
-                            <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                style="width: 100%;" id="primary" class="inputHoverColor"
-                                [style.background]="generate.selectedParticipant.value[0].style.stroke"
-                                [(colorPicker)]="generate.selectedParticipant.value[0].style.stroke"
-                                (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key,generate.selectedParticipant.value[0].style.stroke,null,null)" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 50%;">
-                            Background
-                        </td>
-                        <td style="width: 25%;">
-                            <input matInput id="color1input" class="inputHover"
-                                (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)"
-                                type="text" [(ngModel)]="generate.selectedParticipant.value[0].style.fill" />
-                        </td>
-                        <td></td>
-                        <td style="width: 35%;">
-                            <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                style="width: 100%;" id="primary" class="inputHoverColor"
-                                [style.background]="generate.selectedParticipant.value[0].style.fill"
-                                [(colorPicker)]="generate.selectedParticipant.value[0].style.fill"
-                                (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="width: 50%;">
-                            Text
-                        </td>
-                        <td style="width: 25%;">
-                            <input matInput id="color1input" class="inputHover"
-                                (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)"
-                                type="text" [(ngModel)]="generate.selectedParticipant.value[1].style.fill" />
-                        </td>
-                        <td></td>
-                        <td style="width: 35%;">
-                            <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
-                                style="width: 100%;" id="primary" class="inputHoverColor"
-                                [style.background]="generate.selectedParticipant.value[1].style.fill"
-                                [(colorPicker)]="generate.selectedParticipant.value[1].style.fill"
-                                (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value, generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <mat-form-field>
-                            <mat-label>Shape</mat-label>
-                            <mat-select [(value)]="generate.parshape"
-                                (selectionChange)="generate.setShapes(generate.selectedParticipant.key, generate.parshape);generate.generateSVG(generate.text);">
-                                <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
-                                    {{shape}}
-                                </mat-option>
-                                <mat-option (click)="participantimg.click();" [value]="'Images'">
-                                    Images
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </tr>
-                </table>
-                <input hidden #participantimg id="parimg" type="file" accept="image/*"
-                    (change)="generate.setParticipantImage(participantimg.files[0],generate.selectedParticipant.key)"
-                    value="Image">
             </div>
             <!--Colors-->
             <div>
@@ -232,8 +142,8 @@
                             Box background
                         </td>
                         <td style="width: 25%;">
-                            <input matInput id="color9input" class="inputHover" (change)="generate.setColors(null)"
-                                type="text" [(ngModel)]="generate.colorBoxBack" />
+                            <input matInput id="colorBoxBackinput" class="inputHover"
+                                (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.colorBoxBack" />
                         </td>
                         <td></td>
                         <td style="width: 35%;">
@@ -248,8 +158,8 @@
                             Box border
                         </td>
                         <td style="width: 25%;">
-                            <input matInput id="color9input" class="inputHover" (change)="generate.setColors(null)"
-                                type="text" [(ngModel)]="generate.colorBoxStroke" />
+                            <input matInput id="colorBoxStrokeinput" class="inputHover"
+                                (change)="generate.setColors(null)" type="text" [(ngModel)]="generate.colorBoxStroke" />
                         </td>
                         <td></td>
                         <td style="width: 35%;">
@@ -374,10 +284,101 @@
                 </table>
                 <br>
             </div>
-            <div *ngIf="!generate.multi"></div>
+            <!--Multi Participants-->
+            <div style="width:426px;">
+                <mat-slide-toggle color="primary" class="example-margin" [(ngModel)]="generate.multi"
+                    (change)="generate.generateSVG(generate.text)">
+                    Multi participants
+                </mat-slide-toggle>
+                <div *ngIf="generate.multi">
+                    <mat-form-field>
+                        <mat-label>Participant</mat-label>
+                        <mat-select id="selectedMultiParticipant" [(value)]="generate.selectedParticipant"
+                            (selectionChange)="generate.getShapeByName(generate.selectedParticipant)">
+                            <mat-option *ngFor="let participant of generate.participants | keyvalue"
+                                [value]="participant">
+                                {{participant.key}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <table *ngIf="generate.selectedPart">
+                        <tr>
+                            <td style="width: 50%;">
+                                Border
+                            </td>
+                            <td style="width: 25%;">
+                                <input matInput id="colorMultiBorderinput" class="inputHover"
+                                    (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key,generate.selectedParticipant.value[0].style.stroke,null,null)"
+                                    type="text" [(ngModel)]="generate.selectedParticipant.value[0].style.stroke" />
+                            </td>
+                            <td></td>
+                            <td style="width: 35%;">
+                                <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                    style="width: 100%;" id="primary" class="inputHoverColor"
+                                    [style.background]="generate.selectedParticipant.value[0].style.stroke"
+                                    [(colorPicker)]="generate.selectedParticipant.value[0].style.stroke"
+                                    (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key,generate.selectedParticipant.value[0].style.stroke,null,null)" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;">
+                                Background
+                            </td>
+                            <td style="width: 25%;">
+                                <input matInput id="colorMultiBackgroundinput" class="inputHover"
+                                    (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)"
+                                    type="text" [(ngModel)]="generate.selectedParticipant.value[0].style.fill" />
+                            </td>
+                            <td></td>
+                            <td style="width: 35%;">
+                                <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                    style="width: 100%;" id="primary" class="inputHoverColor"
+                                    [style.background]="generate.selectedParticipant.value[0].style.fill"
+                                    [(colorPicker)]="generate.selectedParticipant.value[0].style.fill"
+                                    (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;">
+                                Text
+                            </td>
+                            <td style="width: 25%;">
+                                <input matInput id="colorMultiTextinput" class="inputHover"
+                                    (change)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)"
+                                    type="text" [(ngModel)]="generate.selectedParticipant.value[1].style.fill" />
+                            </td>
+                            <td></td>
+                            <td style="width: 35%;">
+                                <input type="button" [cpPresetColors]="['#fff']" [cpAddColorButton]="true"
+                                    style="width: 100%;" id="primary" class="inputHoverColor"
+                                    [style.background]="generate.selectedParticipant.value[1].style.fill"
+                                    [(colorPicker)]="generate.selectedParticipant.value[1].style.fill"
+                                    (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value, generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <mat-form-field>
+                                <mat-label>Shape</mat-label>
+                                <mat-select [(value)]="generate.parshape"
+                                    (selectionChange)="generate.setShapes(generate.selectedParticipant.key, generate.parshape);generate.generateSVG(generate.text);">
+                                    <mat-option *ngFor="let shape of generate.shapes" [value]="shape">
+                                        {{shape}}
+                                    </mat-option>
+                                    <mat-option (click)="participantimg.click();" [value]="'Images'">
+                                        Images
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </tr>
+                    </table>
+                    <input hidden #participantimg id="parimg" type="file" accept="image/*"
+                        (change)="generate.setParticipantImage(participantimg.files[0],generate.selectedParticipant.key)"
+                        value="Image">
+                </div>
+            </div>
+
             <div>
-                <button class="exitBtn" mat-icon-button (click)="close()"><i
-                        class="material-icons">clear</i></button>
+                <button class="exitBtn" mat-icon-button (click)="close()"><i class="material-icons">clear</i></button>
             </div>
         </div>
     </div>

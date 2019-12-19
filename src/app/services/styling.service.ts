@@ -95,7 +95,7 @@ export class StylingService {
     this.oldActorElements = [];
     Array.from(oDOM.getElementsByClassName('actor transparent')).forEach((element: SVGPathElement) => {
       const ns = 'http://www.w3.org/2000/svg';
-      const actor = oDOM.createElementNS(ns, 'svg');      
+      const actor = oDOM.createElementNS(ns, 'svg');
       actor.setAttributeNS(null, 'x', (+(element.previousElementSibling as SVGCircleElement).getAttribute('cx') - (25)).toString());
       const half = parseFloat(element.parentElement.parentElement.style.height) / 2;
       if (parseFloat((element.previousElementSibling as SVGCircleElement).getAttribute('cy')) > half) {
@@ -223,6 +223,8 @@ export class StylingService {
     if ((element as SVGEllipseElement).nodeName != 'rect') {
       return;
     }
+    console.log(oDOM, element, participant, second);
+
     const ns = 'http://www.w3.org/2000/svg';
     const ellipse = oDOM.createElementNS(ns, 'ellipse');
     const rx = (parseFloat(element.getAttribute('width')) / 2);
@@ -236,7 +238,7 @@ export class StylingService {
     ellipse.setAttributeNS(null, 'cy', cy.toString());
     ellipse.setAttributeNS(null, 'style', element.getAttribute('style'));
     ellipse.setAttributeNS(null, 'name', 'participantshape');
-    participant ? second ? (participant).splice(2, 1, ellipse) : null : (participant).splice(0, 1, ellipse);
+    participant ? second ? (participant).splice(2, 1, ellipse) : (participant).splice(0, 1, ellipse) : null;
     element.parentNode.replaceChild(ellipse, element);
   }
   toCircleNode(oDOM) {
@@ -270,18 +272,18 @@ export class StylingService {
     circle.setAttributeNS(null, 'cy', cy.toString());
     circle.setAttributeNS(null, 'name', 'participantshape');
     circle.setAttributeNS(null, 'style', element.getAttribute('style'));
-    participant ? second ? (participant).splice(2, 1, circle) : null : (participant).splice(0, 1, circle);
+    participant ? second ? (participant).splice(2, 1, circle) : (participant).splice(0, 1, circle) : null;
     element.parentNode.replaceChild(circle, element);
   }
   setRounded(oDOM, element, participant?, second?) {
     element.setAttribute('rx', 10);
     element.setAttribute('ry', 10);
-    participant ? second ? (participant).splice(2, 1, element) : null : (participant).splice(0, 1, element);
+    participant ? second ? (participant).splice(2, 1, element) : (participant).splice(0, 1, element) : null;
   }
   setRectangle(oDOM, element, participant?, second?) {
     element.setAttribute('rx', 0.5);
     element.setAttribute('ry', 0.5);
-    participant ? second ? (participant).splice(2, 1, element) : null : (participant).splice(0, 1, element);
+    participant ? second ? (participant).splice(2, 1, element) : (participant).splice(0, 1, element) : null;
   }
   removeStyling(oDOM) {
     this.removeStyleFrom(oDOM, 'rect');
@@ -366,8 +368,8 @@ export class StylingService {
     }
   }
   addColorToStyle(color1, color2, color3, color4, color5, color6, color7, color8, color9, oDOM,
-                  colorBoxBack,
-                  colorBoxStroke) {
+    colorBoxBack,
+    colorBoxStroke) {
     if (!oDOM) {
       oDOM = document;
     }

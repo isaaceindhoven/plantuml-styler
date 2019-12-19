@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { StylingService } from './styling.service';
 import { AutoNumberService } from './autonumber.service';
 import { UtilityService } from './utility.service';
+import { MatSelect } from '@angular/material';
 
 @Injectable({
   providedIn: 'root',
@@ -75,6 +76,7 @@ export class GenerateService {
   multi = false;
   multicount = 1;
   selectedParticipant;
+  selectedPart;
   participants = {};
   participantShapes = [
     {
@@ -95,6 +97,7 @@ export class GenerateService {
 
   /* #endregion */
 
+
   async generateSVG(text: string) {
     // using a timeout to check if the diagram hasn't been requested to change within the last 300 ms. to prevent overloading the server with requests.
     clearTimeout(this.timeoutId);
@@ -111,6 +114,7 @@ export class GenerateService {
       this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this);
       // start styling the SVG
       this.styleSVG(oDOM);
+     
     }, 300);
   }
   styleSVG(oDOM) {
@@ -204,7 +208,7 @@ export class GenerateService {
       text = `skinparam titleBorderThickness 2 \n` + text;
       // setting the skinparams to allow the autonumbers to work
       text = this.changeTextForNumbers(this.themedNumber, text, oDOM);
-      
+
     } else {
       // checking if the user wants to hide the footnotes and if so add the right skinparam to do so
       this.footnotes ? null : text = 'hide footbox \n' + text;
@@ -253,7 +257,7 @@ export class GenerateService {
     }
   }
   async getData(text, roundcorner, generate) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       // adding round corners to all rectangles to make it easier to find participants
       text = `skinparam roundcorner ${roundcorner}  \n ${text}`;
       // make the text ready to be sent to PlantUML
@@ -592,7 +596,7 @@ export class GenerateService {
     this.themedParticipantfontsize = 13;
     this.themedSequencetextsize = 13;
     this.themedParticipantstroke = 1.5;
-    this.multi = false;    
+    this.multi = false;
   }
   setTheme() {
     if (this.isThemed) {
@@ -909,6 +913,7 @@ export class GenerateService {
     }
   }
   setMultiParticipantColors(oDOM) {
+    console.log(this);
     this.participantColors.forEach((pc) => {
       const participant = this.participants[pc.name];
       if (participant) {
@@ -1019,12 +1024,13 @@ export class GenerateService {
       this.generateSVG(this.text);
     });
   }
-  getShapeByName(name) {
+  getShapeByName(participant) {
     this.parshape = 'Rectangle';
     this.participantShapes.forEach((shape) => {
-      if (shape.name === name) {
+      if (shape.name === participant.key) {
         this.parshape = shape.shape;
       }
     });
+    this.selectedPart = participant;
   }
 }

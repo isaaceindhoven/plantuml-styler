@@ -17,6 +17,15 @@ export class EditorComponent implements OnInit {
   constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, public util: UtilityService) { }
 
   ngOnInit() {
+    let ns = 'http://www.w3.org/2000/svg'
+    let rect = document.createElementNS(ns, 'rect');
+    rect.setAttributeNS(null, 'width', "1")
+    rect.setAttributeNS(null, 'height', '1')
+    rect.setAttributeNS(null, 'x', "0")
+    rect.setAttributeNS(null, 'y', "0")
+    rect.setAttributeNS(null, 'name', 'label')
+    rect.setAttributeNS(null, 'class', 'label')
+    this.generate.selectedParticipant = { key: "Pick a Participant", value: [rect, rect] }
   }
 
   close() {
