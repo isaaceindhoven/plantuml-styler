@@ -1,21 +1,36 @@
 <div class="box-column" (mouseup)="getEndPoint()">
-    <app-navbar id="nav"></app-navbar>
-    <app-editor style="margin-bottom: 10px;" id="editor"></app-editor>
+    <app-navbar id="nav" style="margin-bottom: 10px;"></app-navbar>
     <div class="box">
-        <div id="resizableTextarea" style="min-width: 400px; width: 20%;">
+        <div id="resizableTextarea" style="min-width: 400px; width: 20%; position: relative;">
             <app-text-area id="text"></app-text-area>
         </div>
         <div class="two" (mousedown)="getStartPoint($event)">
-            <svg style="transform: translateY(-10px)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                contentscripttype="application/javascript" contentstyletype="text/css" width="20px" height="105%">
+            <svg id="Handlebar" style="transform: translateY(-10px)" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" contentscripttype="application/javascript"
+                contentstyletype="text/css" width="30px" height="105%">
                 <g>
-                    <rect id="line" x="8" width="4px" height="100%" style="stroke:#009ddc; fill:#009ddc"></rect>
-                    <rect y="50%" rx="5" ry="5" width="20px" height="80px" style="stroke:#009ddc; fill:#009ddc"></rect>
+                    <rect id="line" x="15" width="1px" height="100%" style="stroke-width:0px; fill:#121212"></rect>
+                    <!-- <rect y="50%" rx="2" ry="2" width="30px" height="30px" style="stroke:#121212; fill:#ccc"></rect> -->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                        x="0px" y="50%" width="30px" height="30px" viewBox="0 0 30 30" enable-background="new 0 0 30 30"
+                        xml:space="preserve">
+                        <g id="Bounding_Box">
+                            <rect style="stroke:#121212; fill:#ccc" width="30" height="30" />
+                        </g>
+                        <g id="Master">
+                            <polygon
+                                style="stroke: #121212; fill: #121212; stroke-width: 0px; transform: rotateZ(90deg) translateY(-33px) translateX(-2px) scale(1.2);"
+                                points="16,9.99 19,9.99 15,6 11,9.99 14,9.99 14,20.01 11,20.01 15,24 19,20.01 16,20.01  " />
+                        </g>
+                    </svg>
                 </g>
             </svg>
         </div>
         <div class="three">
             <app-diagram id="diagram" style="min-width: 400px; height: 100%;"></app-diagram>
+        </div>
+        <div class="four">
+            <app-editor id="editor"></app-editor>
         </div>
     </div>
 </div>

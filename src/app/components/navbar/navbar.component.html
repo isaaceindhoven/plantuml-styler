@@ -1,6 +1,7 @@
 <mat-toolbar class="navbar">
     <mat-toolbar-row>
-        <span><img src="assets\isaac-alternative-logo-invert-white-rgb-transparent-250px.png"></span>
+        <span><img style="transform: scale(0.8);"
+                src="assets\isaac-primary-logo-invert-rgb-transparent-250px.png"></span>
         <h1> StyleUML</h1>
         <a target="_blank"
             href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html#sequence-diagram"
@@ -9,8 +10,8 @@
             <i style="transform: rotate(180deg);" class="material-icons">error_outline</i>
         </button>
         <span class="spacer"></span>
-        <mat-label style="margin-right: 10px;" >Theme</mat-label>
-        <mat-form-field (click)="util.openEditor = false;" class="navDropDown" style="width: 100px;">
+        <mat-label style="margin-right: 10px; transform: scale(0.7);">Theme</mat-label>
+        <mat-form-field (click)="util.openEditor = false;" class="navDropDown" style="width: 100px; color: white;">
             <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
                 (selectionChange)="activateTheme()">
                 <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
@@ -18,25 +19,17 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <button (click)="editTheme();" matTooltip="Edit diagram" mat-icon-button>
-            <i class="material-icons">edit</i>
-        </button>
         <span class="superspacer"></span>
-        <mat-label style="margin-right: 10px;" >Server</mat-label>
-        <mat-form-field class="navDropDown" style="width: 305px;">
+        <mat-label style="margin-right: 10px; transform: scale(0.7);">Server</mat-label>
+        <mat-form-field class="navDropDown" style="width: 305px; color: white;">
             <input matInput #envBox type="text" (change)="setEnvironment(envBox.value)"
                 value="https://plantuml.isaac.local/plantuml/svg/">
         </mat-form-field>
         <span class="spacer"></span>
         <span class="spacer"></span>
-        <button (click)="jsons.click()" matTooltip="Import .zip, .json, .txt, .puml file" mat-icon-button>
-            <i style="transform: rotate(180deg) translateY(3px);" class="material-icons">get_app</i>
+        <button style="margin-right: 10px;" (click)="download()" matTooltip="Download .zip file" mat-raised-button>
+            Download<i style="transform: translateX(10px);" class="material-icons">get_app</i>
         </button>
-        <button (click)="download()" matTooltip="Download .zip file" mat-icon-button>
-            <i style="transform: translateY(3px);" class="material-icons">get_app</i>
-        </button>
-        <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt" (change)="fileChanged($event)"
-            value="Json">
         <mat-spinner diameter="50" *ngIf="isLoading"></mat-spinner>
         <span class="spacer"></span>
     </mat-toolbar-row>

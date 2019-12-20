@@ -7,8 +7,8 @@
 mat-toolbar {
   width: 100%;
   z-index: 1000;
-  color: #fff;
-  background-color: #009ddc;
+  color: #ccc;
+  background-color: #121212;
 }
 mat-accordion{
     top: 0;
@@ -19,6 +19,7 @@ mat-accordion{
     margin-top: 5px;
     font-size: medium;
 }
+
 .grid-container{
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto;

@@ -1,2 +1,8 @@
-<ace #aceComp [config]="config"  (keyup)="generate.generateSVG(tA.value)" id="tA" #tA class="coding"
+<button (click)="jsons.click()" matTooltip="Edit diagram"
+    style="background-color: #121212; position: absolute; z-index: 5; right: 0px; " mat-mini-fab>
+    <i class="material-icons">add</i>
+</button>
+<ace #aceComp [config]="config" (keyup)="generate.generateSVG(tA.value)" id="tA" #tA class="coding"
     [(value)]="generate.text"></ace>
+<input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt" (change)="fileChanged($event)"
+    value="Json">

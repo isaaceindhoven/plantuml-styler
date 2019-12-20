@@ -69,8 +69,8 @@ export class UtilityService {
       this.textarea.ace().resize(true);
   }
   calcHeight() {
-    this.diagram.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - (this.openEditor ? 320 : 0)}px`);
-    this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight - (this.openEditor ? 320 : 0)}px`);
+    this.diagram.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight}px`);
+    this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight}px`);
   }
   calcWidth(pageX) {
     this.diagram.style.setProperty(`--comp-width`, `${window.innerWidth - pageX}px`);

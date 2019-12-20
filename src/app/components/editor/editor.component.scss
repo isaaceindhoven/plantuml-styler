@@ -6,18 +6,44 @@
 
 .editor {
   overflow: hidden;
-  height: 320px;
+  height: 105%;
+  margin-top: 40px;
+  transform: translateY(-10px);
+  width: 400px;
   font-family: "Open Sans";
-  padding-left: 20px;
-  padding-right: 20px;
-  box-shadow: inset 0 0 10px #484848;
-  transition: height ease-in-out 0.2s;
+  transition: width ease-in-out 0.2s;
 }
 
+
+.upper{
+  transform: translateY();
+}
+
+
 .noHeight {
-  height: 0px;
+  width: 0px;
 }
 
 .exitBtn {
   float: right;
+}
+
+.card{
+  height: 100%;
+  box-shadow: none;
+  margin-top: 10px;
+  padding: 4px;
+}
+.accordionbtn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+.accordionbtn {
+  text-align: left;
+  font-style: normal;
+  font-family: Tahoma, "Helvetica Neue", sans-serif;
+  width: 100%;
+  height: 48px;
+}
+mat-form-field{
+  width: 100%;
 }
