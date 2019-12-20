@@ -67,37 +67,38 @@ export class NavbarComponent implements OnInit {
       this.util.calcHeight();
       this.util.resizeAce();
     });
-    this.generate.isThemed = false;
-    this.generate.selectedBreak = this.generate.themedBreak;
-    this.generate.selectedNumber = this.generate.themedNumber;
-    this.generate.selectedShape = this.generate.themedShape;
-    this.generate.selectedActor = this.generate.themedActor;
-    this.generate.selectedFont = this.generate.themedFont;
-    this.generate.footnotes = this.generate.themedFootnotes;
-    this.generate.hiddenShadows = this.generate.themedHiddenShadows;
-    this.generate.participantfontsize = this.generate.themedParticipantfontsize;
-    this.generate.sequencetextsize = this.generate.themedSequencetextsize;
-    this.generate.participantstroke = this.generate.themedParticipantstroke;
-    switch (this.generate.selectedTheme) {
-      case 'PlantUML':
-        this.setTheme(this.stylingservice.PlantUMLStyle);
-        break;
-      case 'ISAAC':
-        this.setTheme(this.stylingservice.IsaacStyle);
-        break;
-      case 'Johan':
-        this.setTheme(this.stylingservice.JohanStyle);
-        break;
-      case 'Graytone':
-        this.setTheme(this.stylingservice.GraytoneStyle);
-        break;
-      case 'Blackwhite':
-        this.setTheme(this.stylingservice.BlackWhiteStyle);
-        break;
-      default:
-        break;
+    if (this.util.openEditor && this.generate.selectedTheme!='No theme') {
+      this.generate.isThemed = false;
+      this.generate.selectedBreak = this.generate.themedBreak;
+      this.generate.selectedNumber = this.generate.themedNumber;
+      this.generate.selectedShape = this.generate.themedShape;
+      this.generate.selectedActor = this.generate.themedActor;
+      this.generate.selectedFont = this.generate.themedFont;
+      this.generate.footnotes = this.generate.themedFootnotes;
+      this.generate.hiddenShadows = this.generate.themedHiddenShadows;
+      this.generate.participantfontsize = this.generate.themedParticipantfontsize;
+      this.generate.sequencetextsize = this.generate.themedSequencetextsize;
+      this.generate.participantstroke = this.generate.themedParticipantstroke;
+      switch (this.generate.selectedTheme) {
+        case 'PlantUML':
+          this.setTheme(this.stylingservice.PlantUMLStyle);
+          break;
+        case 'ISAAC':
+          this.setTheme(this.stylingservice.IsaacStyle);
+          break;
+        case 'Johan':
+          this.setTheme(this.stylingservice.JohanStyle);
+          break;
+        case 'Graytone':
+          this.setTheme(this.stylingservice.GraytoneStyle);
+          break;
+        case 'Blackwhite':
+          this.setTheme(this.stylingservice.BlackWhiteStyle);
+          break;
+        default:
+          break;
+      }
     }
-
   }
   setTheme(array) {
     this.generate.color1 = array[0];
@@ -140,14 +141,14 @@ export class NavbarComponent implements OnInit {
     if (this.generate.participantImages) {
       setTimeout(() => {
         zip.generateAsync({ type: 'blob' })
-          .then(async function(blob) {
+          .then(async function (blob) {
             await saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
           }).then(this.isLoading = false);
       }, 3000);
     } else {
       setTimeout(() => {
         zip.generateAsync({ type: 'blob' })
-          .then(async function(blob) {
+          .then(async function (blob) {
             await saveAs(blob, `StyleUML_${new Date().getDate()}${new Date().getMonth() + 1}${new Date().getFullYear()}${new Date().getHours()}${new Date().getMinutes()}.zip`);
           }).then(this.isLoading = false);
       }, 500);
