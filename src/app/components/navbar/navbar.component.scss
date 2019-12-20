@@ -1,6 +1,9 @@
 .spacer {
   flex: 1 1 auto;
 }
+.superspacer {
+    flex: 1 1 450px;
+  }
 mat-toolbar {
   width: 100%;
   z-index: 1000;
@@ -30,6 +33,6 @@ mat-accordion{
 }
 
 .navbar{
-    padding: 5px;
+    padding: 10px;
 }
 

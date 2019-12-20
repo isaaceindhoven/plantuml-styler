@@ -26,6 +26,7 @@ export class EditorComponent implements OnInit {
     rect.setAttributeNS(null, 'name', 'label')
     rect.setAttributeNS(null, 'class', 'label')
     this.generate.selectedParticipant = { key: "Pick a Participant", value: [rect, rect] }
+    this.close()
   }
 
   close() {

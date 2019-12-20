@@ -9,8 +9,8 @@
             <i style="transform: rotate(180deg);" class="material-icons">error_outline</i>
         </button>
         <span class="spacer"></span>
+        <mat-label style="margin-right: 10px;" >Theme</mat-label>
         <mat-form-field (click)="util.openEditor = false;" class="navDropDown" style="width: 100px;">
-            <mat-label>Theme</mat-label>
             <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
                 (selectionChange)="activateTheme()">
                 <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
@@ -21,14 +21,9 @@
         <button (click)="editTheme();" matTooltip="Edit diagram" mat-icon-button>
             <i class="material-icons">edit</i>
         </button>
-        <span class="spacer"></span>
-        <span class="spacer"></span>
-        <span class="spacer"></span>
-        <span class="spacer"></span>
-        <span class="spacer"></span>
-        <span class="spacer"></span>
+        <span class="superspacer"></span>
+        <mat-label style="margin-right: 10px;" >Server</mat-label>
         <mat-form-field class="navDropDown" style="width: 305px;">
-            <mat-label>Server</mat-label>
             <input matInput #envBox type="text" (change)="setEnvironment(envBox.value)"
                 value="https://plantuml.isaac.local/plantuml/svg/">
         </mat-form-field>

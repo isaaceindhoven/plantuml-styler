@@ -58,6 +58,7 @@ export class NavbarComponent implements OnInit {
     this.generate.isThemed = true;
     setTimeout(() => {
       this.editTheme();
+      this.util.openEditor = false;
     }, 1000);
   }
   editTheme() {

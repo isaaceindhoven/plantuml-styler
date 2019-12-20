@@ -1,13 +1,13 @@
 <div class="box-column" (mouseup)="getEndPoint()">
     <app-navbar id="nav"></app-navbar>
-    <app-editor id="editor"></app-editor>
+    <app-editor style="margin-bottom: 10px;" id="editor"></app-editor>
     <div class="box">
         <div id="resizableTextarea" style="min-width: 400px; width: 20%;">
             <app-text-area id="text"></app-text-area>
         </div>
         <div class="two" (mousedown)="getStartPoint($event)">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                contentscripttype="application/javascript" contentstyletype="text/css" width="20px" height="100%">
+            <svg style="transform: translateY(-10px)" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                contentscripttype="application/javascript" contentstyletype="text/css" width="20px" height="105%">
                 <g>
                     <rect id="line" x="8" width="4px" height="100%" style="stroke:#009ddc; fill:#009ddc"></rect>
                     <rect y="50%" rx="5" ry="5" width="20px" height="80px" style="stroke:#009ddc; fill:#009ddc"></rect>
