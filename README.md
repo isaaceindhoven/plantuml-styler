@@ -5,13 +5,17 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 # How does PlantUML-styler work
 A step-by-step guide on how to work with PlantUML-styler.
-1. Type the PlantUML code in the designated text area ![textarea](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/textarea.png)
+1. Type the PlantUML code in the designated text area 
+![textarea](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/textarea.png)
 
-2. Pick a desired theme ![themes](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/themes.png)
+2. Pick a desired theme 
+![themes](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/themes.png)
 
-3. Edit the styling to make it your own ![edit](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/edit.png)
+3. Edit the styling to make it your own 
+![edit](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/edit.png)
 
-4. Download your beautiful diagram ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/download.png)
+4. Download your beautiful diagram 
+![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/download.png)
 
 # Why PlantUML-styler
 PlantUML-styler A.K.A. StyleUML makes it possible to generate beautiful diagrams with just the press of a button.
@@ -33,3 +37,17 @@ A working demo can be found at [PlantUML-styler](https://plantumlstyler.netlify.
 ## Development server
 Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+# FAQ
+- Can I use PlantUML-styler to style UML diagrams of types other than Sequence-diagram? like for example Usecase-diagram?
+  - You can certainly try. As per the 6th of Januari 2020 this isn't really supported although some diagrams may work, we can't say for   certain it works well. If there is functionality for different UML types that you really want to use, Add it yourself! every bit of     help is highly appreciated.
+
+- Is there an easy way to share these diagrams?
+  - There is! Just press the download button 
+    ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/download.png)
+    This will give you a ".zip" file, this file contains png's and every bit of information needed to import it into PlantUML-styler.
+    Either press the 
+    ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/Plus.png)
+    or the 
+    ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/ImportJSON.png)
+    buttons and select the downloaded ".zip" file.
+    This will open the exact diagram you downloaded and you can change anything you want!
