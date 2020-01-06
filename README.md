@@ -46,7 +46,7 @@ Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The ap
 
 # FAQ
 - Can I use PlantUML-styler to style UML diagrams of types other than Sequence-diagram? like for example Usecase-diagram?
-  - You can certainly try. As per the 6th of Januari 2020 this isn't really supported although some diagrams may work, we can't say for   certain it works well. If there is functionality for different UML types that you really want to use, Add it yourself! every bit of     help is highly appreciated.
+  - You can certainly try. As per the 6th of Januari 2020 this isn't really supported. Although some diagrams may work, we can't say for   certain it works well. If there is functionality for different UML types that you really want to use, Add it yourself! every bit of     help is highly appreciated.
 
 - Is there an easy way to share these diagrams?
   - There is! Just press the download button 
