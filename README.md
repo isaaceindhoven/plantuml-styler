@@ -39,6 +39,7 @@ A working demo can be found at [PlantUML-styler](https://plantumlstyler.netlify.
 1. Clone this repository
 2. Open a CLI
 3. Navigate to the cloned repository
+4. Install the Angular CLI if you haven't already by running _npm install -g @angular/cli_
 4. Start a Development server
 ## Development server
 Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
