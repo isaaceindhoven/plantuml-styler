@@ -16,7 +16,6 @@ Use it on https://plantumlstyler.netlify.com/
 Created as an internship assignment
 
 ## Build status
-Build status of continus integration
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9a5fc7e5-6a6a-4143-a3b2-38ed07237a5a/deploy-status)](https://app.netlify.com/sites/plantumlstyler/deploys)
 
 ## Code style
