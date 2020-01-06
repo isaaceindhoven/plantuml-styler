@@ -53,6 +53,7 @@ Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The ap
     ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/download.png)
     
     This will give you a ".zip" file, this file contains png's and every bit of information needed to import it into PlantUML-styler.
+    
     Either press the 
     
     ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/Plus.png)
@@ -61,5 +62,5 @@ Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The ap
     
     ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/ImportJSON.png)
     
-    buttons and select the downloaded ".zip" file.
+    button and select the downloaded ".zip" file.
     This will open the exact diagram you downloaded and you can change anything you want!
