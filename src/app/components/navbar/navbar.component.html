@@ -22,12 +22,12 @@
         <span class="superspacer"></span>
         <mat-label style="margin-right: 10px; transform: scale(0.7);">Server</mat-label>
         <mat-form-field class="navDropDown" style="width: 305px; color: white;">
-            <input matInput #envBox type="text" (change)="setEnvironment(envBox.value)"
+            <input matInput #envBox (click)="Select(envBox);" type="text" (change)="setEnvironment(envBox.value)"
                 value="https://plantuml.isaac.local/plantuml/svg/">
         </mat-form-field>
         <span class="spacer"></span>
         <span class="spacer"></span>
-        <button style="margin-right: 10px;" (click)="download()" matTooltip="Download .zip file" mat-raised-button>
+        <button style="margin-right: 10px; background-color: #0099dd; color: #fff;" (click)="download()" matTooltip="Download .zip file" mat-raised-button>
             Download<i style="transform: translateX(10px);" class="material-icons">get_app</i>
         </button>
         <mat-spinner diameter="50" *ngIf="isLoading"></mat-spinner>

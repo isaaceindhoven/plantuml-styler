@@ -29,6 +29,7 @@ export class AppComponent {
     this.util.diagram.style.setProperty(`--comp-height`, '900px');
     this.util.text.style.setProperty(`--comp-height`, '880px');
     this.mousemove = (event) => this.onMouseMove(event);
+    this.util.calcHeight();
   }
   getStartPoint(event) {
     this.moveAt(event.pageX);
@@ -38,6 +39,9 @@ export class AppComponent {
     document.removeEventListener('mousemove', this.mousemove);
   }
   moveAt(pageX) {
+    pageX <= 400 ? pageX = 400 : null;
+    this.util.openEditor ? pageX > window.innerWidth - 400 ? pageX = window.innerWidth - 450 : null : null;
+    this.util.pageX = pageX
     this.resizableArea.style.width = `${pageX}px`;
     this.util.calcWidth(pageX);
   }

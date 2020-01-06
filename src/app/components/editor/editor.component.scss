@@ -10,6 +10,7 @@
   margin-top: 40px;
   transform: translateY(-10px);
   width: 400px;
+  min-width: 400px;
   font-family: "Open Sans";
   transition: width ease-in-out 0.2s;
 }
@@ -22,6 +23,7 @@
 
 .noHeight {
   width: 0px;
+  min-width: 0px;
 }
 
 .exitBtn {

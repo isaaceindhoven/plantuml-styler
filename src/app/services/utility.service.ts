@@ -9,8 +9,9 @@ export class UtilityService {
   constructor() { }
   diagram;
   text;
-  openEditor = false;
+  openEditor = true;
   textarea;
+  pageX;
   encode64(data) {
     let r = '';
     for (let i = 0; i < data.length; i += 3) {
@@ -72,8 +73,14 @@ export class UtilityService {
     this.diagram.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight}px`);
     this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight}px`);
   }
+  setWidth(){
+    console.log(this.pageX);
+    this.diagram.style.setProperty(`--comp-width`, `${this.openEditor ? window.innerWidth - this.pageX - 400 : window.innerWidth - this.pageX}px`);
+    this.text.style.setProperty(`--comp-width`, `${this.pageX}px`);
+
+  }
   calcWidth(pageX) {
-    this.diagram.style.setProperty(`--comp-width`, `${window.innerWidth - pageX}px`);
+    this.diagram.style.setProperty(`--comp-width`, `${this.openEditor ? window.innerWidth - pageX - 400 : window.innerWidth - pageX}px`);
     this.text.style.setProperty(`--comp-width`, `${pageX}px`);
   }
   getSVGStyle() {

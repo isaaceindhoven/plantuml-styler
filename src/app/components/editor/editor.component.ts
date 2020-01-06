@@ -45,9 +45,8 @@ export class EditorComponent implements OnInit {
   editTheme() {
     this.util.openEditor = !this.util.openEditor;
     setTimeout(() => {
-      this.util.calcHeight();
-      this.util.resizeAce();
-    });
+      this.util.setWidth();
+    },5);
     if (this.util.openEditor && this.generate.selectedTheme!='No theme') {
       this.generate.isThemed = false;
       this.generate.selectedBreak = this.generate.themedBreak;
@@ -169,7 +168,7 @@ export class EditorComponent implements OnInit {
   close() {
     this.util.openEditor = false;
     setTimeout(() => {
-      this.util.calcHeight();
+      this.util.setWidth();
       this.util.resizeAce();
     });
   }

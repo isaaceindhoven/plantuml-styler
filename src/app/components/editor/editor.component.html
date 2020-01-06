@@ -1,19 +1,20 @@
-<button (click)="editTheme();" matTooltip="Edit diagram" style="background-color: #121212; margin-bottom: 5px; position: absolute; right: 0px;"
-    mat-mini-fab>
+<button (click)="editTheme();" matTooltip="Edit diagram"
+    style="background-color: #121212; margin-bottom: 5px; position: absolute; right: 0px;" mat-mini-fab>
     <i *ngIf="!util.openEditor" class="material-icons">edit</i>
     <i *ngIf="util.openEditor" class="material-icons">arrow_forward</i>
 </button>
 <br>
-<div [ngClass]="{ 'run-fadeIn': util.openEditor, 'noHeight': !util.openEditor }" class="editor">
-    <ng-container>
-        <mat-card id="appCard" class="card">
+<div style="background-color: #f9f9f9;" [ngClass]="{ 'run-fadeIn': util.openEditor, 'noHeight': !util.openEditor }" class="editor">
+    <ng-container style="background-color: #f9f9f9;">
+        <mat-card style="background-color: #f9f9f9;" id="appCard" class="card">
             <mat-card-content>
                 <button mat-raised-button (click)="jsons.click()" matTooltip="Import .zip, .json, .txt, .puml file"
                     class="mat-expansion-panel-header accordionbtn">
                     <div style="display: flex;">
                         <span style="flex: 0 0 auto;">Import JSON</span>
                         <span style="flex: 0 0 222%;"></span>
-                        <i style="flex: 0 0 auto; margin-top: 6px; color: rgb(129, 126, 126);" class="material-icons">add</i>
+                        <i style="flex: 0 0 auto; margin-top: 6px; color: rgb(129, 126, 126);"
+                            class="material-icons">add</i>
                     </div>
 
                 </button>
@@ -22,7 +23,7 @@
                 <br>
                 <mat-accordion id="scrollbar1">
                     <!--Styling-->
-                    <mat-expansion-panel (click)="reduceTextarea()" [disabled]="generate.isThemed">
+                    <mat-expansion-panel [expanded]="true" [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="stylingAccordion">
                                 Styling
@@ -105,11 +106,9 @@
                                 Multi participants
                             </mat-slide-toggle>
                         </section>
-                        <input hidden #img id="img" type="file" accept="image/*" (change)="setImage(img, tA.value)"
-                            value="Image">
                     </mat-expansion-panel>
                     <!--Colors-->
-                    <mat-expansion-panel (click)="reduceTextarea()" [disabled]="generate.isThemed">
+                    <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="colorsAccordion">
                                 Colors
@@ -318,8 +317,7 @@
 
                     </mat-expansion-panel>
                     <!--Multi participant colors-->
-                    <mat-expansion-panel *ngIf="generate.multi" (click)="reduceTextarea()"
-                        [disabled]="generate.isThemed">
+                    <mat-expansion-panel *ngIf="generate.multi" [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="multiColorsAccordion">
                                 Multi participant colors
@@ -422,7 +420,7 @@
                         </div>
                     </mat-expansion-panel>
                     <!--Fonts-->
-                    <mat-expansion-panel (click)="reduceTextarea()" [disabled]="generate.isThemed">
+                    <mat-expansion-panel [disabled]="generate.isThemed">
                         <mat-expansion-panel-header>
                             <mat-panel-title id="fontsAccordion">
                                 Fonts
@@ -455,11 +453,11 @@
                     </mat-expansion-panel>
                 </mat-accordion>
                 <br>
-                <button class="resetBtn" matTooltip="Open app" *ngIf="generate.isSmall" mat-mini-fab
-                    (click)="reduceTextarea()" color="primary"><i class="material-icons">arrow_back</i></button>
+                <button class="resetBtn" matTooltip="Open app" *ngIf="generate.isSmall" mat-mini-fab color="primary"><i
+                        class="material-icons">arrow_back</i></button>
                 <br>
                 <br>
-                <mat-spinner *ngIf="isLoading" style="position: relative; left: 40%;"></mat-spinner>
+                
             </mat-card-content>
         </mat-card>
     </ng-container>
