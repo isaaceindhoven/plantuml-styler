@@ -1,6 +1,13 @@
 # PlantUML-styler
+This project is an open-source Angular application free for anyone to use. It allows its users to generate sequence diagrams with a real-time preview using PlantUML while simultaniously using CSS to style said diagram to their liking. This project started as an internship assingment for ISAAC-Eindhoven but in time grew to be an open-source project for anyone to use and to contribute to.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.2.
+
+# Why PlantUML-styler
+PlantUML-styler A.K.A. StyleUML makes it possible to generate beautiful diagrams with just the press of a button. 
+![PlantUML diagram](https://github.com/isaaceindhoven/plantuml-styler/blob/master/src/assets/plantuml.png)
+
+![StyleUML diagram](https://github.com/isaaceindhoven/plantuml-styler/blob/master/src/assets/styleuml.png)
 
 ## Development server
 
