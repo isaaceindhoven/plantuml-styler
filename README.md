@@ -10,6 +10,7 @@ Some key features include:
 
 Use it on https://plantumlstyler.netlify.com/
 
+![example](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/example.png)
 
 
 # How does PlantUML-styler work
@@ -66,11 +67,11 @@ Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The ap
     
     Either press the 
     
-    ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/Plus.png)
+    ![plus](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/Plus.png)
     
     or the 
     
-    ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/ImportJSON.png)
+    ![import json](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/ImportJSON.png)
     
     button and select the downloaded ".zip" file.
     This will open the exact diagram you downloaded and you can change anything you want!
