@@ -22,7 +22,7 @@ Created as an internship assignment
 [![eslint-style](https://img.shields.io/badge/code%20style-eslint-brightgreen.svg?style=flat)](https://github.com/palantir/tslint)
  
 # Why PlantUML-styler
-PlantUML-styler A.K.A. StyleUML makes it possible to generate beautiful diagrams with just the press of a button.
+PlantUML-styler makes it possible to generate beautiful diagrams with just the press of a button.
 
 it turns a PlantUML diagram like this one.
 
@@ -38,12 +38,9 @@ Into a beautiful diagram like this!
 
 # Running PlantUML-styler locally
 1. Clone this repository
-2. Open a CLI
-3. Navigate to the cloned repository
-4. Install the Angular CLI if you haven't already by running _npm install -g @angular/cli_
-5. Start a Development server
-## Development server
-Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+2. Install the Angular CLI if you haven't already by running `npm install -g @angular/cli`
+3. Run `npm install` in the repository
+4. Run `ng serve -o` to start a development server at `http://localhost:4200`
 
 ## Tests
 1. Clone this repository
