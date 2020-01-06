@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
   api: {
-    base: 'https://plantuml.isaac.local/plantuml/svg/'
+    base: 'http://www.plantuml.com/plantuml/svg/'
   }
 };

@@ -270,4 +270,7 @@ export class NavbarComponent implements OnInit {
   setEnvironment(string) {
     environment.api.base = string;
   }
+  getEnvironment(){
+    return environment.api.base;
+  }
 }

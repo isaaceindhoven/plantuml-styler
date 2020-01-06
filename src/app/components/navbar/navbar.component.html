@@ -23,7 +23,7 @@
         <mat-label style="margin-right: 10px; transform: scale(0.7);">Server</mat-label>
         <mat-form-field class="navDropDown" style="width: 305px; color: white;">
             <input matInput #envBox (click)="Select(envBox);" type="text" (change)="setEnvironment(envBox.value)"
-                value="https://plantuml.isaac.local/plantuml/svg/">
+              [ngModel]="getEnvironment()">
         </mat-form-field>
         <span class="spacer"></span>
         <span class="spacer"></span>
