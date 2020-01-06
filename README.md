@@ -12,6 +12,48 @@ Use it on https://plantumlstyler.netlify.com/
 
 ![example](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/example.png)
 
+## Motivation
+Created as an internship assignment
+
+## Build status
+Build status of continus integration
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9a5fc7e5-6a6a-4143-a3b2-38ed07237a5a/deploy-status)](https://app.netlify.com/sites/plantumlstyler/deploys)
+
+## Code style
+[![eslint-style](https://img.shields.io/badge/code%20style-eslint-brightgreen.svg?style=flat)](https://github.com/palantir/tslint)
+ 
+# Why PlantUML-styler
+PlantUML-styler A.K.A. StyleUML makes it possible to generate beautiful diagrams with just the press of a button.
+
+it turns a PlantUML diagram like this one.
+
+![PlantUML diagram](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/plantuml.png)
+
+Into a beautiful diagram like this! 
+
+![StyleUML diagram](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/styleuml.png)
+
+## Tech/framework used
+<b>Built with</b>
+- [Angular](https://angular.io/)
+
+# Running PlantUML-styler locally
+1. Clone this repository
+2. Open a CLI
+3. Navigate to the cloned repository
+4. Install the Angular CLI if you haven't already by running _npm install -g @angular/cli_
+5. Start a Development server
+## Development server
+Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Tests
+1. Clone this repository
+2. Open a CLI
+3. Navigate to the cloned repository
+4. Install the Angular CLI if you haven't already by running _npm install -g @angular/cli_
+5. Run `ng test`
+
+![karma](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/karma.png)
 
 # How does PlantUML-styler work
 A step-by-step guide on how to work with PlantUML-styler.
@@ -31,28 +73,8 @@ A step-by-step guide on how to work with PlantUML-styler.
 
 ![download](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/download.png)
 
-# Why PlantUML-styler
-PlantUML-styler A.K.A. StyleUML makes it possible to generate beautiful diagrams with just the press of a button.
-
-it turns a PlantUML diagram like this one.
-
-![PlantUML diagram](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/plantuml.png)
-
-Into a beautiful diagram like this! 
-
-![StyleUML diagram](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/styleuml.png)
-
-# Try PlantUML-styler
-A working demo can be found at [PlantUML-styler](https://plantumlstyler.netlify.com/) which will always be up-to-date with the master branch of this repository.
-
-# Running PlantUML-styler locally
-1. Clone this repository
-2. Open a CLI
-3. Navigate to the cloned repository
-4. Install the Angular CLI if you haven't already by running _npm install -g @angular/cli_
-5. Start a Development server
-## Development server
-Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Credits
+Big thanks to [PlantUML](https://plantuml.com/) for making this project possible 
 
 # FAQ
 - Can I use PlantUML-styler to style UML diagrams of types other than Sequence-diagram? like for example Usecase-diagram?
@@ -75,3 +97,7 @@ Run `ng serve -o` for a dev server. Navigate to `http://localhost:4200/`. The ap
     
     button and select the downloaded ".zip" file.
     This will open the exact diagram you downloaded and you can change anything you want!
+
+
+## License
+MIT © ISAAC and/or its affiliates
