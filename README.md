@@ -44,10 +44,9 @@ Into a beautiful diagram like this!
 
 ## Tests
 1. Clone this repository
-2. Open a CLI
-3. Navigate to the cloned repository
-4. Install the Angular CLI if you haven't already by running _npm install -g @angular/cli_
-5. Run `ng test`
+2. Install the Angular CLI if you haven't already by running `npm install -g @angular/cli`
+3. Run `npm install` in the repository
+4. Run `ng test`
 
 ![karma](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/karma.png)
 
