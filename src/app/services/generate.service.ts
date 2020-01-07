@@ -281,14 +281,21 @@ export class GenerateService {
           // returning the domparser when done
           resolve(oDOM);
         }, (er) => {
-          console.log("er pre modification", er.error);
           // creating the domparser
           const oParser = new DOMParser();
           // parsing the svg from the PlantUML server into the domparser
           const oDOM = oParser.parseFromString(er.error, 'image/svg+xml');
-          console.log("dom parsed from data", oDOM);
           generate.isError = true;
           // returning the domparser when done
+
+          Array.from(oDOM.getElementsByTagName('text')).forEach(element => {
+            if (element.textContent.includes('[From string ')) {
+              let text = element;
+              let content = text.textContent.split(')')[0];
+              let string = `[From string (line ${(parseFloat(content.substr(18, content.length - 18)) - 2).toString()})]`;
+              text.textContent = string;
+            }
+          })
           resolve(oDOM);
         });
     });

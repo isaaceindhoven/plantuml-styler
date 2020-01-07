@@ -4,7 +4,7 @@
         <div id="resizableTextarea" style="min-width: 400px; width: 20%; position: relative;">
             <app-text-area id="text"></app-text-area>
         </div>
-        <div class="two" style="transform: translateX(-5px);" (mousedown)="getStartPoint($event)">
+        <div class="two" style="transform: translateX(-5px); z-index: 1;" (mousedown)="getStartPoint($event)">
             <svg id="Handlebar" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" contentscripttype="application/javascript"
                 contentstyletype="text/css" width="10px" height="100%">
