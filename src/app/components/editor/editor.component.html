@@ -1,3 +1,7 @@
+<div *ngIf="stylingservice.isTheming" style="height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0.377); position:fixed; z-index: 100"><span
+        style="position: fixed;top: 50%; right: 150px;">
+        <mat-spinner diameter="100"></mat-spinner>
+    </span></div>
 <div style="width: 100%; background-color: #f9f9f9; height: 10px;"></div>
 <button (click)="editTheme();" matTooltip="Edit diagram"
     style="background-color: #121212; margin-bottom: 6px; position: absolute; right: 10px;" mat-mini-fab>
@@ -5,8 +9,8 @@
     <i *ngIf="util.openEditor" class="material-icons">arrow_forward</i>
 </button>
 <br>
-
-<div style="background-color: #f9f9f9;" [ngClass]="{ 'run-fadeIn': util.openEditor, 'noHeight': !util.openEditor }" class="editor">
+<div style="background-color: #f9f9f9;" [ngClass]="{ 'run-fadeIn': util.openEditor, 'noHeight': !util.openEditor }"
+    class="editor">
     <ng-container style="background-color: #f9f9f9;">
         <mat-card style="background-color: #f9f9f9;" id="appCard" class="card">
             <mat-card-content>
@@ -123,8 +127,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="secondary" class="inputHoverColor" [style.background]="generate.color2"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="secondary"
+                                        class="inputHoverColor" [style.background]="generate.color2"
                                         [(colorPicker)]="generate.color2"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -141,8 +146,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="primary" class="inputHoverColor" [style.background]="generate.color1"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="primary"
+                                        class="inputHoverColor" [style.background]="generate.color1"
                                         [(colorPicker)]="generate.color1"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -159,8 +165,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.colorBoxBack"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.colorBoxBack"
                                         [(colorPicker)]="generate.colorBoxBack"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -177,8 +184,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.colorBoxStroke"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.colorBoxStroke"
                                         [(colorPicker)]="generate.colorBoxStroke"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -195,8 +203,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.color6"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.color6"
                                         [(colorPicker)]="generate.color6"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -213,8 +222,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="tertiary" class="inputHoverColor" [style.background]="generate.color3"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="tertiary"
+                                        class="inputHoverColor" [style.background]="generate.color3"
                                         [(colorPicker)]="generate.color3"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -231,8 +241,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="quaternary" [style.background]="generate.color4" class="inputHoverColor"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="quaternary"
+                                        [style.background]="generate.color4" class="inputHoverColor"
                                         [(colorPicker)]="generate.color4"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -249,8 +260,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.color8"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.color8"
                                         [(colorPicker)]="generate.color8"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -267,8 +279,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.color7"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.color7"
                                         [(colorPicker)]="generate.color7"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -285,8 +298,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.color9"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.color9"
                                         [(colorPicker)]="generate.color9"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -303,8 +317,9 @@
                                 </td>
                                 <td style="width: 25%;">
                                     <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                        [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                        id="text" class="inputHoverColor" [style.background]="generate.color5"
+                                        [cpAddColorButton]="true"
+                                        style="width: 50%; transform:translateX(115%) translateY(16%)" id="text"
+                                        class="inputHoverColor" [style.background]="generate.color5"
                                         [(colorPicker)]="generate.color5"
                                         (colorPickerChange)="generate.setColors(null)" />
                                 </td>
@@ -343,7 +358,8 @@
                                     </td>
                                     <td style="width: 25%;">
                                         <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                            [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
+                                            [cpAddColorButton]="true"
+                                            style="width: 50%; transform:translateX(115%) translateY(16%)"
                                             class="inputHoverColor"
                                             [style.background]="generate.selectedParticipant.value[0].style.stroke"
                                             [(colorPicker)]="generate.selectedParticipant.value[0].style.stroke"
@@ -365,8 +381,9 @@
                                     </td>
                                     <td style="width: 25%;">
                                         <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                            [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                            id="primary" class="inputHoverColor"
+                                            [cpAddColorButton]="true"
+                                            style="width: 50%; transform:translateX(115%) translateY(16%)" id="primary"
+                                            class="inputHoverColor"
                                             [style.background]="generate.selectedParticipant.value[0].style.fill"
                                             [(colorPicker)]="generate.selectedParticipant.value[0].style.fill"
                                             (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value,generate.selectedParticipant.key, null,generate.selectedParticipant.value[0].style.fill,null)" />
@@ -386,8 +403,9 @@
                                     </td>
                                     <td style="width: 25%;">
                                         <input type="button" [cpPosition]="'bottom-left'" [cpPresetColors]="['#fff']"
-                                            [cpAddColorButton]="true" style="width: 50%; transform:translateX(115%) translateY(16%)"
-                                            id="primary" class="inputHoverColor"
+                                            [cpAddColorButton]="true"
+                                            style="width: 50%; transform:translateX(115%) translateY(16%)" id="primary"
+                                            class="inputHoverColor"
                                             [style.background]="generate.selectedParticipant.value[1].style.fill"
                                             [(colorPicker)]="generate.selectedParticipant.value[1].style.fill"
                                             (colorPickerChange)="generate.setMultiColors(generate.selectedParticipant.value, generate.selectedParticipant.key, null,null,generate.selectedParticipant.value[1].style.fill)" />
@@ -459,7 +477,7 @@
                         class="material-icons">arrow_back</i></button>
                 <br>
                 <br>
-                
+
             </mat-card-content>
         </mat-card>
     </ng-container>

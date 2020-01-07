@@ -22,6 +22,11 @@ mat-accordion {
   margin-top: 5px;
   font-size: medium;
 }
+.drop {
+  outline: 1px solid #333;
+  padding: 9px;
+  border-radius: 4px;
+}
 
 mat-toolbar ::ng-deep .mat-form-field-underline {
   display: none;
@@ -57,6 +62,7 @@ mat-toolbar ::ng-deep .mat-select-arrow {
 
 .inputBox {
   font-size: medium;
+  padding: 9px;
   border: none;
   background-color: #222;
   color: #fff;

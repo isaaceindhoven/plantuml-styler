@@ -1,9 +1,9 @@
 <mat-toolbar>
     <mat-toolbar-row>
         <span style="transform: translateX(-20%);">
-            <img style="transform: scale(0.8);" src="assets\isaac-alternative-logo-invert-rgb-transparent-250px.png">
+            <img style="transform: scale(0.75);" src="assets\isaac-alternative-logo-invert-rgb-transparent-250px.png">
         </span>
-        <h1 style="font-family: Rockwell; font-size: 25px;"> PlantUML - styler</h1>
+        <h1 style="font-family: Rockwell; font-size: 25px; transform: translateX(-33%);"> PlantUML - styler</h1>
         <!-- <a target="_blank"
             href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html#sequence-diagram"
             hidden #syntax></a>
@@ -17,14 +17,13 @@
         <input class="inputBox" #envBox type="text" (change)="setEnvironment(envBox.value)"
             [ngModel]="getEnvironment()">
         <!-- </mat-form-field> -->
-        <span class="spacer"></span>
-        <span class="endspacer"></span>
+        <span style="flex: 1 1 160px;"></span>
         <span class="endspacer"></span>
         <h3 style="font-family: 'Open Sans'; font-size: 15px; transform: translateX(-10px);">Theme</h3>
-        <mat-form-field class="inputBox" (click)="util.openEditor = false;" class="navDropDown"
-            style="width: 100px; color: white; border: none; transform: translateY(2px);">
-            <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
-                (selectionChange)="activateTheme()">
+        <mat-form-field  class="navDropDown"
+            style="width: 145px; color: white; border: none; transform: translateY(2px);">
+            <mat-select class="drop" #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
+                (selectionChange)="activateTheme(); changeTheme();">
                 <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
                     {{theme}}
                 </mat-option>

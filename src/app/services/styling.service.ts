@@ -9,6 +9,7 @@ export class StylingService {
   actorlist: string[] = [];
   oldActorElements: any[] = [];
   image;
+  isTheming = false;
   IsaacStyle = [
     '#cccccc',
     '#ffffff',

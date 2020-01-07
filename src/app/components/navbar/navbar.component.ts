@@ -272,9 +272,17 @@ export class NavbarComponent implements OnInit {
     environment.api.base = string;
     console.log(environment);
     this.generate.generateSVG(this.generate.text);
-    
+
   }
   getEnvironment() {
     return environment.api.base;
+  }
+
+  changeTheme() {
+    this.stylingservice.isTheming = true;
+    setTimeout(() => {
+      this.stylingservice.isTheming = false;
+      this.generate.isThemed = false;
+    }, 200);
   }
 }
