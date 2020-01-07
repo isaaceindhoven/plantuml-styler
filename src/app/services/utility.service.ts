@@ -11,7 +11,7 @@ export class UtilityService {
   text;
   openEditor = true;
   textarea;
-  pageX;
+  pageX = 400;
   encode64(data) {
     let r = '';
     for (let i = 0; i < data.length; i += 3) {
