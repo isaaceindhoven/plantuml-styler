@@ -1,13 +1,13 @@
 <div class="box-column" (mouseup)="getEndPoint()">
-    <app-navbar id="nav" style="margin-bottom: 10px;"></app-navbar>
+    <app-navbar id="nav"></app-navbar>
     <div class="box">
         <div id="resizableTextarea" style="min-width: 400px; width: 20%; position: relative;">
             <app-text-area id="text"></app-text-area>
         </div>
         <div class="two" (mousedown)="getStartPoint($event)">
-            <svg id="Handlebar" style="transform: translateY(-10px)" xmlns="http://www.w3.org/2000/svg"
+            <svg id="Handlebar" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" contentscripttype="application/javascript"
-                contentstyletype="text/css" width="10px" height="105%">
+                contentstyletype="text/css" width="10px" height="100%">
                 <g>
                     <rect id="line" x="5" width="1px" height="100%" style="stroke-width:0px; fill:#e1e1e1"></rect>
                     <!-- <rect y="50%" rx="2" ry="2" width="30px" height="30px" style="stroke:#121212; fill:#ccc"></rect> -->
@@ -27,7 +27,7 @@
             </svg>
         </div>
         <div class="three">
-            <app-diagram id="diagram" style="min-width: 400px; height: 100%;"></app-diagram>
+            <app-diagram id="diagram" style="min-width: 400px; height: 100%; margin-top: 10px;"></app-diagram>
         </div>
         <div class="four">
             <app-editor id="editor"></app-editor>

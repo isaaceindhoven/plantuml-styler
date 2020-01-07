@@ -4,11 +4,14 @@
 .superspacer {
   flex: 1 1 450px;
 }
+.endspacer {
+  flex: 1 1 200px;
+}
 mat-toolbar {
   width: 100%;
   z-index: 1000;
   color: #ccc;
-  background-color: #121212;
+  background-color: #222;
 }
 mat-accordion {
   top: 0;
@@ -20,6 +23,13 @@ mat-accordion {
   font-size: medium;
 }
 
+::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+::ng-deep .mat-select-arrow {
+  border-top: 5px solid #0099dd !important;
+}
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto auto auto auto auto;
@@ -33,11 +43,9 @@ mat-accordion {
   grid-column: 2 2;
 }
 
-.navbar {
-  padding: 10px;
-}
 
 .downloadBtn {
+  min-width: 116px;
   margin-right: 10px;
   background-color: #0099dd;
   color: #fff;
@@ -46,4 +54,21 @@ mat-accordion {
   margin-right: 10px;
   background-color: #009bdd67;
   color: rgba(255, 255, 255, 0.63);
+}
+
+.inputBox {
+  border: none;
+  background-color: #222;
+  color: #fff;
+}
+.inputBox:hover {
+  outline: 1px solid #ccc;
+  background-color: #222;
+  color: #fff;
+}
+.inputBox:focus {
+  outline: none;
+  border: 1px solid #fff;
+  background-color: #222;
+  color: #fff;
 }

@@ -1,17 +1,28 @@
-<mat-toolbar class="navbar">
+<mat-toolbar>
     <mat-toolbar-row>
-        <span><img style="transform: scale(0.8);"
-                src="assets\isaac-primary-logo-invert-rgb-transparent-250px.png"></span>
-        <h1> StyleUML</h1>
-        <a target="_blank"
+        <span style="transform: translateX(-20%);">
+            <img style="transform: scale(0.8);" src="assets\isaac-alternative-logo-invert-rgb-transparent-250px.png">
+        </span>
+        <h1 style="font-family: Rockwell; font-size: 25px;"> PlantUML - styler</h1>
+        <!-- <a target="_blank"
             href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html#sequence-diagram"
             hidden #syntax></a>
         <button matTooltip="Sequence-diagram Styler for PlantUML" (click)="syntax.click()" mat-icon-button>
             <i style="transform: rotate(180deg);" class="material-icons">error_outline</i>
-        </button>
+        </button> -->
         <span class="spacer"></span>
-        <mat-label style="margin-right: 10px; transform: scale(0.7);">Theme</mat-label>
-        <mat-form-field (click)="util.openEditor = false;" class="navDropDown" style="width: 100px; color: white;">
+        <span class="superspacer"></span>
+        <h3 style="font-family: 'Open Sans'; font-size: 15px; transform: translateX(-10px);">Server</h3>
+        <!-- <mat-form-field class="navDropDown" style="width: 150px; color: white;"> -->
+        <input class="inputBox" #envBox type="text" (change)="setEnvironment(envBox.value)"
+            [ngModel]="getEnvironment()">
+        <!-- </mat-form-field> -->
+        <span class="spacer"></span>
+        <span class="endspacer"></span>
+        <span class="endspacer"></span>
+        <h3 style="font-family: 'Open Sans'; font-size: 15px; transform: translateX(-10px);">Theme</h3>
+        <mat-form-field class="inputBox" (click)="util.openEditor = false;" class="navDropDown"
+            style="width: 100px; color: white; border: none; transform: translateY(2px);">
             <mat-select #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
                 (selectionChange)="activateTheme()">
                 <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
@@ -19,15 +30,10 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <span class="superspacer"></span>
-        <mat-label style="margin-right: 10px; transform: scale(0.7);">Server</mat-label>
-        <mat-form-field class="navDropDown" style="width: 150px; color: white;">
-            <input matInput #envBox  type="text" (change)="setEnvironment(envBox.value)"
-              [ngModel]="getEnvironment()">
-        </mat-form-field>
-        <span class="spacer"></span>
-        <span class="spacer"></span>
-        <button [disabled]="generate.isError" class="downloadBtn" (click)="download()" matTooltip="Download .zip file containing: PNG's of the diagram as well as the code and styling needed to re-import this diagram" mat-raised-button>
+        <span style="flex: 1 1 50px;"></span>
+        <button [disabled]="generate.isError" class="downloadBtn" (click)="download()"
+            matTooltip="Download .zip file containing: PNG's of the diagram as well as the code and styling needed to re-import this diagram"
+            mat-raised-button>
             Download<i style="transform: translateX(10px);" class="material-icons">get_app</i>
         </button>
         <mat-spinner diameter="50" *ngIf="isLoading"></mat-spinner>
