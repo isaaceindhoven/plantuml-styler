@@ -271,6 +271,7 @@ export class NavbarComponent implements OnInit {
     console.log(string);
     environment.api.base = string;
     console.log(environment);
+    this.generate.generateSVG(this.generate.text);
     
   }
   getEnvironment() {
