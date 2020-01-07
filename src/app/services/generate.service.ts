@@ -658,11 +658,13 @@ export class GenerateService {
             break;
           case 'ellipse':
             // if its an <ellipse> we need to check if its not part of an actor
-            if ((element.nextElementSibling.nextElementSibling as SVGRectElement).getAttribute('class')) {
-              if ((element.nextElementSibling.nextElementSibling as SVGRectElement).getAttribute('class').includes('actor')) {
-                if (element.getAttribute('font-size') == fontsize.toString()) {
-                  (element.nextElementSibling as SVGImageElement).setAttribute('name', 'participantshape');
-                  (element.nextElementSibling as SVGImageElement).setAttribute('class', (element.nextElementSibling as SVGImageElement).getAttribute('class') + ' actorshape');
+            if (element.nextElementSibling.nextElementSibling) {
+              if ((element.nextElementSibling.nextElementSibling as SVGRectElement).getAttribute('class')) {
+                if ((element.nextElementSibling.nextElementSibling as SVGRectElement).getAttribute('class').includes('actor')) {
+                  if (element.getAttribute('font-size') == fontsize.toString()) {
+                    (element.nextElementSibling as SVGImageElement).setAttribute('name', 'participantshape');
+                    (element.nextElementSibling as SVGImageElement).setAttribute('class', (element.nextElementSibling as SVGImageElement).getAttribute('class') + ' actorshape');
+                  }
                 }
               }
             }
