@@ -17,6 +17,7 @@ export class GenerateService {
   halfwayDoneProcessing = false;
   refresh = false;
   canRefresh = true;
+  isError = false;
   isSmall = false;
   svg: any;
   rectangled: any;
@@ -46,7 +47,7 @@ export class GenerateService {
   actors = ['Default', 'Modern', 'Male', 'Female'];
   breaks = ['Default', 'Squiggly'];
   fonts = ['Tahoma'];
-  themes = ['No theme', 'PlantUML', 'ISAAC', 'Johan', 'Graytone', 'Blackwhite'];
+  themes = ['No theme', 'Default plantUML', 'ISAAC', 'Deep sea', 'Graytone', 'Black and white'];
   color1 = '';
   color2 = '';
   color3 = '';
@@ -59,7 +60,7 @@ export class GenerateService {
   colorBoxBack = '';
   colorBoxStroke = '';
   selectedSize = '14';
-  selectedTheme = 'PlantUML';
+  selectedTheme = 'Default plantUML';
   selectedType = 'Sequence';
   selectedFont = 'Tahoma';
   selectedBreak = 'Default';
@@ -112,9 +113,16 @@ export class GenerateService {
       // generate the svg and turning it into a DomParser
       let oDOM;
       this.isThemed ? oDOM = await this.getData(text, this.themedShape == 'Rounded' ? 20 : 1, this) : oDOM = await this.getData(text, this.selectedShape == 'Rounded' ? 20 : 1, this);
+      if (this.isError) {
+        this.styling.prepareError(oDOM);
+        const s = new XMLSerializer();
+        const str = s.serializeToString((oDOM as XMLDocument).firstChild);
+        this.svg = str;
+        this.isError = false;
+        return null;
+      }
       // start styling the SVG
       this.styleSVG(oDOM);
-     
     }, 300);
   }
   styleSVG(oDOM) {
@@ -263,7 +271,7 @@ export class GenerateService {
       // make the text ready to be sent to PlantUML
       const t = unescape(encodeURIComponent(text));
       // send a request to the PlantUML server
-      generate.http.get(environment.api.base + generate.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
+      generate.http.get(environment.api.prefix + environment.api.base + environment.api.path + generate.utility.encode64(deflate(t, 9)), { responseType: 'text' }).subscribe(
         (data) => {
           // add the svgTag id to the <svg> tag
           data = (data as string).replace('<svg', `<svg id="svgTag"`);
@@ -271,6 +279,16 @@ export class GenerateService {
           const oParser = new DOMParser();
           // parsing the svg from the PlantUML server into the domparser
           const oDOM = oParser.parseFromString(data, 'image/svg+xml');
+          // returning the domparser when done
+          resolve(oDOM);
+        }, (er) => {
+          console.log("er pre modification", er.error);
+          // creating the domparser
+          const oParser = new DOMParser();
+          // parsing the svg from the PlantUML server into the domparser
+          const oDOM = oParser.parseFromString(er.error, 'image/svg+xml');
+          console.log("dom parsed from data", oDOM);
+          generate.isError = true;
           // returning the domparser when done
           resolve(oDOM);
         });
@@ -329,7 +347,7 @@ export class GenerateService {
   setColors(oDOM) {
     // setting the color based on theme or own choices
     if (this.isThemed) {
-      if (this.selectedTheme == 'PlantUML') {
+      if (this.selectedTheme == 'Default plantUML') {
         this.styling.addColorToStyle(
           this.styling.PlantUMLStyle[0],
           this.styling.PlantUMLStyle[1],
@@ -357,20 +375,20 @@ export class GenerateService {
           oDOM,
           this.styling.IsaacStyle[9],
           this.styling.IsaacStyle[10]);
-      } else if (this.selectedTheme == 'Johan') {
+      } else if (this.selectedTheme == 'Deep sea') {
         this.styling.addColorToStyle(
-          this.styling.JohanStyle[0],
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[2],
-          this.styling.JohanStyle[3],
-          this.styling.JohanStyle[4],
-          this.styling.JohanStyle[5],
-          this.styling.JohanStyle[6],
-          this.styling.JohanStyle[7],
-          this.styling.JohanStyle[8],
+          this.styling.DeepSeaStyle[0],
+          this.styling.DeepSeaStyle[1],
+          this.styling.DeepSeaStyle[2],
+          this.styling.DeepSeaStyle[3],
+          this.styling.DeepSeaStyle[4],
+          this.styling.DeepSeaStyle[5],
+          this.styling.DeepSeaStyle[6],
+          this.styling.DeepSeaStyle[7],
+          this.styling.DeepSeaStyle[8],
           oDOM,
-          this.styling.JohanStyle[1],
-          this.styling.JohanStyle[0]);
+          this.styling.DeepSeaStyle[1],
+          this.styling.DeepSeaStyle[0]);
       } else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
           this.styling.GraytoneStyle[0],
@@ -385,7 +403,7 @@ export class GenerateService {
           oDOM,
           this.styling.GraytoneStyle[1],
           this.styling.GraytoneStyle[0]);
-      } else if (this.selectedTheme == 'Blackwhite') {
+      } else if (this.selectedTheme == 'Black and white') {
         this.styling.addColorToStyle(
           this.styling.BlackWhiteStyle[0],
           this.styling.BlackWhiteStyle[1],
@@ -475,6 +493,7 @@ export class GenerateService {
         this.autonumbering.setAutonumberRounded(oDOM);
         break;
       case 'None':
+        this.styling.clearLabels(oDOM);
         break;
       default:
         this.styling.clearLabels(oDOM);
@@ -546,7 +565,7 @@ export class GenerateService {
     this.themedParticipantstroke = 2;
     this.multi = false;
   }
-  JohanStyle() {
+  DeepSeaStyle() {
     this.themedBreak = 'Squiggly';
     this.themedNumber = 'Circular';
     this.themedShape = 'Rectangle';
@@ -601,19 +620,19 @@ export class GenerateService {
   setTheme() {
     if (this.isThemed) {
       switch (this.selectedTheme) {
-        case 'PlantUML':
+        case 'Default plantUML':
           this.plantumlStyle();
           break;
         case 'ISAAC':
           this.isaacStyle();
           break;
-        case 'Johan':
-          this.JohanStyle();
+        case 'Deep sea':
+          this.DeepSeaStyle();
           break;
         case 'Graytone':
           this.GrayToneStyle();
           break;
-        case 'Blackwhite':
+        case 'Black and white':
           this.BlackWhiteStyle();
           break;
         default:
@@ -625,33 +644,33 @@ export class GenerateService {
     // loop through all the <text> tags
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
       // checking if its neither the first nor the last element in the diagram
-      if (element.previousSibling && element.nextSibling) {
+      if (element.previousElementSibling && element.nextElementSibling) {
         // now er need to do some different things depending on the kind of tag the previous sibling is
-        switch (element.previousSibling.nodeName) {
+        switch (element.previousElementSibling.nodeName) {
           // if its a <rect> then we need to check if its a participant by looking at the rx and class attributes
           case 'rect':
-            if ((element.previousSibling as SVGRectElement).getAttribute('rx')) {
-              if (!(element.previousSibling as SVGRectElement).getAttribute('class')) {
+            if ((element.previousElementSibling as SVGRectElement).getAttribute('rx')) {
+              if (!(element.previousElementSibling as SVGRectElement).getAttribute('class')) {
                 if (element.getAttribute('font-size') == fontsize.toString()) {
-                  (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
+                  (element.previousElementSibling as SVGRectElement).setAttribute('name', 'participantshape');
                 }
               }
             }
             break;
           case 'ellipse':
             // if its an <ellipse> we need to check if its not part of an actor
-            if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class')) {
-              if ((element.nextSibling.nextSibling as SVGRectElement).getAttribute('class').includes('actor')) {
+            if ((element.nextElementSibling.nextElementSibling as SVGRectElement).getAttribute('class')) {
+              if ((element.nextElementSibling.nextElementSibling as SVGRectElement).getAttribute('class').includes('actor')) {
                 if (element.getAttribute('font-size') == fontsize.toString()) {
-                  (element.nextSibling as SVGImageElement).setAttribute('name', 'participantshape');
-                  (element.nextSibling as SVGImageElement).setAttribute('class', (element.nextSibling as SVGImageElement).getAttribute('class') + ' actorshape');
+                  (element.nextElementSibling as SVGImageElement).setAttribute('name', 'participantshape');
+                  (element.nextElementSibling as SVGImageElement).setAttribute('class', (element.nextElementSibling as SVGImageElement).getAttribute('class') + ' actorshape');
                 }
               }
             }
             break;
           default:
             if (element.getAttribute('font-size') == fontsize.toString()) {
-              (element.previousSibling as SVGRectElement).setAttribute('name', 'participantshape');
+              (element.previousElementSibling as SVGRectElement).setAttribute('name', 'participantshape');
             }
             break;
         }
@@ -663,7 +682,7 @@ export class GenerateService {
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGTextElement) => {
       if (parseFloat(element.getAttribute('font-size')) === fontsize + 1 && once) {
         once = false;
-        (element.previousSibling as SVGRectElement).setAttribute('class', 'titleBox');
+        (element.previousElementSibling as SVGRectElement).setAttribute('class', 'titleBox');
       }
     });
   }
@@ -686,14 +705,14 @@ export class GenerateService {
   }
   findDividers(oDOM) {
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
-      if (element.previousSibling) {
-        if (element.previousSibling.nodeName == 'rect') {
-          if (element.previousSibling.previousSibling) {
-            if (element.previousSibling.previousSibling.nodeName == 'line') {
-              if (element.previousSibling.previousSibling.previousSibling) {
-                if (element.previousSibling.previousSibling.previousSibling.nodeName == 'line') {
-                  if (element.previousSibling.previousSibling.previousSibling.previousSibling) {
-                    if (element.previousSibling.previousSibling.previousSibling.previousSibling.nodeName == 'rect') {
+      if (element.previousElementSibling) {
+        if (element.previousElementSibling.nodeName == 'rect') {
+          if (element.previousElementSibling.previousElementSibling) {
+            if (element.previousElementSibling.previousElementSibling.nodeName == 'line') {
+              if (element.previousElementSibling.previousElementSibling.previousElementSibling) {
+                if (element.previousElementSibling.previousElementSibling.previousElementSibling.nodeName == 'line') {
+                  if (element.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling) {
+                    if (element.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.nodeName == 'rect') {
                       element.setAttribute('class', 'divider');
                       element.previousElementSibling.setAttribute('class', 'divider');
                       element.previousElementSibling.previousElementSibling.setAttribute('class', 'divider');
@@ -758,8 +777,8 @@ export class GenerateService {
       }
     });
     this.styling.getTagList(oDOM, 'text').forEach((element: SVGPathElement) => {
-      if (element.getAttribute('font-size') === '11' && (element.previousSibling as SVGLineElement).getAttribute('class') === 'null dotted' && element.textContent.includes('[')) {
-        (element.previousSibling as SVGLineElement).setAttribute('class', 'altDivider');
+      if (element.getAttribute('font-size') === '11' && (element.previousElementSibling as SVGLineElement).getAttribute('class') === 'null dotted' && element.textContent.includes('[')) {
+        (element.previousElementSibling as SVGLineElement).setAttribute('class', 'altDivider');
       }
     });
   }
@@ -774,24 +793,24 @@ export class GenerateService {
           if (element.getAttribute('class').includes('actorshape')) {
             if (half) {
               half = false;
-              (element.nextSibling.nextSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
-              const name = element.nextSibling.textContent;
-              const elements = [element, element.nextSibling];
+              (element.nextElementSibling.nextElementSibling as SVGRectElement).setAttribute('class', (element as SVGRectElement).getAttribute('class') + ` participant${count}`);
+              const name = element.nextElementSibling.textContent;
+              const elements = [element, element.nextElementSibling];
               const el = {};
               el[name] = elements;
               this.addToParticipants(name, elements);
               count++;
             } else {
               half = true;
-              const name = element.nextSibling.textContent;
-              const elements = [element, element.nextSibling];
+              const name = element.nextElementSibling.textContent;
+              const elements = [element, element.nextElementSibling];
               const el = {};
               el[name] = elements;
               this.addToParticipants(name, elements);
             }
           } else if (element.getAttribute('class').includes('actorClass')) {
-            const name = element.parentElement.parentElement.nextSibling.textContent;
-            const elements = [element, element.parentElement.parentElement.nextSibling];
+            const name = element.parentElement.parentElement.nextElementSibling.textContent;
+            const elements = [element, element.parentElement.parentElement.nextElementSibling];
             const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
@@ -800,16 +819,16 @@ export class GenerateService {
         } else {
           if (half) {
             half = false;
-            const name = element.nextSibling.textContent;
-            const elements = [element, element.nextSibling];
+            const name = element.nextElementSibling.textContent;
+            const elements = [element, element.nextElementSibling];
             const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
             count++;
           } else {
             half = true;
-            const name = element.nextSibling.textContent;
-            const elements = [element, element.nextSibling];
+            const name = element.nextElementSibling.textContent;
+            const elements = [element, element.nextElementSibling];
             const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
@@ -818,23 +837,23 @@ export class GenerateService {
       } else {
         if (element.getAttribute('class')) {
           if (element.getAttribute('class').includes('actorshape')) {
-            const name = element.nextSibling.textContent;
-            const elements = [element, element.nextSibling.nextSibling];
+            const name = element.nextElementSibling.textContent;
+            const elements = [element, element.nextElementSibling.nextElementSibling];
             const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
             count++;
           } else if (element.getAttribute('class').includes('actorClass')) {
-            const name = element.parentElement.parentElement.nextSibling.textContent;
-            const elements = [element, element.parentElement.parentElement.nextSibling];
+            const name = element.parentElement.parentElement.nextElementSibling.textContent;
+            const elements = [element, element.parentElement.parentElement.nextElementSibling];
             const el = {};
             el[name] = elements;
             this.addToParticipants(name, elements);
             count++;
           }
         } else {
-          const name = element.nextSibling.textContent;
-          const elements = [element, element.nextSibling];
+          const name = element.nextElementSibling.textContent;
+          const elements = [element, element.nextElementSibling];
           const el = {};
           el[name] = elements;
           this.addToParticipants(name, elements);
@@ -888,12 +907,12 @@ export class GenerateService {
         element.getAttribute('x') === participant[2].getAttribute('x')) {
         (element as SVGRectElement).style.stroke = pc.border;
         (element as SVGRectElement).style.fill = pc.background;
-        if (element.nextSibling) {
-          (element.nextSibling as SVGRectElement).style.fill = pc.text;
-          (element.nextSibling as SVGRectElement).style.stroke = 'none';
+        if (element.nextElementSibling) {
+          (element.nextElementSibling as SVGRectElement).style.fill = pc.text;
+          (element.nextElementSibling as SVGRectElement).style.stroke = 'none';
         } else {
-          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
-          (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
+          (element.parentElement.parentElement.nextElementSibling as SVGRectElement).style.fill = pc.text;
+          (element.parentElement.parentElement.nextElementSibling as SVGRectElement).style.stroke = 'none';
         }
       }
     }
@@ -903,12 +922,12 @@ export class GenerateService {
       element.getAttribute('x') === participant[0].getAttribute('x')) {
       (element as SVGRectElement).style.stroke = pc.border;
       (element as SVGRectElement).style.fill = pc.background;
-      if (element.nextSibling) {
-        (element.nextSibling as SVGRectElement).style.fill = pc.text;
-        (element.nextSibling as SVGRectElement).style.stroke = 'none';
+      if (element.nextElementSibling) {
+        (element.nextElementSibling as SVGRectElement).style.fill = pc.text;
+        (element.nextElementSibling as SVGRectElement).style.stroke = 'none';
       } else {
-        (element.parentElement.parentElement.nextSibling as SVGRectElement).style.fill = pc.text;
-        (element.parentElement.parentElement.nextSibling as SVGRectElement).style.stroke = 'none';
+        (element.parentElement.parentElement.nextElementSibling as SVGRectElement).style.fill = pc.text;
+        (element.parentElement.parentElement.nextElementSibling as SVGRectElement).style.stroke = 'none';
       }
     }
   }

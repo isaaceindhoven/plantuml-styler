@@ -33,7 +33,7 @@ export class StylingService {
     '#000000',
     '#fefece',
     '#a80036'];
-  JohanStyle = [
+  DeepSeaStyle = [
     '#90c9cc',
     '#a6dee1',
     '#32bdb8',
@@ -437,5 +437,10 @@ export class StylingService {
   }
   getFonts() {
     return this.http.get('https://www.googleapis.com/webfonts/v1/webfonts?key=AIzaSyBwIX97bVWr3-6AIUvGkcNnmFgirefZ6Sw');
+  }
+  prepareError(oDOM) {
+    this.getTagList(oDOM, 'text').forEach((element: SVGRectElement) => {
+      element.setAttribute('style', `fill:${element.getAttribute('fill')}`)
+    });
   }
 }

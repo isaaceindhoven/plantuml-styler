@@ -64,7 +64,7 @@ export class NavbarComponent implements OnInit {
   }
   Select(input) {
     console.log(input);
-    
+
     setTimeout(() => {
       input.select();
     }, 0);
@@ -89,19 +89,19 @@ export class NavbarComponent implements OnInit {
       this.generate.sequencetextsize = this.generate.themedSequencetextsize;
       this.generate.participantstroke = this.generate.themedParticipantstroke;
       switch (this.generate.selectedTheme) {
-        case 'PlantUML':
+        case 'Default plantUML':
           this.setTheme(this.stylingservice.PlantUMLStyle);
           break;
         case 'ISAAC':
           this.setTheme(this.stylingservice.IsaacStyle);
           break;
-        case 'Johan':
-          this.setTheme(this.stylingservice.JohanStyle);
+        case 'Deep sea':
+          this.setTheme(this.stylingservice.DeepSeaStyle);
           break;
         case 'Graytone':
           this.setTheme(this.stylingservice.GraytoneStyle);
           break;
-        case 'Blackwhite':
+        case 'Black and white':
           this.setTheme(this.stylingservice.BlackWhiteStyle);
           break;
         default:
@@ -268,9 +268,12 @@ export class NavbarComponent implements OnInit {
     }
   }
   setEnvironment(string) {
+    console.log(string);
     environment.api.base = string;
+    console.log(environment);
+    
   }
-  getEnvironment(){
+  getEnvironment() {
     return environment.api.base;
   }
 }

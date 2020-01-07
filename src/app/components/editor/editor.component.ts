@@ -60,19 +60,19 @@ export class EditorComponent implements OnInit {
       this.generate.sequencetextsize = this.generate.themedSequencetextsize;
       this.generate.participantstroke = this.generate.themedParticipantstroke;
       switch (this.generate.selectedTheme) {
-        case 'PlantUML':
+        case 'Default plantUML':
           this.setTheme(this.stylingservice.PlantUMLStyle);
           break;
         case 'ISAAC':
           this.setTheme(this.stylingservice.IsaacStyle);
           break;
-        case 'Johan':
-          this.setTheme(this.stylingservice.JohanStyle);
+        case 'Deep sea':
+          this.setTheme(this.stylingservice.DeepSeaStyle);
           break;
         case 'Graytone':
           this.setTheme(this.stylingservice.GraytoneStyle);
           break;
-        case 'Blackwhite':
+        case 'Black and white':
           this.setTheme(this.stylingservice.BlackWhiteStyle);
           break;
         default:

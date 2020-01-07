@@ -74,7 +74,6 @@ export class UtilityService {
     this.text.style.setProperty(`--comp-height`, `${window.innerHeight - document.getElementById('nav').clientHeight}px`);
   }
   setWidth(){
-    console.log(this.pageX);
     this.diagram.style.setProperty(`--comp-width`, `${this.openEditor ? window.innerWidth - this.pageX - 400 : window.innerWidth - this.pageX}px`);
     this.text.style.setProperty(`--comp-width`, `${this.pageX}px`);
 

@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   api: {
-    base: 'https://localhost:8080/svg/'
+    prefix: 'https://',
+    base: 'www.plantuml.com',
+    path: '/plantuml/svg/'
   }
 };
 
