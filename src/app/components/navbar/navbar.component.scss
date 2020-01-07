@@ -23,11 +23,11 @@ mat-accordion {
   font-size: medium;
 }
 
-::ng-deep .mat-form-field-underline {
+mat-toolbar ::ng-deep .mat-form-field-underline {
   display: none;
 }
 
-::ng-deep .mat-select-arrow {
+mat-toolbar ::ng-deep .mat-select-arrow {
   border-top: 5px solid #0099dd !important;
 }
 .grid-container {
