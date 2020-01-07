@@ -103,6 +103,7 @@ export class GenerateService {
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(async () => {
       console.log('generating...');
+      this.isError = false;
       // setting the variables to the ones needed for themes
       this.setTheme();
       // make the text ready for generation
@@ -117,7 +118,6 @@ export class GenerateService {
         const s = new XMLSerializer();
         const str = s.serializeToString((oDOM as XMLDocument).firstChild);
         this.svg = str;
-        this.isError = false;
         return null;
       }
       // start styling the SVG
@@ -192,57 +192,57 @@ export class GenerateService {
     // then depending on whether the themed toggle has been toggled on. We decide what code to execute
     if (this.isThemed) {
       // checking if the user wants to hide the footnotes and if so add the right skinparam to do so
-      this.themedFootnotes ? null : text = 'hide footbox \n' + text;
+      this.themedFootnotes ? null : text = text + '\nhide footbox';
       // checking if the user wants to hide the backdrop shadow and if so add the right skinparam to do so
-      this.themedHiddenShadows ? null : text = 'skinparam Shadowing false \n' + text;
+      this.themedHiddenShadows ? null : text = text + ' \nskinparam Shadowing false';
       // setting the fontsize of notes
-      text = `skinparam notefontsize 12 \n ` + text;
+      text = text + ` \n skinparam notefontsize 12`;
       // setting the padding between participants
-      text = `skinparam ParticipantPadding  ${this.themedParticipantpadding} \n` + text;
+      text = text + ` \nskinparam ParticipantPadding  ${this.themedParticipantpadding}`;
       // setting the participant's font size
-      text = `skinparam ParticipantFontSize ${this.themedParticipantfontsize} \n` + text;
+      text = text + ` \nskinparam ParticipantFontSize ${this.themedParticipantfontsize}`;
       // setting the font size of the actors
-      text = `skinparam ActorFontSize ${this.themedParticipantfontsize} \n` + text;
+      text = text + ` \nskinparam ActorFontSize ${this.themedParticipantfontsize}`;
       // setting the font size of the arrows
-      text = `skinparam ArrowFontSize ${this.themedSequencetextsize} \n` + text;
+      text = text + ` \nskinparam ArrowFontSize ${this.themedSequencetextsize}`;
       // setting the font size of the sequence dividers
-      text = 'skinparam SequenceDividerFontSize 14 \n' + text;
+      text = text + '\nskinparam SequenceDividerFontSize 14 ';
       // setting the padding between the boxes
-      text = 'skinparam BoxPadding 15 \n' + text;
+      text = text + ' \nskinparam BoxPadding 15';
       // setting the font size of the title
-      text = `skinparam SequenceTitleFontSize ${this.themedParticipantfontsize + 1} \n` + text;
+      text = text + ` \nskinparam SequenceTitleFontSize ${this.themedParticipantfontsize + 1}`;
       // setting the border thickness of the title
-      text = `skinparam titleBorderThickness 2 \n` + text;
+      text = text + ` \nskinparam titleBorderThickness 2`;
       // setting the skinparams to allow the autonumbers to work
       text = this.changeTextForNumbers(this.themedNumber, text, oDOM);
 
     } else {
       // checking if the user wants to hide the footnotes and if so add the right skinparam to do so
-      this.footnotes ? null : text = 'hide footbox \n' + text;
+      this.footnotes ? null : text = text + ' \nhide footbox';
       // checking if the user wants to hide the backdrop shadow and if so add the right skinparam to do so
-      this.hiddenShadows ? null : text = 'skinparam Shadowing false \n' + text;
+      this.hiddenShadows ? null : text = text + ' \nskinparam Shadowing false';
       // setting the fontsize of notes
-      text = `skinparam notefontsize 12 \n ` + text;
+      text = text + ` \nskinparam notefontsize 12 `;
       // making sure the numbers don't go above or below normal amounts
       this.participantfontsize < 1 ? this.participantfontsize = 1 : this.participantfontsize > 40 ? this.participantfontsize = 40 : null;
       this.sequencetextsize < 1 ? this.sequencetextsize = 1 : this.sequencetextsize > 40 ? this.sequencetextsize = 40 : null;
       this.participantpadding < 0 ? this.participantpadding = 0 : this.participantpadding > 500 ? this.participantpadding = 500 : null;
       // setting the padding between participants
-      text = `skinparam ParticipantPadding  ${this.participantpadding} \n` + text;
+      text = text + ` \nskinparam ParticipantPadding  ${this.participantpadding}`;
       // setting the participant's font size
-      text = `skinparam ParticipantFontSize ${this.participantfontsize} \n` + text;
+      text = text + ` \nskinparam ParticipantFontSize ${this.participantfontsize}`;
       // setting the font size of the actors
-      text = `skinparam ActorFontSize ${this.participantfontsize} \n` + text;
+      text = text + ` \nskinparam ActorFontSize ${this.participantfontsize}`;
       // setting the font size of the arrows
-      text = `skinparam ArrowFontSize ${this.sequencetextsize} \n` + text;
+      text = text + ` \nskinparam ArrowFontSize ${this.sequencetextsize}`;
       // setting the font size of the sequence dividers
-      text = 'skinparam SequenceDividerFontSize 14 \n' + text;
+      text = text + ' \nskinparam SequenceDividerFontSize 14';
       // setting the padding between the boxes
-      text = 'skinparam BoxPadding 15 \n' + text;
+      text = text + ' \nskinparam BoxPadding 15';
       // setting the font size of the title
-      text = `skinparam SequenceTitleFontSize ${this.participantfontsize + 1} \n` + text;
+      text = text + ` \nskinparam SequenceTitleFontSize ${this.participantfontsize + 1}`;
       // setting the border thickness of the title
-      text = `skinparam titleBorderThickness 2 \n` + text;
+      text = text + ` \nskinparam titleBorderThickness 2`;
       // setting the skinparams to allow the autonumbers to work
       text = this.changeTextForNumbers(this.selectedNumber, text, oDOM);
     }
@@ -259,14 +259,14 @@ export class GenerateService {
         return text;
       default:
         text = 'autonumber 1\n' + text;
-        text = `skinparam   Padding  4 \n` + text;
+        text = text + `\nskinparam   Padding  4`;
         return text;
     }
   }
   async getData(text, roundcorner, generate) {
     return new Promise(function (resolve, reject) {
       // adding round corners to all rectangles to make it easier to find participants
-      text = `skinparam roundcorner ${roundcorner}  \n ${text}`;
+      text = `${text} \n skinparam roundcorner ${roundcorner}`;
       // make the text ready to be sent to PlantUML
       const t = unescape(encodeURIComponent(text));
       // send a request to the PlantUML server

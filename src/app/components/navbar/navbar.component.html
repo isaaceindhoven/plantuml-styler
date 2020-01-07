@@ -27,7 +27,7 @@
         </mat-form-field>
         <span class="spacer"></span>
         <span class="spacer"></span>
-        <button style="margin-right: 10px; background-color: #0099dd; color: #fff;" (click)="download()" matTooltip="Download .zip file" mat-raised-button>
+        <button [disabled]="generate.isError" class="downloadBtn" (click)="download()" matTooltip="Download .zip file containing: PNG's of the diagram as well as the code and styling needed to re-import this diagram" mat-raised-button>
             Download<i style="transform: translateX(10px);" class="material-icons">get_app</i>
         </button>
         <mat-spinner diameter="50" *ngIf="isLoading"></mat-spinner>
