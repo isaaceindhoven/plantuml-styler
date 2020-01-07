@@ -23,7 +23,7 @@
         <mat-form-field  class="navDropDown"
             style="width: 145px; color: white; border: none; transform: translateY(2px);">
             <mat-select class="drop" #selecttheme id="selecttheme" [(value)]="generate.selectedTheme"
-                (selectionChange)="activateTheme(); changeTheme();">
+                (selectionChange)="changeTheme();activateTheme(); ">
                 <mat-option id="{{theme}}" *ngFor="let theme of generate.themes" [value]="theme">
                     {{theme}}
                 </mat-option>

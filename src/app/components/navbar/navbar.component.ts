@@ -283,6 +283,6 @@ export class NavbarComponent implements OnInit {
     setTimeout(() => {
       this.stylingservice.isTheming = false;
       this.generate.isThemed = false;
-    }, 200);
+    }, 500);
   }
 }
