@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class EditorComponent implements OnInit {
 
-  constructor(public generate: GenerateService, private stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, public util: UtilityService) { }
+  constructor(public generate: GenerateService, public stylingservice: StylingService, private zipservice: ZipService, private impoexpo: ImportExportService, public dialog: MatDialog, public util: UtilityService) { }
 
   ngOnInit() {
     let ns = 'http://www.w3.org/2000/svg'
