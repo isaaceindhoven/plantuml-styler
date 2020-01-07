@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 import { StylingService } from './styling.service';
 import { AutoNumberService } from './autonumber.service';
 import { UtilityService } from './utility.service';
-import { MatSelect } from '@angular/material';
 
 @Injectable({
   providedIn: 'root',
