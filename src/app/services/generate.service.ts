@@ -281,24 +281,41 @@ export class GenerateService {
           // returning the domparser when done
           resolve(oDOM);
         }, (er) => {
-          // creating the domparser
-          const oParser = new DOMParser();
           // parsing the svg from the PlantUML server into the domparser
-          const oDOM = oParser.parseFromString(er.error, 'image/svg+xml');
-          generate.isError = true;
-          // returning the domparser when done
+          try {
+            const oDOM = generate.parseSVG(er.error) as Document;
+            generate.isError = true;
+            Array.from(oDOM.getElementsByTagName('text')).forEach(element => {
+              if (element.textContent.includes('[From string ')) {
+                let text = element;
+                let content = text.textContent.split(')')[0];
+                let string =
+                  `[From string (line ${
+                  (parseFloat(content.substr(18, content.length - 18)) -
+                    (generate.isThemed ? generate.themedNumber == "None" ? 1 : 2 : generate.selectedNumber == "None" ? 1 : 2)
+                  ).toString()
+                  })]`;
+                text.textContent = string;
+                // returning the domparser when done
+                resolve(oDOM);
+              }
+            })
+          } catch{
+            generate.svg = "<h1 style='color:red; font-family:\"Open sans\";'>404 No server Found</h1>";
+            resolve()
+          }
 
-          Array.from(oDOM.getElementsByTagName('text')).forEach(element => {
-            if (element.textContent.includes('[From string ')) {
-              let text = element;
-              let content = text.textContent.split(')')[0];
-              let string = `[From string (line ${(parseFloat(content.substr(18, content.length - 18)) - 2).toString()})]`;
-              text.textContent = string;
-            }
-          })
-          resolve(oDOM);
         });
     });
+  }
+  parseSVG(svgString) {
+    var parser = new DOMParser();
+    var parsererrorNS = parser.parseFromString('INVALID', 'image/svg+xml').getElementsByTagName("parsererror")[0].namespaceURI;
+    var dom = parser.parseFromString(svgString, 'image/svg+xml');
+    if (dom.getElementsByTagNameNS(parsererrorNS, 'parsererror').length > 0) {
+      throw new Error('Error parsing XML');
+    }
+    return dom;
   }
   hideNotes(oDOM) {
     // searching for notes and hiding them adding the note name tag
