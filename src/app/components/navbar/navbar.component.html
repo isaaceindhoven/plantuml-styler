@@ -17,7 +17,8 @@
         <input class="inputBox" #envBox type="text" (change)="setEnvironment(envBox.value)"
             [ngModel]="getEnvironment()">
         <!-- </mat-form-field> -->
-        <span style="flex: 1 1 160px;"></span>
+        <span style="flex: 1 0 20px;"></span>
+        <span style="flex: 1 1 140px;"></span>
         <span class="endspacer"></span>
         <h3 style="font-family: 'Open Sans'; font-size: 15px; transform: translateX(-10px);">Theme</h3>
         <mat-form-field  class="navDropDown"
@@ -29,7 +30,7 @@
                 </mat-option>
             </mat-select>
         </mat-form-field>
-        <span style="flex: 1 1 50px;"></span>
+        <span style="flex: 1 0 50px;"></span>
         <button [disabled]="generate.isError" class="downloadBtn" (click)="download()"
             matTooltip="Download .zip file containing: PNG's of the diagram as well as the code and styling needed to re-import this diagram"
             mat-raised-button>
