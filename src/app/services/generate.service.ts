@@ -410,8 +410,8 @@ export class GenerateService {
           this.styling.DeepSeaStyle[7],
           this.styling.DeepSeaStyle[8],
           oDOM,
-          this.styling.DeepSeaStyle[1],
-          this.styling.DeepSeaStyle[0]);
+          this.styling.DeepSeaStyle[9],
+          this.styling.DeepSeaStyle[10]);
       } else if (this.selectedTheme == 'Graytone') {
         this.styling.addColorToStyle(
           this.styling.GraytoneStyle[0],

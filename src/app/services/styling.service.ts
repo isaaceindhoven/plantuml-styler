@@ -44,8 +44,8 @@ export class StylingService {
     '#32bdb8',
     '#32bdb8',
     '#ffffff',
-    '#a6dee1',
-    '#90c9cc'];
+    'rgba(166,222,225,0.50)',
+    'rgba(144,201,204,0.50)',];
   GraytoneStyle = [
     '#bfbcbc',
     '#ffffff',

@@ -446,7 +446,8 @@ textarea {
 }
 
 @import "@angular/material/prebuilt-themes/indigo-pink.css";
-.mat-progress-spinner circle, .mat-spinner circle {
+.mat-progress-spinner circle,
+.mat-spinner circle {
   stroke: #fff;
 }
 .mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-bar {
@@ -496,6 +497,8 @@ $text-color: #000000;
   --label-text-color: #000000;
   --box-back-color: #fefece;
   --box-stroke-color: #a80036;
+  --alt-back-color: #ffffff00;
+  --alt-stroke-color: #a80036;
 }
 svg g ellipse,
 svg g circle,
@@ -604,7 +607,6 @@ svg g rect.titleBox {
   fill: none;
   stroke: rgba(255, 255, 255, 0);
   stroke-width: 5;
-
 }
 svg g line.divider {
   stroke: var(--primary-color);
@@ -615,6 +617,10 @@ svg g line.altDivider {
   stroke-dasharray: 2, 2;
 }
 
+svg g rect.alt {
+  fill: var(--alt-back-color);
+  stroke: var(--alt-stroke-color);
+}
 
 svg g path.alt {
   fill: var(--primary-color);
@@ -626,8 +632,7 @@ svg g path.actorClass {
   stroke: var(--primary-color);
 }
 
-
-body{
+body {
   overflow-y: hidden;
   min-width: 1200px;
 }
