@@ -53,7 +53,7 @@
   
   .diagram {
     overflow: auto;
-    max-height: var(--comp-height);
+    max-height: calc(var(--comp-height) - 10px);
     max-width: var(--comp-width);
   }
   

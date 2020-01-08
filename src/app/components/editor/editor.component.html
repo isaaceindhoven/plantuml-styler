@@ -4,7 +4,7 @@
     </span></div>
 <div style="width: 100%; background-color: #f9f9f9; height: 10px;"></div>
 <button (click)="editTheme();" matTooltip="Show/Hide styling tools"
-    style="background-color: #121212; margin-bottom: 2px; position: absolute; right: 10px; z-index: 4;" mat-mini-fab>
+    style="background-color: #121212; margin-bottom: 2px; position: fixed; right: 10px; z-index: 4;" mat-mini-fab>
     <i *ngIf="!util.openEditor" class="material-icons">edit</i>
     <i *ngIf="util.openEditor" class="material-icons">arrow_forward</i>
 </button>

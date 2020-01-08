@@ -628,5 +628,6 @@ svg g path.actorClass {
 
 
 body{
-  overflow: hidden;
+  overflow-y: hidden;
+  min-width: 1440px;
 }

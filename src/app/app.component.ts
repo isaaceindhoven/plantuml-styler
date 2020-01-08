@@ -22,6 +22,9 @@ export class AppComponent {
     window.addEventListener('drop', e => {
       e && e.preventDefault();
     }, false);
+    window.addEventListener('resize', e => {
+      this.util.calcWidth(this.util.pageX);
+    });
     this.resizableArea = document.getElementById('resizableTextarea');
     this.util.diagram = document.getElementById('diagram');
     this.util.text = document.getElementById('text');
