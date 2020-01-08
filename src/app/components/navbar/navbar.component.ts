@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
     this.generate.selectedTheme = 'ISAAC';
     this.generate.isThemed = true;
     setTimeout(() => {
-      this.editTheme();
+      this.editTheme(true);
       this.util.openEditor = true;
 
     }, 1000);
@@ -70,8 +70,9 @@ export class NavbarComponent implements OnInit {
     }, 0);
   }
 
-  editTheme() {
-    this.util.openEditor = !this.util.openEditor;
+  editTheme(bool) {
+    if (bool)
+      this.util.openEditor = !this.util.openEditor;
     setTimeout(() => {
       this.util.setWidth();
       this.util.resizeAce();
@@ -281,8 +282,8 @@ export class NavbarComponent implements OnInit {
   changeTheme() {
     this.stylingservice.isTheming = true;
     setTimeout(() => {
+      this.editTheme(false)
       this.stylingservice.isTheming = false;
-      this.generate.isThemed = false;
     }, 900);
   }
 }
