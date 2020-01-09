@@ -16,7 +16,7 @@ Use it on https://plantumlstyler.netlify.com/
 Created as an internship assignment
 
 ## Build status
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9a5fc7e5-6a6a-4143-a3b2-38ed07237a5a/deploy-status)](https://app.netlify.com/sites/plantumlstyler/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9865bac2-1f35-45f2-b804-46108e7fc7c8/deploy-status)](https://app.netlify.com/sites/plantumlstyler/deploys)
 
 ## Code style
 [![eslint-style](https://img.shields.io/badge/code%20style-eslint-brightgreen.svg?style=flat)](https://github.com/palantir/tslint)
