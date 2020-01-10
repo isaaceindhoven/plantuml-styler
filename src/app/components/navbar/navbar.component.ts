@@ -268,7 +268,20 @@ export class NavbarComponent implements OnInit {
       });
     }
   }
-  setEnvironment(string) {
+  setEnvironment(string: string) {
+    console.log(string);
+    if (string.includes("http://")) {
+      string = string.split("http://")[1];
+    }
+    if (string.includes("https://")) {
+      string = string.split("https://")[1];
+    }
+    if (string.endsWith("/")) {
+      string = string.substr(0, string.length - 1);
+    }
+    if (string.endsWith("/")) {
+      string = string.substr(0, string.length - 1);
+    }
     console.log(string);
     environment.api.base = string;
     console.log(environment);

@@ -14,7 +14,7 @@
         <span class="superspacer"></span>
         <h3 style="font-family: 'Open Sans'; font-size: 15px; transform: translateX(-10px);">Server</h3>
         <!-- <mat-form-field class="navDropDown" style="width: 150px; color: white;"> -->
-        <input class="inputBox" #envBox type="text" (change)="setEnvironment(envBox.value)"
+        <input class="inputBox" placeholder="your.servername.com" #envBox type="text" (change)="setEnvironment(envBox.value)"
             [ngModel]="getEnvironment()">
         <!-- </mat-form-field> -->
         <span style="flex: 1 0 20px;"></span>
