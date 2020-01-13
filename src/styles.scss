@@ -603,7 +603,7 @@ svg g rect.box {
   fill: var(--box-back-color);
   stroke: var(--box-stroke-color);
 }
-svg g rect.titleBox {
+svg g .titleBox {
   fill: none;
   stroke: rgba(255, 255, 255, 0);
   stroke-width: 5;

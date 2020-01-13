@@ -708,6 +708,8 @@ export class GenerateService {
       if (parseFloat(element.getAttribute('font-size')) === fontsize + 1 && once) {
         once = false;
         (element.previousElementSibling as SVGRectElement).setAttribute('class', 'titleBox');
+        (element.previousElementSibling as SVGRectElement).removeAttribute('rx');
+        (element.previousElementSibling as SVGRectElement).removeAttribute('ry');
       }
     });
   }
