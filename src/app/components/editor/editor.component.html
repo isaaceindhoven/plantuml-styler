@@ -9,8 +9,7 @@
     <i *ngIf="util.openEditor" class="material-icons">arrow_forward</i>
 </button>
 <br>
-<div style="background-color: #f9f9f9;" [ngClass]="{ 'run-fadeIn': util.openEditor, 'noHeight': !util.openEditor }"
-    class="editor">
+<div style="background-color: #f9f9f9;" class="editor" [ngClass]="{ 'noHeight': !util.openEditor }">
     <ng-container style="background-color: #f9f9f9;">
         <mat-card style="background-color: #f9f9f9;" id="appCard" class="card">
             <mat-card-content>
@@ -22,7 +21,6 @@
                         <i style="flex: 0 0 auto; margin-top: 6px; color: rgb(129, 126, 126);"
                             class="material-icons">add</i>
                     </div>
-
                 </button>
                 <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt"
                     (change)="fileChanged($event)" value="Json">
