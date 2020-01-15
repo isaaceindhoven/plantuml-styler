@@ -3,6 +3,13 @@
     style="background-color: #fff; position: absolute; z-index: 5; right: 22px; " mat-mini-fab>
     <i style="color: #0099dd;" class="material-icons">add</i>
 </button>
+<a target="_blank" href="https://plantuml-documentation.readthedocs.io/en/latest/diagrams/sequence.html">
+    <button matTooltip="Syntax"
+        style="background-color: #fff; position: absolute; z-index: 5; right: 22px; top: 60px;" mat-mini-fab>
+        <i style="color: #000; " class="material-icons">info_outline</i>
+    </button>
+</a>
+
 <ace #aceComp [config]="config" (change)="generate.generateSVG(tA.value)" (keyup)="generate.generateSVG(tA.value)"
     id="tA" #tA class="coding" [(value)]="generate.text"></ace>
 <input hidden #jsons id="jsonInput" type="file" accept=".zip, .json,.puml,.txt" (change)="fileChanged($event)"
