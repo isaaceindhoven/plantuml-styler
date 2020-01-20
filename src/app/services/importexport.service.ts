@@ -152,4 +152,62 @@ export class ImportExportService {
       this.gen.halfwayDoneProcessing = true;
     }
   }
+  loadStyle(jsonstring) {
+    const json = JSON.parse(jsonstring);
+    this.gen.color1 = json.color1;
+    this.gen.color2 = json.color2;
+    this.gen.color3 = json.color3;
+    this.gen.color4 = json.color4;
+    this.gen.color5 = json.color5;
+    this.gen.color6 = json.color6;
+    this.gen.color7 = json.color7;
+    this.gen.color8 = json.color8;
+    this.gen.color9 = json.color9;
+    this.gen.colorBoxBack = json.colorBoxBack;
+    this.gen.colorBoxStroke = json.colorBoxStroke;
+    this.gen.selectedSize = json.selectedSize;
+    this.gen.selectedTheme = json.selectedTheme;
+    this.gen.selectedFont = json.selectedFont;
+    this.gen.selectedBreak = json.selectedBreak;
+    this.gen.selectedActor = json.selectedActor;
+    this.gen.selectedShape = json.selectedShape;
+    this.gen.selectedNumber = json.selectedNumber;
+    this.gen.hiddenNotes = json.hiddenNotes;
+    this.gen.footnotes = json.hiddenFootnotes;
+    this.gen.hiddenShadows = json.hiddenShadows;
+    this.gen.isThemed = json.isThemed;
+    this.gen.textImages = json.textImages;
+    this.gen.participantpadding = json.participantpadding;
+    this.gen.participantfontsize = json.participantfontsize;
+    this.gen.participantstroke = json.participantstroke;
+    this.gen.sequencetextsize = json.sequencetextsize;
+    this.gen.themedBreak = json.themedBreak;
+    this.gen.themedNumber = json.themedNumber;
+    this.gen.themedShape = json.themedShape;
+    this.gen.themedActor = json.themedActor;
+    this.gen.themedFont = json.themedFont;
+    this.gen.themedFootnotes = json.themedHiddenFootnotes;
+    this.gen.themedHiddenShadows = json.themedHiddenShadows;
+    this.gen.themedParticipantfontsize = json.themedParticipantfontsize;
+    this.gen.themedSequencetextsize = json.themedSequencetextsize;
+    this.gen.themedParticipantstroke = json.themedParticipantstroke;
+    this.gen.lineThickness = json.lineThickness;
+    this.gen.themedLineThickness = json.themedLineThickness;
+    this.gen.multicount = json.multicount;
+    this.gen.multi = json.multi;
+    this.gen.participants = json.participants;
+    this.gen.participantColors = json.participantColors;
+    this.gen.participantShapes = json.participantShapes;
+    this.gen.participantImages = json.participantImages;
+
+    if (!this.gen.isThemed) {
+      this.gen.selectedTheme = 'No theme';
+    }
+    if (this.gen.halfwayDoneProcessing) {
+      this.gen.isDoneProcessing = true;
+      this.gen.generateSVG(this.gen.text);
+    } else {
+      this.gen.halfwayDoneProcessing = true;
+    }
+  }
 }

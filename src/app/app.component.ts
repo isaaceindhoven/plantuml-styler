@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { UtilityService } from './services/utility.service';
+import Swal from 'sweetalert2';
+import { generate } from 'rxjs';
+import { GenerateService } from './services/generate.service';
+import { ImportExportService } from './services/importexport.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +11,7 @@ import { UtilityService } from './services/utility.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(public util: UtilityService) { }
+  constructor(public util: UtilityService, public gen: GenerateService, private impoexpo: ImportExportService) { }
   title = 'plantUml';
   resizableArea;
   text;
@@ -16,6 +20,14 @@ export class AppComponent {
   mousemove;
   hide;
   ngOnInit() {
+    window.addEventListener('load', e => {
+      console.log("loading previous");
+      this.gen.text = localStorage.getItem('code');
+      this.impoexpo.loadStyle(localStorage.getItem('style'));
+      setTimeout(() => {
+        this.gen.generateSVG(this.gen.text)
+      }, );
+    })
     window.addEventListener('dragover', e => {
       e && e.preventDefault();
     }, false);
@@ -25,6 +37,27 @@ export class AppComponent {
     window.addEventListener('resize', e => {
       this.util.calcWidth(this.util.pageX);
     });
+    window.addEventListener('beforeunload', e => {
+      this.beforePageClose();
+    });
+
+
+    let disableConfirmation = false;
+    window.addEventListener('beforeunload', event => {
+      const confirmationText = 'Are you sure?';
+      if (!disableConfirmation) {
+        event.returnValue = confirmationText; // Gecko, Trident, Chrome 34+
+        return confirmationText;              // Gecko, WebKit, Chrome <34
+      } else {
+        // Set flag back to false, just in case
+        // user stops loading page after clicking a link.
+        disableConfirmation = false;
+      }
+    });
+
+
+
+
     this.resizableArea = document.getElementById('resizableTextarea');
     this.util.diagram = document.getElementById('diagram');
     this.util.text = document.getElementById('text');
@@ -53,6 +86,11 @@ export class AppComponent {
   }
   getHalf() {
     return this.util.diagram.style.height / 2;
+  }
+
+  beforePageClose() {
+    localStorage.setItem('code', this.gen.text);
+    localStorage.setItem('style', this.impoexpo.saveConfig(true));
   }
 
 }
