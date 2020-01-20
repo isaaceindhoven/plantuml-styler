@@ -92,7 +92,8 @@ Big thanks to [PlantUML](https://plantuml.com/) for making this project possible
     
     button and select the downloaded ".zip" file.
     This will open the exact diagram you downloaded and you can change anything you want!
-
+- How do I change the environment variables like the default server?
+  - there is a file called [environment.prod.ts](https://github.com/isaaceindhoven/plantuml-styler/blob/master/src/environments/environment.prod.ts) change the base to whatever server you want, this will set it as default
 
 ## License
 MIT © ISAAC and/or its affiliates
