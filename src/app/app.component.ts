@@ -22,11 +22,13 @@ export class AppComponent {
   ngOnInit() {
     window.addEventListener('load', e => {
       console.log("loading previous");
-      this.gen.text = localStorage.getItem('code');
-      this.impoexpo.loadStyle(localStorage.getItem('style'));
+      if (localStorage.getItem('code')) {
+        this.gen.text = localStorage.getItem('code');
+        this.impoexpo.loadStyle(localStorage.getItem('style'));
+      }
       setTimeout(() => {
         this.gen.generateSVG(this.gen.text)
-      }, );
+      });
     })
     window.addEventListener('dragover', e => {
       e && e.preventDefault();
