@@ -8,7 +8,7 @@ Some key features include:
 * Use the default plantUML render server, or use your own server.
 * And much more...
 
-Use it on https://plantumlstyler.netlify.com/
+Use it on https://plantumlstyler.netlify.app/
 
 ![example](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/example.png)
 
