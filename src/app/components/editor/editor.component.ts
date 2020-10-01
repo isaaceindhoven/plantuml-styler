@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { StylingService } from 'src/app/services/styling.service';
 import { ZipService } from 'src/app/services/zip.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GenerateService } from 'src/app/services/generate.service';
 import { ImportExportService } from 'src/app/services/importexport.service';
 import { UtilityService } from 'src/app/services/utility.service';
