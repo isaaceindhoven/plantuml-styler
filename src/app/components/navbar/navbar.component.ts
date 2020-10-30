@@ -6,7 +6,7 @@ import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
 import { ZipService } from 'src/app/services/zip.service';
 import { NgxFileDropEntry, FileSystemFileEntry } from 'ngx-file-drop';
-import { MatDialog, MatInput } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GenerateService } from 'src/app/services/generate.service';
 import { ImportExportService } from 'src/app/services/importexport.service';
 import { UtilityService } from 'src/app/services/utility.service';
