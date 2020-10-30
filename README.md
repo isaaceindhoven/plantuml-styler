@@ -8,7 +8,7 @@ Some key features include:
 * Use the default plantUML render server, or use your own server.
 * And much more...
 
-Use it on https://plantumlstyler.netlify.app/
+See the latest version in action on https://plantumlstyler.netlify.app/
 
 ![example](https://github.com/isaaceindhoven/plantuml-styler/blob/master/Readme_Assets/example.png)
 
@@ -38,7 +38,7 @@ Into a beautiful diagram like this!
 
 ## Running PlantUML-styler locally
 1. Clone this repository
-2. Install the Angular CLI if you haven't already by running `npm install -g @angular/cli`
+2. Install the Angular CLI if you haven't already by running `npm install -g @angular/cli@9.1.12`
 3. Run `npm install` in the repository
 4. Run `ng serve -o` to start a development server at `http://localhost:4200`
 
